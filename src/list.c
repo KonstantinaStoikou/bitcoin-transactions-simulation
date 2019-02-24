@@ -21,7 +21,46 @@ Node *add_node(List **list, void *data) {
 }
 
 // the diagrafei me vasi kapoio stoixeio
-int delete_node(List **list, void *data) {}
+int delete_node(List **list, void *data) {
+    // check if node to be deleted is the head
+    if ((*list)->head->data == data) {
+    }
+
+    // else continue
+    // find the previous node of the one to be deleted
+    Node *prev = search_for_previous_node(list, data);
+    if (prev == NULL) {
+        perror("The node does not exist in the list");
+        return 1;
+    }
+
+    // free(temp);  // Free memory
+}
+
+Node *search_for_node(List **list, void *data) {
+    Node *current = (*list)->head;
+
+    while (current != NULL) {
+        if (current->data == data) {
+            return current;
+        }
+        current = current->next;
+    }
+    return NULL;
+}
+
+Node *search_for_previous_node(List **list, void *data) {
+    Node *current = (*list)->head;
+
+    while (current != NULL && current->next != NULL) {
+        if (current->next->data == data) {
+            return current;
+        }
+
+        current = current->next;
+    }
+    return NULL;
+}
 
 void print_list(List *list) {
     Node *current = list->head;
