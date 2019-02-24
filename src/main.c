@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "../include/read_functions.h"
 
 int main(int argc, char const *argv[]) {
@@ -11,14 +12,29 @@ int main(int argc, char const *argv[]) {
     printf("bitcoin_balances_file:             %s\n", bitcoin_balances_file);
     printf("transaction_file:                  %s\n", transaction_file);
     printf("bitcoin_value:                     %d\n", bitcoin_value);
-    printf("sender_hashtable_num_of_entries:   %d\n",
+    printf("sender_hashtanewline character linuxble_num_of_entries:   %d\n",
            sender_hashtable_num_of_entries);
-    printf("receiver_hashtable_num_of_entries: %d\n",
+    printf("receiver_hashnewline character linuxtable_num_of_entries: %d\n",
            receiver_hashtable_num_of_entries);
     printf("bucket_size:                       %d\n", bucket_size);
 
     // read ta arxeia kai eisagogi ton dedomenon tous se domes
 
-    // zitao eisodo apo xristi
+    // ask for user input until user enters "exit"
+    char prompt[100];
+    do {
+        // empty prompt array before asking for new user input
+        memset(prompt, 0, 100);
+
+        printf("Please enter a command: ");
+        fgets(prompt, 100, stdin);
+        // remove newline character from prompt string
+        prompt[strcspn(prompt, "\r\n")] = 0;
+        // call function to execute prompts given on the graph
+        // execute_prompt(prompt, &graph);
+    } while (strcmp(prompt, "/exit") != 0);
+
+    // apeleuterosi mnimis
+
     return 0;
 }
