@@ -16,5 +16,9 @@ int main(int argc, char const *argv[]) {
     printf("receiver_hashtable_num_of_entries: %d\n",
            receiver_hashtable_num_of_entries);
     printf("bucket_size:                       %d\n", bucket_size);
+
+    // read ta arxeia kai eisagogi ton dedomenon tous se domes
+
+    // zitao eisodo apo xristi
     return 0;
 }

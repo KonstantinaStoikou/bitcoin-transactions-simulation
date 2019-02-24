@@ -1,3 +1,8 @@
+/**
+ * Functions to read input files and command line arguments
+ *
+ */
+
 #ifndef READ_FUNCTIONS_HEADER
 #define READ_FUNCTIONS_HEADER
 
