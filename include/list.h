@@ -29,5 +29,7 @@ Node *search_for_node(List **list, void *data);
 Node *search_for_previous_node(List **list, void *data);
 // Print all nodes of the list
 void print_list(List *list);
+// Release memory of list
+void delete_list(List **list);
 
 #endif

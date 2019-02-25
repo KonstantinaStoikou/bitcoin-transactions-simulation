@@ -21,13 +21,13 @@ int main(int argc, char const *argv[]) {
     // read ta arxeia kai eisagogi ton dedomenon tous se domes
 
     // ask for user input until user enters "exit"
-    char prompt[100];
+    char prompt[200];
     do {
         // empty prompt array before asking for new user input
-        memset(prompt, 0, 100);
+        memset(prompt, 0, 200);
 
         printf("Please enter a command: ");
-        fgets(prompt, 100, stdin);
+        fgets(prompt, 200, stdin);
         // remove newline character from prompt string
         prompt[strcspn(prompt, "\r\n")] = 0;
         // call function to execute prompts given on the graph

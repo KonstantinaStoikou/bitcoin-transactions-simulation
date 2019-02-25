@@ -1,4 +1,6 @@
 #include "../include/list.h"
+#include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 List *initialize_list(void) {
@@ -20,10 +22,12 @@ Node *add_node(List **list, void *data) {
     return 0;
 }
 
-// the diagrafei me vasi kapoio stoixeio
 int delete_node(List **list, void *data) {
     // check if node to be deleted is the head
     if ((*list)->head->data == data) {
+        Node *node_deleted = (*list)->head;
+        (*list)->head = node_deleted->next;
+        free(node_deleted);
     }
 
     // else continue
@@ -34,7 +38,12 @@ int delete_node(List **list, void *data) {
         return 1;
     }
 
-    // free(temp);  // Free memory
+    // link previous node with the next of the one to delete
+    Node *node_deleted = prev->next;
+    prev->next = node_deleted->next;
+    // free memory
+    free(node_deleted);
+    return 0;
 }
 
 Node *search_for_node(List **list, void *data) {
@@ -56,7 +65,6 @@ Node *search_for_previous_node(List **list, void *data) {
         if (current->next->data == data) {
             return current;
         }
-
         current = current->next;
     }
     return NULL;
@@ -66,7 +74,18 @@ void print_list(List *list) {
     Node *current = list->head;
 
     while (current != NULL) {
-        // printf("%s\n", current->data);
+        printf("%s\n", (char *)current->data);
         current = current->next;
     }
+}
+
+void delete_list(List **list) {
+    Node *current = (*list)->head;
+
+    while (current != NULL) {
+        // free(current->data);
+        free(current);
+        current = current->next;
+    }
+    free(*list);
 }
