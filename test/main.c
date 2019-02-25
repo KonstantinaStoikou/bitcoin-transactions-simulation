@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <string.h>
 #include "../include/list.h"
+#include "../include/prompts.h"
 #include "../include/read_functions.h"
 
 int main(int argc, char const *argv[]) {
@@ -37,6 +39,22 @@ int main(int argc, char const *argv[]) {
     delete_list_node(&list, str4);
     print_list(list);
     delete_list(&list);
+
+    // TEST PROMPTS HERE:
+
+    // ask for user input until user enters "exit"
+    char prompt[200];
+    do {
+        // empty prompt array before asking for new user input
+        memset(prompt, 0, 200);
+
+        printf("Please enter a command: ");
+        fgets(prompt, 200, stdin);
+        // remove newline character from prompt string
+        prompt[strcspn(prompt, "\r\n")] = 0;
+        // call function to execute prompts given on the graph
+        execute_prompt(prompt);
+    } while (strcmp(prompt, "/exit") != 0);
 
     // TEST TREE HERE:
 
