@@ -5,6 +5,7 @@
 int main(int argc, char const *argv[]) {
     printf("THIS IS A TEST MAIN!\n");
 
+    // TEST READING ARGUMENTS HERE:
     char *bitcoin_balances_file, *transaction_file;
     int bitcoin_value, sender_hashtable_num_of_entries,
         receiver_hashtable_num_of_entries, bucket_size;
@@ -20,22 +21,24 @@ int main(int argc, char const *argv[]) {
     //        receiver_hashtable_num_of_entries);
     // printf("bucket_size: %d\n", bucket_size);
 
+    // TEST LIST HERE:
     char *str1 = "hello";
     char *str2 = "hi";
     char *str3 = "my name is";
     char *str4 = "Konstantina";
-    char *str5 = "Stoikou";
 
     List *list = initialize_list();
-    add_node(&list, str1);
-    add_node(&list, str2);
-    add_node(&list, str3);
-    add_node(&list, str4);
-    add_node(&list, str5);
+    add_list_node(&list, str1);
+    add_list_node(&list, str2);
+    add_list_node(&list, str3);
+    add_list_node(&list, str4);
     print_list(list);
     printf("\n");
-    delete_node(&list, str4);
+    delete_list_node(&list, str4);
     print_list(list);
     delete_list(&list);
+
+    // TEST TREE HERE:
+
     return 0;
 }

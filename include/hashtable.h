@@ -1,5 +1,5 @@
 /**
- * A hash table with bucket hashing
+ * A hash table with bucket hashing.
  *
  */
 

@@ -1,5 +1,4 @@
 #include "../include/list.h"
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -11,9 +10,9 @@ List *initialize_list(void) {
     return list;
 }
 
-Node *add_node(List **list, void *data) {
+List_node *add_list_node(List **list, void *data) {
     // Allocate memory for node
-    Node *new_node = (Node *)malloc(sizeof(Node));
+    List_node *new_node = (List_node *)malloc(sizeof(List_node));
     new_node->data = data;
     new_node->next = (*list)->head;
     // Change head pointer as new node is added at the beginning
@@ -22,32 +21,32 @@ Node *add_node(List **list, void *data) {
     return 0;
 }
 
-int delete_node(List **list, void *data) {
+int delete_list_node(List **list, void *data) {
     // check if node to be deleted is the head
     if ((*list)->head->data == data) {
-        Node *node_deleted = (*list)->head;
+        List_node *node_deleted = (*list)->head;
         (*list)->head = node_deleted->next;
         free(node_deleted);
     }
 
     // else continue
     // find the previous node of the one to be deleted
-    Node *prev = search_for_previous_node(list, data);
+    List_node *prev = search_list_prev_node(list, data);
     if (prev == NULL) {
         perror("The node does not exist in the list");
         return 1;
     }
 
     // link previous node with the next of the one to delete
-    Node *node_deleted = prev->next;
+    List_node *node_deleted = prev->next;
     prev->next = node_deleted->next;
     // free memory
     free(node_deleted);
     return 0;
 }
 
-Node *search_for_node(List **list, void *data) {
-    Node *current = (*list)->head;
+List_node *search_list_node(List **list, void *data) {
+    List_node *current = (*list)->head;
 
     while (current != NULL) {
         if (current->data == data) {
@@ -58,8 +57,8 @@ Node *search_for_node(List **list, void *data) {
     return NULL;
 }
 
-Node *search_for_previous_node(List **list, void *data) {
-    Node *current = (*list)->head;
+List_node *search_list_prev_node(List **list, void *data) {
+    List_node *current = (*list)->head;
 
     while (current != NULL && current->next != NULL) {
         if (current->next->data == data) {
@@ -71,7 +70,7 @@ Node *search_for_previous_node(List **list, void *data) {
 }
 
 void print_list(List *list) {
-    Node *current = list->head;
+    List_node *current = list->head;
 
     while (current != NULL) {
         printf("%s\n", (char *)current->data);
@@ -80,7 +79,7 @@ void print_list(List *list) {
 }
 
 void delete_list(List **list) {
-    Node *current = (*list)->head;
+    List_node *current = (*list)->head;
 
     while (current != NULL) {
         // free(current->data);

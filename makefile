@@ -4,13 +4,13 @@ FLAGS   = -g -Wall
 
 all: $(OUT)
 
-# the app executable
+# the app's executable
 bitcoin: src/main.c
-	$(CC) $(FLAGS) src/main.c src/read_functions.c -o bitcoin
+	$(CC) $(FLAGS) src/main.c src/read_functions.c src/list.c -o bitcoin
 
 # a main function for testing new features or changes
 demo: test/main.c
-	$(CC) $(FLAGS) test/main.c src/read_functions.c src/list.c -o demo
+	$(CC) $(FLAGS) test/main.c src/read_functions.c src/list.c src/tree.c -o demo
 
 clean:
 	rm -f $(OUT)

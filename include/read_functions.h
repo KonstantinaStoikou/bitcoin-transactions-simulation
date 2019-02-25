@@ -1,5 +1,5 @@
 /**
- * Functions to read input files and command line arguments
+ * Functions to read input files and command line arguments.
  *
  */
 
