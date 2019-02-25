@@ -14,21 +14,26 @@ void execute_prompt(char *prompt) {
         word = strtok(NULL, " ");
     }
     printf("\n");
+
     // request a transaction
     if (strcmp(words[0], "/requestTransaction") == 0) {
         printf("a transaction was requested\n");
     }
     // request multiple transactions
-    else if (strcmp(words[0], "/requestTransaction") == 0) {
+    else if (strcmp(words[0], "/requestTransactions") == 0) {
         printf("multiple transactions were requested\n");
-        // add_edge(graph, words[1], words[2], atoi(words[3]));
-        // printf("- Inserted |%s|->%s->|%s|\n", words[1], words[3], words[2]);
+        // check if transactions are from an input file (if only one extra
+        // argument was given)
+        if (words[2] == NULL) {
+            printf("transactions from an input file were requested\n");
+        }
     }
     // exit program
     else if (strcmp(words[0], "/exit") == 0) {
         printf("Exit program\n");
     }
     // EXTRA PROMPTS FOR DEBUGGING:
+    // list all possible commands
     else if (strcmp(words[0], "/listCommands") == 0) {
         printf(
             "- Request a transaction :\n"

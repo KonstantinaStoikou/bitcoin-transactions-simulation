@@ -1,5 +1,11 @@
+/**
+ * A main function to test new features or changes in preexisting code.
+ *
+ */
+
 #include <stdio.h>
 #include <string.h>
+#include "../include/defines.h"
 #include "../include/list.h"
 #include "../include/prompts.h"
 #include "../include/read_functions.h"
@@ -43,13 +49,12 @@ int main(int argc, char const *argv[]) {
     // TEST PROMPTS HERE:
 
     // ask for user input until user enters "exit"
-    char prompt[200];
+    char prompt[BUF_SIZE];
     do {
         // empty prompt array before asking for new user input
-        memset(prompt, 0, 200);
-
-        printf("Please enter a command: ");
-        fgets(prompt, 200, stdin);
+        memset(prompt, 0, BUF_SIZE);
+        printf(CYAN "Please enter a command: " RESET);
+        fgets(prompt, BUF_SIZE, stdin);
         // remove newline character from prompt string
         prompt[strcspn(prompt, "\r\n")] = 0;
         // call function to execute prompts given on the graph

@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <string.h>
+#include "../include/defines.h"
 #include "../include/read_functions.h"
+
+// define color codes
+#define CYAN "\x1B[36m"
+#define RESET "\033[0m"
 
 int main(int argc, char const *argv[]) {
     char *bitcoin_balances_file, *transaction_file;
@@ -21,13 +26,13 @@ int main(int argc, char const *argv[]) {
     // read ta arxeia kai eisagogi ton dedomenon tous se domes
 
     // ask for user input until user enters "exit"
-    char prompt[200];
+    char prompt[BUF_SIZE];
     do {
         // empty prompt array before asking for new user input
-        memset(prompt, 0, 200);
+        memset(prompt, 0, BUF_SIZE);
 
-        printf("Please enter a command: ");
-        fgets(prompt, 200, stdin);
+        printf(CYAN "Please enter a command: " RESET);
+        fgets(prompt, BUF_SIZE, stdin);
         // remove newline character from prompt string
         prompt[strcspn(prompt, "\r\n")] = 0;
         // call function to execute prompts given on the graph
