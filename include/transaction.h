@@ -3,8 +3,8 @@
 
 typedef struct Transaction {
     char *transaction_id;
-    char *wallet_id;
-    int bitcoin_id;
+    char *sender_wallet_id;
+    char *receiver_wallet_id;
     int value;
     char *date;
     char *time;

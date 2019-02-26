@@ -1,6 +1,8 @@
 #include "../include/read_functions.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../include/defines.h"
 
 void read_arguments(int argc, char const *argv[], char **bitcoin_balances_file,
                     char **transaction_file, int *bitcoin_value,
@@ -23,4 +25,31 @@ void read_arguments(int argc, char const *argv[], char **bitcoin_balances_file,
             *bucket_size = atoi(argv[i + 1]);
         }
     }
+}
+
+void read_bitcoin_balances_file(char *filename) {
+    FILE *fp;
+    char *line = NULL;
+    size_t len = 0;
+    // format path because of folder structure
+    char filepath[BUF_SIZE];
+    snprintf(filepath, sizeof filepath, "%s%s", "./", filename);
+
+    fp = fopen(filepath, "r");
+    if (fp == NULL) {
+        perror("Balances file cannot be opened");
+        exit(EXIT_FAILURE);
+    }
+
+    while (getline(&line, &len, fp) != -1) {
+        printf("%s", line);
+        char *word = strtok(line, " ");
+        printf("username is : %s\n", word);
+        while (word) {
+            word = strtok(NULL, " ");
+            printf("bitcoin is : %s\n", word);
+        }
+    }
+    printf("\n");
+    fclose(fp);
 }

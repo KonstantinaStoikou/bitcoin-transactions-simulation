@@ -20,7 +20,7 @@ int main(int argc, char const *argv[]) {
     read_arguments(argc, argv, &bitcoin_balances_file, &transaction_file,
                    &bitcoin_value, &sender_hashtable_num_of_entries,
                    &receiver_hashtable_num_of_entries, &bucket_size);
-    // printf("bitcoin_balances_file: %s\n", bitcoin_balances_file);
+    printf("bitcoin_balances_file: %s\n", bitcoin_balances_file);
     // printf("transaction_file: %s\n", transaction_file);
     // printf("bitcoin_value: %d\n", bitcoin_value);
     // printf("sender_hashtable_num_of_entries: %d\n",
@@ -28,6 +28,9 @@ int main(int argc, char const *argv[]) {
     // printf("receiver_hashtable_num_of_entries: %d\n",
     //        receiver_hashtable_num_of_entries);
     // printf("bucket_size: %d\n", bucket_size);
+
+    // TEST READING FILES HERE:
+    read_bitcoin_balances_file(bitcoin_balances_file);
 
     // TEST LIST HERE:
     char *str1 = "hello";
@@ -46,6 +49,15 @@ int main(int argc, char const *argv[]) {
     print_list(list);
     delete_list(&list);
 
+    // TEST COLORS HERE:
+    printf("%sred\n", RED);
+    printf("%sgreen\n", GREEN);
+    printf("%syellow\n", YELLOW);
+    printf("%sblue\n", BLUE);
+    printf("%smagenta\n", MAGENTA);
+    printf("%scyan\n", CYAN);
+    printf("%snormal\n", RESET);
+
     // TEST PROMPTS HERE:
 
     // ask for user input until user enters "exit"
@@ -53,7 +65,7 @@ int main(int argc, char const *argv[]) {
     do {
         // empty prompt array before asking for new user input
         memset(prompt, 0, BUF_SIZE);
-        printf(CYAN "Please enter a command: " RESET);
+        printf(YELLOW "Please enter a command: " RESET);
         fgets(prompt, BUF_SIZE, stdin);
         // remove newline character from prompt string
         prompt[strcspn(prompt, "\r\n")] = 0;

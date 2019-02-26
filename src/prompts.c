@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../include/defines.h"
 
 void execute_prompt(char *prompt) {
     // break prompt into words
@@ -36,34 +37,33 @@ void execute_prompt(char *prompt) {
     // list all possible commands
     else if (strcmp(words[0], "/listCommands") == 0) {
         printf(
-            "- Request a transaction :\n"
+            CYAN
+            "- Request a transaction :\n" RESET
             "\t/requestTransaction senderWalletID receiverWalletID amount date "
-            "time\n\n"
-            "- Request mupliple transactions :\n"
+            "time\n\n" CYAN "- Request mupliple transactions :\n" RESET
             "\t/requestTransactions senderWalletID receiverWalletID amount "
             "date "
             "time;\n"
             "\tsenderWalletID2 receiverWalletID2 amount2 date2 time2;\n"
             "\t...\n"
-            "\tsenderWalletIDn receiverWalletIDn amountn daten timen;\n\n"
-            "- Read transactions from an input file as :\n"
-            "\t/requestTransactions inputFile\n\n"
+            "\tsenderWalletIDn receiverWalletIDn amountn daten timen;\n\n" CYAN
+            "- Read transactions from an input file as :\n" RESET
+            "\t/requestTransactions inputFile\n\n" CYAN
             "- Show received earnings of a certain user (optionally in a "
             "certain "
             "time period) "
-            ":\n"
-            "​\t/findEarnings walletID [time1][year1][time2][year2]\n\n"
+            ":\n" RESET
+            "​\t/findEarnings walletID [time1][year1][time2][year2]\n\n" CYAN
             "- Show sended payments of a certain user (optionally in a certain "
             "time "
-            "period) :\n"
-            "​\t/findPayments walletID [time1][year1][time2][year2]\n\n"
-            "- Show balance in a certain wallet :\n"
-            "​\t/walletStatus walletID\n\n"
-            "- Show info about a certain bitcoin :\n"
-            "\t/bitCoinStatus bitCoinID\n\n"
-            "- Show transaction history of a certain bitcoin :\n"
-            "\t/traceCoin bitCoinID\n\n"
-            "- Exit program: \n"
+            "period) :\n" RESET
+            "​\t/findPayments walletID [time1][year1][time2][year2]\n\n" CYAN
+            "- Show balance in a certain wallet :\n" RESET
+            "​\t/walletStatus walletID\n\n" CYAN
+            "- Show info about a certain bitcoin :\n" RESET
+            "\t/bitCoinStatus bitCoinID\n\n" CYAN
+            "- Show transaction history of a certain bitcoin :\n" RESET
+            "\t/traceCoin bitCoinID\n\n" CYAN "- Exit program: \n" RESET
             "\t/exit\n\n");
     } else {
         printf("There is no such command\n");

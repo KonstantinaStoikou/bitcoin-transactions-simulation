@@ -12,7 +12,7 @@ void read_arguments(int argc, char const *argv[], char **bitcoin_balances_file,
                     int *sender_hashtable_num_of_entries,
                     int *receiver_hashtable_num_of_entries, int *bucket_size);
 
-void read_bitcoin_balances_file();
+void read_bitcoin_balances_file(char *filename);
 void read_transaction_file();
 
 #endif
