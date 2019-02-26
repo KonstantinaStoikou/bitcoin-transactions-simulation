@@ -32,22 +32,56 @@ void read_bitcoin_balances_file(char *filename) {
     char *line = NULL;
     size_t len = 0;
     // format path because of folder structure
-    char filepath[BUF_SIZE];
+    char filepath[strlen(filename) + 3];
     snprintf(filepath, sizeof filepath, "%s%s", "./", filename);
 
     fp = fopen(filepath, "r");
     if (fp == NULL) {
-        perror("Balances file cannot be opened");
+        perror(RED "Balances file cannot be opened" RESET);
         exit(EXIT_FAILURE);
     }
 
     while (getline(&line, &len, fp) != -1) {
         printf("%s", line);
+
         char *word = strtok(line, " ");
         printf("username is : %s\n", word);
         while (word) {
             word = strtok(NULL, " ");
-            printf("bitcoin is : %s\n", word);
+            if (word) {
+                printf("bitcoin is : %s\n", word);
+            }
+        }
+    }
+    printf("\n");
+    fclose(fp);
+}
+
+void read_transaction_file(char *filename) {
+    FILE *fp;
+    char *line = NULL;
+    size_t len = 0;
+    // format path because of folder structure
+    char filepath[strlen(filename) + 3];
+    snprintf(filepath, sizeof filepath, "%s%s", "./", filename);
+
+    fp = fopen(filepath, "r");
+    if (fp == NULL) {
+        perror("Transactions file cannot be opened");
+        exit(EXIT_FAILURE);
+    }
+
+    while (getline(&line, &len, fp) != -1) {
+        printf("%s", line);
+
+        char *words[6];  // maximum number of words for a line of that file is 6
+        int count = 0;
+        char *word = strtok(line, " ");  // split prompt by spaces
+        while (word) {
+            words[count] = word;
+            printf("token #%d is : %s\n", count, words[count]);
+            count++;
+            word = strtok(NULL, " ");
         }
     }
     printf("\n");

@@ -31,6 +31,7 @@ int main(int argc, char const *argv[]) {
 
     // TEST READING FILES HERE:
     read_bitcoin_balances_file(bitcoin_balances_file);
+    read_transaction_file(transaction_file);
 
     // TEST LIST HERE:
     char *str1 = "hello";

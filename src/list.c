@@ -1,6 +1,7 @@
 #include "../include/list.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "../include/defines.h"
 
 List *initialize_list(void) {
     List *list = NULL;
@@ -27,13 +28,14 @@ int delete_list_node(List **list, void *data) {
         List_node *node_deleted = (*list)->head;
         (*list)->head = node_deleted->next;
         free(node_deleted);
+        return 0;
     }
 
     // else continue
     // find the previous node of the one to be deleted
     List_node *prev = search_list_prev_node(list, data);
     if (prev == NULL) {
-        perror("The node does not exist in the list");
+        perror(RED "The node does not exist in the list" RESET);
         return 1;
     }
 

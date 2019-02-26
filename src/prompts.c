@@ -66,7 +66,7 @@ void execute_prompt(char *prompt) {
             "\t/traceCoin bitCoinID\n\n" CYAN "- Exit program: \n" RESET
             "\t/exit\n\n");
     } else {
-        printf("There is no such command\n");
+        printf(RED "There is no such command\n" RESET);
     }
 
     printf("\n");
