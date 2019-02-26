@@ -21,7 +21,7 @@ int main(int argc, char const *argv[]) {
                    &bitcoin_value, &sender_hashtable_num_of_entries,
                    &receiver_hashtable_num_of_entries, &bucket_size);
     printf("bitcoin_balances_file: %s\n", bitcoin_balances_file);
-    // printf("transaction_file: %s\n", transaction_file);
+    printf("transaction_file: %s\n", transaction_file);
     // printf("bitcoin_value: %d\n", bitcoin_value);
     // printf("sender_hashtable_num_of_entries: %d\n",
     //        sender_hashtable_num_of_entries);

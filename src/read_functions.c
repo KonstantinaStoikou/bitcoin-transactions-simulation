@@ -1,8 +1,10 @@
 #include "../include/read_functions.h"
+#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "../include/defines.h"
+#include "../include/transaction.h"
 
 void read_arguments(int argc, char const *argv[], char **bitcoin_balances_file,
                     char **transaction_file, int *bitcoin_value,
@@ -67,7 +69,7 @@ void read_transaction_file(char *filename) {
 
     fp = fopen(filepath, "r");
     if (fp == NULL) {
-        perror("Transactions file cannot be opened");
+        perror(RED "Transactions file cannot be opened" RESET);
         exit(EXIT_FAILURE);
     }
 
@@ -76,14 +78,61 @@ void read_transaction_file(char *filename) {
 
         char *words[6];  // maximum number of words for a line of that file is 6
         int count = 0;
-        char *word = strtok(line, " ");  // split prompt by spaces
-        while (word) {
-            words[count] = word;
+        char *w = strtok(line, " ");  // split prompt by spaces
+        while (w) {
+            words[count] = w;
             printf("token #%d is : %s\n", count, words[count]);
             count++;
-            word = strtok(NULL, " ");
+            w = strtok(NULL, " ");
         }
+        // insert values into a transaction struct
+        Transaction *transaction = malloc(sizeof(Transaction));
+        transaction->transaction_id = malloc(sizeof(words[0]));
+        strcpy(transaction->transaction_id, words[0]);
+        transaction->sender_wallet_id = malloc(sizeof(words[1]));
+        strcpy(transaction->sender_wallet_id, words[1]);
+        transaction->receiver_wallet_id = malloc(sizeof(words[2]));
+        strcpy(transaction->receiver_wallet_id, words[2]);
+        transaction->value = atoi(words[3]);
+        char buffer[26];
+        struct tm *tm_info = ascii_to_tm(words[4], words[5]);
+
+        strftime(buffer, 26, "%d-%m-%Y %H:%M", tm_info);
+        puts(buffer);
+        // transaction->date = malloc(sizeof(words[4]));
+        // strcpy(transaction->date, words[4]);
+        // transaction->time = malloc(sizeof(words[5]));
+        // strcpy(transaction->time, words[5]);
     }
     printf("\n");
     fclose(fp);
+}
+
+struct tm *ascii_to_tm(char *date_str, char *time_str) {
+    struct tm *tm;
+    char *date[3];  // maximum number of members of date is 3 (DD-MM-YYYY)
+    int count = 0;
+    char *d = strtok(date_str, "-");  // split prompt by spaces
+    while (d) {
+        date[count] = d;
+        printf("token #%d is : %s\n", count, date[count]);
+        count++;
+        d = strtok(NULL, "-");
+    }
+    char *time[2];  // maximum number of members of time is 2 (HH:MM)
+    count = 0;
+    char *t = strtok(time_str, ":");  // split prompt by spaces
+    while (t) {
+        time[count] = t;
+        printf("token #%d is : %s\n", count, time[count]);
+        count++;
+        t = strtok(NULL, ":");
+    }
+
+    tm->tm_mday = atoi(date[0]);
+    tm->tm_mon = atoi(date[1]) - 1;
+    tm->tm_year = atoi(date[2]) - 1900;
+    tm->tm_hour = atoi(time[0]);
+    tm->tm_min = atoi(time[1]);
+    return tm;
 }
