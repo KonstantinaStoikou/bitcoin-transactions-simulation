@@ -71,11 +71,12 @@ List_node *search_list_prev_node(List **list, void *data) {
     return NULL;
 }
 
-void print_list(List *list) {
+// Give a printing function as argument depending on the data struct
+void print_list(List *list, void (*fptr)(void *)) {
     List_node *current = list->head;
 
     while (current != NULL) {
-        printf("%s\n", (char *)current->data);
+        (*fptr)(current->data);
         current = current->next;
     }
 }

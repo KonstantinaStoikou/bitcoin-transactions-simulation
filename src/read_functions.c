@@ -99,10 +99,6 @@ void read_transaction_file(char *filename) {
 
         strftime(buffer, 26, "%d-%m-%Y %H:%M", tm_info);
         puts(buffer);
-        // transaction->date = malloc(sizeof(words[4]));
-        // strcpy(transaction->date, words[4]);
-        // transaction->time = malloc(sizeof(words[5]));
-        // strcpy(transaction->time, words[5]);
     }
     printf("\n");
     fclose(fp);

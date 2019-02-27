@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "../include/defines.h"
+#include "../include/prompts.h"
 #include "../include/read_functions.h"
 
 // define color codes
@@ -31,12 +32,12 @@ int main(int argc, char const *argv[]) {
         // empty prompt array before asking for new user input
         memset(prompt, 0, BUF_SIZE);
 
-        printf(CYAN "Please enter a command: " RESET);
+        printf(YELLOW "Please enter a command: " RESET);
         fgets(prompt, BUF_SIZE, stdin);
         // remove newline character from prompt string
         prompt[strcspn(prompt, "\r\n")] = 0;
         // call function to execute prompts given on the graph
-        // execute_prompt(prompt, &graph);
+        execute_prompt(prompt);
     } while (strcmp(prompt, "/exit") != 0);
 
     // apeleuterosi mnimis

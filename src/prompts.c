@@ -29,6 +29,26 @@ void execute_prompt(char *prompt) {
             printf("transactions from an input file were requested\n");
         }
     }
+    // Show received earnings of a certain user
+    else if (strcmp(words[0], "/findEarnings") == 0) {
+        printf("finding earnings\n");
+    }
+    // Show sent payments of a certain user
+    else if (strcmp(words[0], "/findPayments") == 0) {
+        printf("finding payments\n");
+    }
+    // Show balance in a certain wallet
+    else if (strcmp(words[0], "/walletStatus") == 0) {
+        printf("showing wallet status\n");
+    }
+    // Show info about a certain bitcoin
+    else if (strcmp(words[0], "/bitcoinStatus") == 0) {
+        printf("showing bitcoin status\n");
+    }
+    // Show transaction history of a certain bitcoin
+    else if (strcmp(words[0], "/traceCoin") == 0) {
+        printf("tracing a coin\n");
+    }
     // exit program
     else if (strcmp(words[0], "/exit") == 0) {
         printf("Exit program\n");
@@ -54,7 +74,7 @@ void execute_prompt(char *prompt) {
             "time period) "
             ":\n" RESET
             "​\t/findEarnings walletID [time1][year1][time2][year2]\n\n" CYAN
-            "- Show sended payments of a certain user (optionally in a certain "
+            "- Show sent payments of a certain user (optionally in a certain "
             "time "
             "period) :\n" RESET
             "​\t/findPayments walletID [time1][year1][time2][year2]\n\n" CYAN
