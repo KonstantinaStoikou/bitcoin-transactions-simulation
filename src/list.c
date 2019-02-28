@@ -86,7 +86,9 @@ void delete_list(List **list, void (*fptr)(void *)) {
     List_node *current = (*list)->head;
 
     while (current != NULL) {
-        (*fptr)(current->data);
+        if (*fptr != NULL) {
+            (*fptr)(current->data);
+        }
         free(current);
         current = current->next;
     }

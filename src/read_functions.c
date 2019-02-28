@@ -5,6 +5,7 @@
 #include <string.h>
 #include "../include/defines.h"
 #include "../include/transaction.h"
+#include "../include/wallet.h"
 
 void read_arguments(int argc, char const *argv[], char **bitcoin_balances_file,
                     char **transaction_file, int *bitcoin_value,
@@ -29,31 +30,40 @@ void read_arguments(int argc, char const *argv[], char **bitcoin_balances_file,
     }
 }
 
-void read_bitcoin_balances_file(char *filename) {
+void read_bitcoin_balances_file(char *filename, int bitcoin_value,
+                                Hashtable **wallets) {
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
     // format path because of folder structure
-    char filepath[strlen(filename) + 3];
-    snprintf(filepath, sizeof filepath, "%s%s", "./", filename);
+    char filepath[strlen(filename) + 4];
+    snprintf(filepath, sizeof(filepath), "%s%s", "./", filename);
 
     fp = fopen(filepath, "r");
+    printf("file is %s\n", filepath);
     if (fp == NULL) {
         perror(RED "Balances file cannot be opened" RESET);
         exit(EXIT_FAILURE);
     }
 
     while (getline(&line, &len, fp) != -1) {
+        Wallet *wal = malloc(sizeof(Wallet));
         printf("%s", line);
 
         char *word = strtok(line, " ");
-        printf("username is : %s\n", word);
+        strcpy(wal->wallet_id, word);
+        printf("username is : %s\n", wal->wallet_id);
+        wal->balance = 0;
         while (word) {
             word = strtok(NULL, " ");
             if (word) {
                 printf("bitcoin is : %s\n", word);
+                wal->balance += bitcoin_value;
             }
         }
+        int pos = get_hash(get_wallet_hash, wal->wallet_id);
+        insert_hashtable_entry(wallets, pos, wal, sizeof(Wallet));
+        free(wal);
     }
     printf("\n");
     fclose(fp);
@@ -65,7 +75,7 @@ void read_transaction_file(char *filename) {
     size_t len = 0;
     // format path because of folder structure
     char filepath[strlen(filename) + 3];
-    snprintf(filepath, sizeof filepath, "%s%s", "./", filename);
+    snprintf(filepath, sizeof(filepath), "%s%s", "./", filename);
 
     fp = fopen(filepath, "r");
     if (fp == NULL) {

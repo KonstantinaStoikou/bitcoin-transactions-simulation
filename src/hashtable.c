@@ -1,6 +1,7 @@
 #include "../include/hashtable.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "../include/defines.h"
 
 Hashtable *initialize_hashtable(int num_of_entries, int bucket_size) {
@@ -16,6 +17,11 @@ Hashtable *initialize_hashtable(int num_of_entries, int bucket_size) {
     }
 
     return ht;
+}
+
+int get_hash(int (*fptr)(void *), void *data) {
+    int num = (*fptr)(data);
+    return num;
 }
 
 Bucket *initialize_bucket(int size, int sizeof_struct) {
@@ -49,7 +55,8 @@ void *insert_hashtable_entry(Hashtable **ht, int position, void *data,
         // search bucket array for an empty space to insert new data
         for (int i = 0; i < buck->num_of_entries; i++) {
             if (buck->data[i] == NULL) {
-                buck->data[i] = data;
+                buck->data[i] = malloc(sizeof_data_struct);
+                memcpy(buck->data[i], data, sizeof_data_struct);
                 return buck->data[i];
             }
         }
@@ -58,7 +65,8 @@ void *insert_hashtable_entry(Hashtable **ht, int position, void *data,
     // if no space was found, add a new bucket in the list and add the data
     // there
     Bucket *buck = initialize_bucket((*ht)->bucket_size, sizeof_data_struct);
-    buck->data[0] = data;
+    buck->data[0] = malloc(sizeof_data_struct);
+    memcpy(buck->data[0], data, sizeof_data_struct);
     bucket_node = add_list_node(&((*ht)->table[position]), buck);
     return buck->data[0];
 }

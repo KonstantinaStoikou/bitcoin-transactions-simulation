@@ -28,6 +28,8 @@ typedef struct Hashtable {
 // Allocate memory for hashtable and initialize table with the given number of
 // entries
 Hashtable *initialize_hashtable(int num_of_entries, int bucket_size);
+// Hash function
+int get_hash(int (*fptr)(void *), void *data);
 // Allocate memory for bucket based on the given size in bytes and the size of
 // the structs that will be passed as data
 Bucket *initialize_bucket(int size, int sizeof_struct);

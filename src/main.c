@@ -1,8 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "../include/defines.h"
+#include "../include/hashtable.h"
 #include "../include/prompts.h"
 #include "../include/read_functions.h"
+#include "../include/wallet.h"
 
 // define color codes
 #define CYAN "\x1B[36m"
@@ -15,6 +18,19 @@ int main(int argc, char const *argv[]) {
     read_arguments(argc, argv, &bitcoin_balances_file, &transaction_file,
                    &bitcoin_value, &sender_hashtable_num_of_entries,
                    &receiver_hashtable_num_of_entries, &bucket_size);
+
+    if (argc == 1) {
+        bitcoin_balances_file =
+            malloc(strlen("files/bitCoinBalancesFile.txt" + 1));
+        strcpy(bitcoin_balances_file, "files/bitCoinBalancesFile.txt");
+        transaction_file = malloc(strlen("files/transactionsFile.txt" + 1));
+        strcpy(transaction_file, "files/transactionsFile.txt");
+        bitcoin_value = 50;
+        sender_hashtable_num_of_entries = 10;
+        receiver_hashtable_num_of_entries = 15;
+        bucket_size = 100;
+    }
+
     printf("bitcoin_balances_file:             %s\n", bitcoin_balances_file);
     printf("transaction_file:                  %s\n", transaction_file);
     printf("bitcoin_value:                     %d\n", bitcoin_value);
@@ -24,14 +40,19 @@ int main(int argc, char const *argv[]) {
            receiver_hashtable_num_of_entries);
     printf("bucket_size:                       %d\n", bucket_size);
 
-    // read ta arxeia kai eisagogi ton dedomenon tous se domes
+    // read input files and insert data in structs
+    Hashtable *wallets_ht =
+        initialize_hashtable(WALLET_HT_SIZE, WALLET_BUCKET_SIZE);
+    read_bitcoin_balances_file(bitcoin_balances_file, bitcoin_value,
+                               &wallets_ht);
+    // read_transaction_file(transaction_file);
+    print_hashtable(wallets_ht, print_wallet);
 
     // ask for user input until user enters "exit"
     char prompt[BUF_SIZE];
     do {
         // empty prompt array before asking for new user input
         memset(prompt, 0, BUF_SIZE);
-
         printf(YELLOW "Please enter a command: " RESET);
         fgets(prompt, BUF_SIZE, stdin);
         // remove newline character from prompt string
@@ -40,7 +61,9 @@ int main(int argc, char const *argv[]) {
         execute_prompt(prompt);
     } while (strcmp(prompt, "/exit") != 0);
 
-    // apeleuterosi mnimis
+    // Free allocated memory
+    free(bitcoin_balances_file);
+    free(transaction_file);
 
     return 0;
 }

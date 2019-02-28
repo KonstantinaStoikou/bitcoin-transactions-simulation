@@ -60,21 +60,21 @@ int main(int argc, char const *argv[]) {
     // char *str2 = "hi";
     // char *str3 = "my name is";
     // char *str4 = "Konstantina";
-    // int num1 = 1;
-    // int num2 = 2;
-    // int num3 = 3;
-    // int num4 = 4;
+    int num1 = 1;
+    int num2 = 2;
+    int num3 = 3;
+    int num4 = 4;
 
-    // List *list = initialize_list();
-    // add_list_node(&list, &num1);
-    // add_list_node(&list, &num2);
-    // add_list_node(&list, &num3);
-    // add_list_node(&list, &num4);
-    // print_list(list, print_int);
-    // printf("\n");
-    // delete_list_node(&list, &num4);
-    // print_list(list, print_int);
-    // delete_list(&list);
+    List *list = initialize_list();
+    add_list_node(&list, &num1);
+    add_list_node(&list, &num2);
+    add_list_node(&list, &num3);
+    add_list_node(&list, &num4);
+    print_list(list, print_int);
+    printf("\n");
+    delete_list_node(&list, &num4);
+    print_list(list, print_int);
+    delete_list(&list, NULL);
     // ------------------------------------------------------------------------
 
     // TEST HASHTABLE HERE:
@@ -87,23 +87,14 @@ int main(int argc, char const *argv[]) {
            (bucket_size - sizeof(Bucket)) / sizeof(int *));
     Hashtable *hashtable =
         initialize_hashtable(sender_hashtable_num_of_entries, bucket_size);
-    printf("Insertion 1\n");
     int insert1 = 100;
     insert_hashtable_entry(&hashtable, 3, &insert1, sizeof(&insert1));
-    print_hashtable(hashtable, print_int);
-    printf("Insertion 2\n");
     int insert2 = 101;
     insert_hashtable_entry(&hashtable, 3, &insert2, sizeof(&insert1));
-    print_hashtable(hashtable, print_int);
-    printf("Insertion 3\n");
     int insert3 = 102;
     insert_hashtable_entry(&hashtable, 3, &insert3, sizeof(&insert1));
-    print_hashtable(hashtable, print_int);
-    printf("Insertion 4\n");
     int insert4 = 103;
     insert_hashtable_entry(&hashtable, 2, &insert4, sizeof(&insert1));
-    print_hashtable(hashtable, print_int);
-    printf("Insertion 5\n");
     int insert5 = 104;
     insert_hashtable_entry(&hashtable, 3, &insert5, sizeof(&insert1));
     print_hashtable(hashtable, print_int);
@@ -117,32 +108,33 @@ int main(int argc, char const *argv[]) {
 
     // TEST COLORS HERE:
     // ------------------------------------------------------------------------
-    // printf("\n");
-    // printf("%sred\n", RED);
-    // printf("%sgreen\n", GREEN);
-    // printf("%syellow\n", YELLOW);
-    // printf("%sblue\n", BLUE);
-    // printf("%smagenta\n", MAGENTA);
-    // printf("%scyan\n", CYAN);
-    // printf("%snormal\n", RESET);
+    printf("\n");
+    printf("%sred\n", RED);
+    printf("%sgreen\n", GREEN);
+    printf("%syellow\n", YELLOW);
+    printf("%sblue\n", BLUE);
+    printf("%smagenta\n", MAGENTA);
+    printf("%scyan\n", CYAN);
+    printf("%snormal\n", RESET);
     // ------------------------------------------------------------------------
 
     // TEST PROMPTS HERE:
     // ------------------------------------------------------------------------
 
     // ask for user input until user enters "exit"
-    // char prompt[BUF_SIZE];
-    // do {
-    //     // empty prompt array before asking for new user input
-    //     memset(prompt, 0, BUF_SIZE);
-    //     printf(YELLOW "Please enter a command: " RESET);
-    //     fgets(prompt, BUF_SIZE, stdin);
-    //     // remove newline character from prompt string
-    //     prompt[strcspn(prompt, "\r\n")] = 0;
-    //     // call function to execute prompts given on the graph
-    //     execute_prompt(prompt);
-    // } while (strcmp(prompt, "/exit") != 0);
+    char prompt[BUF_SIZE];
+    do {
+        // empty prompt array before asking for new user input
+        memset(prompt, 0, BUF_SIZE);
+        printf(YELLOW "Please enter a command: " RESET);
+        fgets(prompt, BUF_SIZE, stdin);
+        // remove newline character from prompt string
+        prompt[strcspn(prompt, "\r\n")] = 0;
+        // call function to execute prompts given on the graph
+        execute_prompt(prompt);
+    } while (strcmp(prompt, "/exit") != 0);
     // ------------------------------------------------------------------------
+
     free(bitcoin_balances_file);
     free(transaction_file);
 
