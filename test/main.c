@@ -122,17 +122,17 @@ int main(int argc, char const *argv[]) {
     // ------------------------------------------------------------------------
 
     // ask for user input until user enters "exit"
-    char prompt[BUF_SIZE];
-    do {
-        // empty prompt array before asking for new user input
-        memset(prompt, 0, BUF_SIZE);
-        printf(YELLOW "Please enter a command: " RESET);
-        fgets(prompt, BUF_SIZE, stdin);
-        // remove newline character from prompt string
-        prompt[strcspn(prompt, "\r\n")] = 0;
-        // call function to execute prompts given on the graph
-        execute_prompt(prompt);
-    } while (strcmp(prompt, "/exit") != 0);
+    // char prompt[BUF_SIZE];
+    // do {
+    //     // empty prompt array before asking for new user input
+    //     memset(prompt, 0, BUF_SIZE);
+    //     printf(YELLOW "Please enter a command: " RESET);
+    //     fgets(prompt, BUF_SIZE, stdin);
+    //     // remove newline character from prompt string
+    //     prompt[strcspn(prompt, "\r\n")] = 0;
+    //     // call function to execute prompts given on the graph
+    //     execute_prompt(prompt);
+    // } while (strcmp(prompt, "/exit") != 0);
     // ------------------------------------------------------------------------
 
     free(bitcoin_balances_file);

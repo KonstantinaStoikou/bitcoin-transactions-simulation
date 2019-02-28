@@ -58,7 +58,7 @@ int main(int argc, char const *argv[]) {
         // remove newline character from prompt string
         prompt[strcspn(prompt, "\r\n")] = 0;
         // call function to execute prompts given on the graph
-        execute_prompt(prompt);
+        execute_prompt(prompt, &wallets_ht, &bitcoins_ht);
     } while (strcmp(prompt, "/exit") != 0);
 
     // Free allocated memory

@@ -2,9 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../include/bitcoin.h"
 #include "../include/defines.h"
+#include "../include/wallet.h"
 
-void execute_prompt(char *prompt) {
+void execute_prompt(char *prompt, Hashtable **wallets_ht,
+                    Hashtable **bitcoins_ht) {
     // break prompt into words
     char *words[6];  // maximum number of words for a prompt is 6
     int count = 0;
@@ -85,6 +88,10 @@ void execute_prompt(char *prompt) {
             "- Show transaction history of a certain bitcoin :\n" RESET
             "\t/traceCoin bitCoinID\n\n" CYAN "- Exit program: \n" RESET
             "\t/exit\n\n");
+    } else if (strcmp(words[0], "/showBitcoins") == 0) {
+        print_hashtable(*bitcoins_ht, print_bitcoin);
+    } else if (strcmp(words[0], "/showWallets") == 0) {
+        print_hashtable(*wallets_ht, print_wallet);
     } else {
         printf(RED "There is no such command\n" RESET);
     }
