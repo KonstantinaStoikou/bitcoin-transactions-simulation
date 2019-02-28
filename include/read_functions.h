@@ -16,7 +16,7 @@ void read_arguments(int argc, char const *argv[], char **bitcoin_balances_file,
                     int *receiver_hashtable_num_of_entries, int *bucket_size);
 // Read bitcoin balances file and store items in structures
 void read_bitcoin_balances_file(char *filename, int bitcoin_value,
-                                Hashtable **wallets);
+                                Hashtable **wallets, Hashtable **bitcoins);
 // Read transactions file and store items in structures
 void read_transaction_file(char *filename);
 // Convert a string to a tm struct and return the struct

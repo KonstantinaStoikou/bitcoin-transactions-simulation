@@ -17,9 +17,13 @@
 
 // Define size of buffer for reading user input, formatting strings etc.
 #define BUF_SIZE 300
-// Define number of entries of wallet hashtable
+// Define number of entries of wallets hashtable
 #define WALLET_HT_SIZE 20
 // Define size of buckets of wallets (in bytes)
 #define WALLET_BUCKET_SIZE 100
+// Define number of entries of bitcoins hashtable
+#define BITCOIN_HT_SIZE 20
+// Define size of buckets of bitcoins (in bytes)
+#define BITCOIN_BUCKET_SIZE 50
 
 #endif

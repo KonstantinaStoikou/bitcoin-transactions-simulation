@@ -7,12 +7,12 @@ all: $(OUT)
 # the app's executable
 bitcoin: src/main.c
 	$(CC) $(FLAGS) src/main.c src/read_functions.c src/list.c src/prompts.c \
-		src/hashtable.c src/wallet.c -o bitcoin
+		src/hashtable.c src/wallet.c src/bitcoin.c -o bitcoin
 
 # a main function for testing new features or changes
 demo: test/main.c
 	$(CC) $(FLAGS) test/main.c src/read_functions.c src/list.c src/tree.c \
-		src/hashtable.c src/prompts.c src/wallet.c src/print_functions.c -o demo
+		src/hashtable.c src/prompts.c src/wallet.c src/print_functions.c src/bitcoin.c -o demo
 
 clean:
 	rm -f $(OUT)

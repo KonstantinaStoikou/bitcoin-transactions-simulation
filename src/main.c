@@ -1,15 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../include/bitcoin.h"
 #include "../include/defines.h"
 #include "../include/hashtable.h"
 #include "../include/prompts.h"
 #include "../include/read_functions.h"
 #include "../include/wallet.h"
-
-// define color codes
-#define CYAN "\x1B[36m"
-#define RESET "\033[0m"
 
 int main(int argc, char const *argv[]) {
     char *bitcoin_balances_file, *transaction_file;
@@ -43,10 +40,13 @@ int main(int argc, char const *argv[]) {
     // read input files and insert data in structs
     Hashtable *wallets_ht =
         initialize_hashtable(WALLET_HT_SIZE, WALLET_BUCKET_SIZE);
+    Hashtable *bitcoins_ht =
+        initialize_hashtable(BITCOIN_HT_SIZE, BITCOIN_BUCKET_SIZE);
     read_bitcoin_balances_file(bitcoin_balances_file, bitcoin_value,
-                               &wallets_ht);
+                               &wallets_ht, &bitcoins_ht);
     // read_transaction_file(transaction_file);
     print_hashtable(wallets_ht, print_wallet);
+    print_hashtable(bitcoins_ht, print_bitcoin);
 
     // ask for user input until user enters "exit"
     char prompt[BUF_SIZE];

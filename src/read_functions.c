@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../include/bitcoin.h"
 #include "../include/defines.h"
 #include "../include/transaction.h"
 #include "../include/wallet.h"
@@ -31,7 +32,7 @@ void read_arguments(int argc, char const *argv[], char **bitcoin_balances_file,
 }
 
 void read_bitcoin_balances_file(char *filename, int bitcoin_value,
-                                Hashtable **wallets) {
+                                Hashtable **wallets, Hashtable **bitcoins) {
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
@@ -57,12 +58,19 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
         while (word) {
             word = strtok(NULL, " ");
             if (word) {
-                printf("bitcoin is : %s\n", word);
+                Bitcoin *bitc = malloc(sizeof(Bitcoin));
+                bitc->bitcoin_id = atoi(word);
+                bitc->unspent = bitcoin_value;
+                bitc->num_of_transactions = 0;
+                int bpos = get_hash(get_bitcoin_hash, &bitc->bitcoin_id);
+                insert_hashtable_entry(bitcoins, bpos, bitc, sizeof(Bitcoin));
+                free(bitc);
                 wal->balance += bitcoin_value;
+                printf("bitcoin is : %s\n", word);
             }
         }
-        int pos = get_hash(get_wallet_hash, wal->wallet_id);
-        insert_hashtable_entry(wallets, pos, wal, sizeof(Wallet));
+        int wpos = get_hash(get_wallet_hash, wal->wallet_id);
+        insert_hashtable_entry(wallets, wpos, wal, sizeof(Wallet));
         free(wal);
     }
     printf("\n");
