@@ -21,6 +21,7 @@ Bucket *initialize_bucket(int size, int sizeof_struct) {
     // allocate memory for bucket struct (size in bytes given as argument)
     Bucket *buck = malloc(sizeof(Bucket));
     buck->num_of_entries = (size - sizeof(Bucket)) / sizeof_struct;
+    printf("num of entries in bucket : %d\n", buck->num_of_entries);
     buck->data = malloc(sizeof_struct * buck->num_of_entries);
     // allocate remaining space in bucket so that:
     // bucket size + size of data array = given size in bytes
@@ -40,7 +41,7 @@ void *insert_hashtable_entry(Hashtable **ht, int position, void *data) {
     }
 
     // search bucket list to find an empty space in the buckets
-    while (bucket_node->next != NULL) {
+    while (bucket_node != NULL) {
         // cast data of bucket list to Bucket, to access the Bucket data
         Bucket *buck = (Bucket *)bucket_node->data;
         // search bucket array for an empty space to insert new data

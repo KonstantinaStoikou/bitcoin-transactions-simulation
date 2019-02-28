@@ -35,7 +35,7 @@ int main(int argc, char const *argv[]) {
         bitcoin_value = 50;
         sender_hashtable_num_of_entries = 10;
         receiver_hashtable_num_of_entries = 15;
-        bucket_size = 5;
+        bucket_size = 200;
     }
     printf("bitcoin_balances_file:             %s\n", bitcoin_balances_file);
     printf("transaction_file:                  %s\n", transaction_file);
@@ -49,27 +49,45 @@ int main(int argc, char const *argv[]) {
 
     // TEST READING FILES HERE:
     // ------------------------------------------------------------------------
-    read_bitcoin_balances_file(bitcoin_balances_file);
-    read_transaction_file(transaction_file);
+    // read_bitcoin_balances_file(bitcoin_balances_file);
+    // read_transaction_file(transaction_file);
     // ------------------------------------------------------------------------
 
     // TEST LIST HERE:
     // ------------------------------------------------------------------------
-    char *str1 = "hello";
-    char *str2 = "hi";
-    char *str3 = "my name is";
-    char *str4 = "Konstantina";
+    // char *str1 = "hello";
+    // char *str2 = "hi";
+    // char *str3 = "my name is";
+    // char *str4 = "Konstantina";
+    int num1 = 1;
+    int num2 = 2;
+    int num3 = 3;
+    int num4 = 4;
 
     List *list = initialize_list();
-    add_list_node(&list, str1);
-    add_list_node(&list, str2);
-    add_list_node(&list, str3);
-    add_list_node(&list, str4);
+    add_list_node(&list, &num1);
+    add_list_node(&list, &num2);
+    add_list_node(&list, &num3);
+    add_list_node(&list, &num4);
     // print_list(list);
     printf("\n");
-    delete_list_node(&list, str4);
+    // delete_list_node(&list, str4);
     // print_list(list);
     delete_list(&list);
+    // ------------------------------------------------------------------------
+
+    // TEST TREE HERE:
+    // ------------------------------------------------------------------------
+    Hashtable *hashtable =
+        initialize_hashtable(sender_hashtable_num_of_entries, bucket_size);
+    int insert = 100;
+    int *num = insert_hashtable_entry(&hashtable, 3, &insert);
+    printf("inserted value in hashtable: %d\n", *num);
+    // ------------------------------------------------------------------------
+
+    // TEST HASHTABLE HERE:
+    // ------------------------------------------------------------------------
+
     // ------------------------------------------------------------------------
 
     // TEST COLORS HERE:
@@ -98,14 +116,6 @@ int main(int argc, char const *argv[]) {
         // call function to execute prompts given on the graph
         execute_prompt(prompt);
     } while (strcmp(prompt, "/exit") != 0);
-    // ------------------------------------------------------------------------
-
-    // TEST TREE HERE:
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    // TEST HASHTABLE HERE:
-    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     return 0;
