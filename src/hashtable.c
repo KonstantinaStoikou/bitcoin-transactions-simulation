@@ -22,7 +22,6 @@ Bucket *initialize_bucket(int size, int sizeof_struct) {
     // allocate memory for bucket struct (size in bytes given as argument)
     Bucket *buck = malloc(sizeof(Bucket));
     buck->num_of_entries = (size - sizeof(Bucket)) / sizeof_struct;
-    printf("num of entries in bucket : %d\n", buck->num_of_entries);
     buck->data = malloc(sizeof_struct * buck->num_of_entries);
     // allocate remaining space in bucket so that:
     // bucket size + size of data array = given size in bytes
@@ -31,11 +30,13 @@ Bucket *initialize_bucket(int size, int sizeof_struct) {
     return buck;
 }
 
-void *insert_hashtable_entry(Hashtable **ht, int position, void *data) {
+void *insert_hashtable_entry(Hashtable **ht, int position, void *data,
+                             int sizeof_data_struct) {
     List_node *bucket_node;
     // if there is no bucket in this position, add one
     if ((*ht)->table[position]->head == NULL) {
-        Bucket *buck = initialize_bucket((*ht)->bucket_size, sizeof(Bucket));
+        Bucket *buck =
+            initialize_bucket((*ht)->bucket_size, sizeof_data_struct);
         bucket_node = add_list_node(&((*ht)->table[position]), buck);
     } else {
         bucket_node = (*ht)->table[position]->head;
@@ -46,7 +47,7 @@ void *insert_hashtable_entry(Hashtable **ht, int position, void *data) {
         // cast data of bucket list to Bucket, to access the Bucket data
         Bucket *buck = (Bucket *)bucket_node->data;
         // search bucket array for an empty space to insert new data
-        for (int i = 0; i < buck->num_of_entries - 1; i++) {
+        for (int i = 0; i < buck->num_of_entries; i++) {
             if (buck->data[i] == NULL) {
                 buck->data[i] = data;
                 return buck->data[i];
@@ -56,24 +57,29 @@ void *insert_hashtable_entry(Hashtable **ht, int position, void *data) {
     }
     // if no space was found, add a new bucket in the list and add the data
     // there
-    Bucket *buck = initialize_bucket((*ht)->bucket_size, sizeof(Bucket));
+    Bucket *buck = initialize_bucket((*ht)->bucket_size, sizeof_data_struct);
     buck->data[0] = data;
     bucket_node = add_list_node(&((*ht)->table[position]), buck);
     return buck->data[0];
 }
 
 void print_hashtable(Hashtable *ht, void (*fptr)(void *)) {
-    for (int i = 0; i < ht->num_of_entries - 1; i++) {
-        printf(GREEN "- In hashtable entry %d: \n", i);
+    for (int i = 0; i < ht->num_of_entries; i++) {
+        printf(GREEN "- In hashtable entry %d: \n" RESET, i);
         List_node *current_entry = ht->table[i]->head;
         int count = 0;
         while (current_entry != NULL) {
             printf(BLUE "\tIn bucket %d: \n", count);
-            printf(RESET "\t\t");
             Bucket *current_bucket = (Bucket *)current_entry->data;
-            // call print function given as argument
-            (*fptr)(*(current_bucket->data));
-            printf("\n");
+            for (int i = 0; i < current_bucket->num_of_entries; i++) {
+                if (current_bucket->data[i] == NULL) {
+                    break;
+                }
+                printf(RESET "\t\t");
+                // call print function given as argument
+                (*fptr)(current_bucket->data[i]);
+                printf("\n");
+            }
             current_entry = current_entry->next;
             count++;
         }

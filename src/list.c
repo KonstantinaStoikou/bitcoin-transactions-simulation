@@ -77,6 +77,7 @@ void print_list(List *list, void (*fptr)(void *)) {
 
     while (current != NULL) {
         (*fptr)(current->data);
+        printf("\n");
         current = current->next;
     }
 }
