@@ -6,6 +6,6 @@
 #ifndef PRINT_FUNCTIONS_HEADER
 #define PRINT_FUNCTIONS_HEADER
 
-void print_int(void *data);
+void print_int(void *num);
 
 #endif

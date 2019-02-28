@@ -107,6 +107,7 @@ int main(int argc, char const *argv[]) {
     int insert5 = 104;
     insert_hashtable_entry(&hashtable, 3, &insert5, sizeof(&insert1));
     print_hashtable(hashtable, print_int);
+    delete_hashtable(&hashtable);
     // ------------------------------------------------------------------------
 
     // TEST TREE HERE:
@@ -142,6 +143,8 @@ int main(int argc, char const *argv[]) {
     //     execute_prompt(prompt);
     // } while (strcmp(prompt, "/exit") != 0);
     // ------------------------------------------------------------------------
+    free(bitcoin_balances_file);
+    free(transaction_file);
 
     return 0;
 }

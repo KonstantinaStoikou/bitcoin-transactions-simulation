@@ -82,11 +82,11 @@ void print_list(List *list, void (*fptr)(void *)) {
     }
 }
 
-void delete_list(List **list) {
+void delete_list(List **list, void (*fptr)(void *)) {
     List_node *current = (*list)->head;
 
     while (current != NULL) {
-        // free(current->data);
+        (*fptr)(current->data);
         free(current);
         current = current->next;
     }

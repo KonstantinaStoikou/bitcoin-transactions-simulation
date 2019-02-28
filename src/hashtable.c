@@ -85,3 +85,17 @@ void print_hashtable(Hashtable *ht, void (*fptr)(void *)) {
         }
     }
 }
+
+void delete_hashtable(Hashtable **ht) {
+    for (int i = 0; i < (*ht)->num_of_entries; i++) {
+        delete_list(&(*ht)->table[i], delete_bucket);
+    }
+    free((*ht)->table);
+    free(*ht);
+}
+
+void delete_bucket(void *bucket) {
+    free(((Bucket *)bucket)->remaining_space);
+    free(((Bucket *)bucket)->data);
+    free((Bucket *)bucket);
+}

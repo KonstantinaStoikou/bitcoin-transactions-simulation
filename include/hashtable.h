@@ -38,5 +38,8 @@ void *insert_hashtable_entry(Hashtable **ht, int position, void *data,
 // Print all data in the hashtable giving a printing function as argument
 // depending on the data struct
 void print_hashtable(Hashtable *ht, void (*fptr)(void *));
+void delete_hashtable(Hashtable **ht);
+// Release memory of bucket
+void delete_bucket(void *bucket);
 
 #endif
