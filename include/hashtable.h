@@ -34,5 +34,8 @@ Bucket *initialize_bucket(int size, int sizeof_struct);
 // Insert an element in the given position of the hashtable and return the
 // inserted data
 void *insert_hashtable_entry(Hashtable **ht, int position, void *data);
+// Print all data in the hashtable giving a printing function as argument
+// depending on the data struct
+void print_hashtable(Hashtable *ht, void (*fptr)(void *));
 
 #endif

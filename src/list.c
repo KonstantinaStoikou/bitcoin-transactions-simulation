@@ -19,7 +19,7 @@ List_node *add_list_node(List **list, void *data) {
     // Change head pointer as new node is added at the beginning
     (*list)->head = new_node;
 
-    return 0;
+    return new_node;
 }
 
 int delete_list_node(List **list, void *data) {

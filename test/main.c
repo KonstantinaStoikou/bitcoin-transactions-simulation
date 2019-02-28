@@ -9,6 +9,7 @@
 #include "../include/defines.h"
 #include "../include/hashtable.h"
 #include "../include/list.h"
+#include "../include/print_functions.h"
 #include "../include/prompts.h"
 #include "../include/read_functions.h"
 
@@ -35,14 +36,14 @@ int main(int argc, char const *argv[]) {
         bitcoin_value = 50;
         sender_hashtable_num_of_entries = 10;
         receiver_hashtable_num_of_entries = 15;
-        bucket_size = 200;
+        bucket_size = 100;
     }
     printf("bitcoin_balances_file:             %s\n", bitcoin_balances_file);
     printf("transaction_file:                  %s\n", transaction_file);
     printf("bitcoin_value:                     %d\n", bitcoin_value);
-    printf("sender_hashtanewline character linuxble_num_of_entries:   %d\n",
+    printf("sender_hashtable_num_of_entries:   %d\n",
            sender_hashtable_num_of_entries);
-    printf("receiver_hashnewline character linuxtable_num_of_entries: %d\n",
+    printf("receiver_hashtable_num_of_entries: %d\n",
            receiver_hashtable_num_of_entries);
     printf("bucket_size:                       %d\n", bucket_size);
     // ------------------------------------------------------------------------
@@ -59,39 +60,53 @@ int main(int argc, char const *argv[]) {
     // char *str2 = "hi";
     // char *str3 = "my name is";
     // char *str4 = "Konstantina";
-    int num1 = 1;
-    int num2 = 2;
-    int num3 = 3;
-    int num4 = 4;
+    // int num1 = 1;
+    // int num2 = 2;
+    // int num3 = 3;
+    // int num4 = 4;
 
-    List *list = initialize_list();
-    add_list_node(&list, &num1);
-    add_list_node(&list, &num2);
-    add_list_node(&list, &num3);
-    add_list_node(&list, &num4);
-    // print_list(list);
-    printf("\n");
-    // delete_list_node(&list, str4);
-    // print_list(list);
-    delete_list(&list);
-    // ------------------------------------------------------------------------
-
-    // TEST TREE HERE:
-    // ------------------------------------------------------------------------
-    Hashtable *hashtable =
-        initialize_hashtable(sender_hashtable_num_of_entries, bucket_size);
-    int insert = 100;
-    int *num = insert_hashtable_entry(&hashtable, 3, &insert);
-    printf("inserted value in hashtable: %d\n", *num);
+    // List *list = initialize_list();
+    // add_list_node(&list, &num1);
+    // add_list_node(&list, &num2);
+    // add_list_node(&list, &num3);
+    // add_list_node(&list, &num4);
+    // // print_list(list);
+    // printf("\n");
+    // // delete_list_node(&list, str4);
+    // // print_list(list);
+    // delete_list(&list);
     // ------------------------------------------------------------------------
 
     // TEST HASHTABLE HERE:
+    // ------------------------------------------------------------------------
+    Hashtable *hashtable =
+        initialize_hashtable(sender_hashtable_num_of_entries, bucket_size);
+    int insert1 = 100;
+    int *num1 = insert_hashtable_entry(&hashtable, 3, &insert1);
+    int insert2 = 101;
+    int *num2 = insert_hashtable_entry(&hashtable, 3, &insert2);
+    int insert3 = 102;
+    int *num3 = insert_hashtable_entry(&hashtable, 3, &insert3);
+    int insert4 = 103;
+    int *num4 = insert_hashtable_entry(&hashtable, 2, &insert4);
+    int insert5 = 104;
+    int *num5 = insert_hashtable_entry(&hashtable, 3, &insert5);
+    printf("inserted value in hashtable: %d\n", *num1);
+    printf("inserted value in hashtable: %d\n", *num2);
+    printf("inserted value in hashtable: %d\n", *num3);
+    printf("inserted value in hashtable: %d\n", *num4);
+    printf("inserted value in hashtable: %d\n", *num5);
+    print_hashtable(hashtable, print_int);
+    // ------------------------------------------------------------------------
+
+    // TEST TREE HERE:
     // ------------------------------------------------------------------------
 
     // ------------------------------------------------------------------------
 
     // TEST COLORS HERE:
     // ------------------------------------------------------------------------
+    printf("\n");
     printf("%sred\n", RED);
     printf("%sgreen\n", GREEN);
     printf("%syellow\n", YELLOW);

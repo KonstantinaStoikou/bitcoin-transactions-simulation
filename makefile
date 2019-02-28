@@ -10,7 +10,7 @@ bitcoin: src/main.c
 
 # a main function for testing new features or changes
 demo: test/main.c
-	$(CC) $(FLAGS) test/main.c src/read_functions.c src/list.c src/tree.c src/hashtable.c src/prompts.c -o demo
+	$(CC) $(FLAGS) test/main.c src/read_functions.c src/list.c src/tree.c src/hashtable.c src/prompts.c src/print_functions.c -o demo
 
 clean:
 	rm -f $(OUT)

@@ -1,6 +1,7 @@
 #include "../include/hashtable.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "../include/defines.h"
 
 Hashtable *initialize_hashtable(int num_of_entries, int bucket_size) {
     // allocate memory for hashtable struct
@@ -59,4 +60,22 @@ void *insert_hashtable_entry(Hashtable **ht, int position, void *data) {
     buck->data[0] = data;
     bucket_node = add_list_node(&((*ht)->table[position]), buck);
     return buck->data[0];
+}
+
+void print_hashtable(Hashtable *ht, void (*fptr)(void *)) {
+    for (int i = 0; i < ht->num_of_entries - 1; i++) {
+        printf(GREEN "- In hashtable entry %d: \n", i);
+        List_node *current_entry = ht->table[i]->head;
+        int count = 0;
+        while (current_entry != NULL) {
+            printf(BLUE "\tIn bucket %d: \n", count);
+            printf(RESET "\t\t");
+            Bucket *current_bucket = (Bucket *)current_entry->data;
+            // call print function given as argument
+            (*fptr)(*(current_bucket->data));
+            printf("\n");
+            current_entry = current_entry->next;
+            count++;
+        }
+    }
 }
