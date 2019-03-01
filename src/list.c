@@ -82,12 +82,12 @@ void print_list(List *list, void (*fptr)(void *)) {
     }
 }
 
-void delete_list(List **list, void (*fptr)(void *)) {
+void delete_list(List **list, void (*function)(void *)) {
     List_node *current = (*list)->head;
 
     while (current != NULL) {
-        if (*fptr != NULL) {
-            (*fptr)(current->data);
+        if (*function != NULL) {
+            (*function)(current->data);
         }
         free(current);
         current = current->next;

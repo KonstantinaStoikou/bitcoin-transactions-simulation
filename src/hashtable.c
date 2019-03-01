@@ -19,8 +19,8 @@ Hashtable *initialize_hashtable(int num_of_entries, int bucket_size) {
     return ht;
 }
 
-int get_hash(int (*fptr)(void *), void *data) {
-    int num = (*fptr)(data);
+int get_hash(int (*function)(void *), void *data) {
+    int num = (*function)(data);
     return num;
 }
 
@@ -71,7 +71,7 @@ void *insert_hashtable_entry(Hashtable **ht, int position, void *data,
     return buck->data[0];
 }
 
-void print_hashtable(Hashtable *ht, void (*fptr)(void *)) {
+void print_hashtable(Hashtable *ht, void (*function)(void *)) {
     for (int i = 0; i < ht->num_of_entries; i++) {
         printf(GREEN "- In hashtable entry %d: \n" RESET, i);
         List_node *current_entry = ht->table[i]->head;
@@ -85,7 +85,7 @@ void print_hashtable(Hashtable *ht, void (*fptr)(void *)) {
                 }
                 printf(RESET "\t\t");
                 // call print function given as argument
-                (*fptr)(current_bucket->data[i]);
+                (*function)(current_bucket->data[i]);
                 printf("\n");
             }
             current_entry = current_entry->next;

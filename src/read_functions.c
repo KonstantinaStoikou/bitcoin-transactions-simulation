@@ -41,7 +41,6 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
     snprintf(filepath, sizeof(filepath), "%s%s", "./", filename);
 
     fp = fopen(filepath, "r");
-    printf("file is %s\n", filepath);
     if (fp == NULL) {
         perror(RED "Balances file cannot be opened" RESET);
         exit(EXIT_FAILURE);
@@ -53,7 +52,6 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
 
         char *word = strtok(line, " ");
         strcpy(wal->wallet_id, word);
-        printf("username is : %s\n", wal->wallet_id);
         wal->balance = 0;
         while (word) {
             word = strtok(NULL, " ");
@@ -66,7 +64,6 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
                 insert_hashtable_entry(bitcoins, bpos, bitc, sizeof(Bitcoin));
                 free(bitc);
                 wal->balance += bitcoin_value;
-                printf("bitcoin is : %s\n", word);
             }
         }
         int wpos = get_hash(get_wallet_hash, wal->wallet_id);
@@ -105,11 +102,8 @@ void read_transaction_file(char *filename) {
         }
         // insert values into a transaction struct
         Transaction *transaction = malloc(sizeof(Transaction));
-        transaction->transaction_id = malloc(sizeof(words[0]));
         strcpy(transaction->transaction_id, words[0]);
-        transaction->sender_wallet_id = malloc(sizeof(words[1]));
         strcpy(transaction->sender_wallet_id, words[1]);
-        transaction->receiver_wallet_id = malloc(sizeof(words[2]));
         strcpy(transaction->receiver_wallet_id, words[2]);
         transaction->value = atoi(words[3]);
         char buffer[26];

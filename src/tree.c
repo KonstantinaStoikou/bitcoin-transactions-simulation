@@ -1,4 +1,5 @@
 #include "../include/tree.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 Tree *initialize_tree(void) {
@@ -33,4 +34,20 @@ Tree_node *add_sender(Tree_node *node, void *data) {
     node->sender = new_node;
 
     return 0;
+}
+
+// Give a printing function as argument depending on the data struct
+void print_tree(Tree_node *node, void (*function)(void *)) {
+    if (node == NULL) {
+        return;
+    }
+    (*function)(node->data);
+    printf("\n");
+
+    if (node->sender != NULL) {
+        (*function)(node->sender->data);
+        printf("\n");
+    }
+    print_tree(node->sender, function);
+    print_tree(node->receiver, function);
 }

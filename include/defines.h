@@ -25,5 +25,9 @@
 #define BITCOIN_HT_SIZE 20
 // Define size of buckets of bitcoins (in bytes)
 #define BITCOIN_BUCKET_SIZE 50
+// Define size of wallet id string
+#define WALLET_ID_SIZE 50
+// Define size of transaction id string
+#define TRANSACTION_ID_SIZE 10
 
 #endif

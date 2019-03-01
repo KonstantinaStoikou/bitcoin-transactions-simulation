@@ -29,5 +29,11 @@ Tree_node *allocate_tree_node(void *data);
 Tree_node *add_receiver(Tree_node *node, void *data);
 // Add sender of a transaction for a given bitcoin "share" (tree node)
 Tree_node *add_sender(Tree_node *node, void *data);
+// Print (depth-first) all sender nodes of the tree (first argument root of the
+// tree) giving a printing function as argument depending on the data struct
+void print_tree(Tree_node *node, void (*fptr)(void *));
+// Release memory of tree giving a delete function as argument depending on the
+// data struct
+void delete_tree(Tree **tree, void (*fptr)(void *));
 
 #endif
