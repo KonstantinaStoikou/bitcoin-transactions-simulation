@@ -48,7 +48,6 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
     }
 
     while (getline(&line, &len, fp) != -1) {
-        printf("%s", line);
         char *word = strtok(line, " ");
         // initialize wallet struct
         Wallet *wal = malloc(sizeof(Wallet));
@@ -74,6 +73,7 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
                 // add bitcoin struct to bitcoin hashtable
                 int bpos = get_hash(get_bitcoin_hash, &bitc->bitcoin_id);
                 insert_hashtable_entry(bitcoins, bpos, bitc, sizeof(Bitcoin));
+                free(btd);
                 free(bitc);
                 wal->balance += bitcoin_value;
             }

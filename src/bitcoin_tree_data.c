@@ -4,8 +4,10 @@
 
 void print_bitcoin_tree_data(void *data) {
     Bitcoin_tree_data *btd = (Bitcoin_tree_data *)data;
-    printf("%s %d %s", btd->wallet_id, btd->amount,
-           btd->transaction->transaction_id);
+    printf("%s %d", btd->wallet_id, btd->amount);
+    if (btd->transaction != NULL) {
+        printf("%s", btd->transaction->transaction_id);
+    }
 }
 
 void print_bitcoin_transactions(void *data) {

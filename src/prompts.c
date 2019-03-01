@@ -53,14 +53,18 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     // Show transaction history of a certain bitcoin
     else if (strcmp(words[0], "/traceCoin") == 0) {
         if (words[1] == NULL) {
-            printf(RED "Bitcoin if was not given\n" RESET);
-        } else {
-            int bitc_id = atoi(words[1]);
-            int pos = get_hash(get_bitcoin_hash, &bitc_id);
-            Tree_node *root =
-                search_hashtable(bitcoins_ht, pos, &bitc_id, check_bitcoin_id);
-            print_tree_senders(root, print_bitcoin_transactions);
+            printf(RED "Bitcoin if was not given\n\n" RESET);
+            return;
         }
+        int bitc_id = atoi(words[1]);
+        int pos = get_hash(get_bitcoin_hash, &bitc_id);
+        Bitcoin *bitc = (Bitcoin *)search_hashtable(bitcoins_ht, pos, &bitc_id,
+                                                    check_bitcoin_id);
+        if (bitc == NULL) {
+            printf(RED "There is no bitcoin with the given id\n\n" RESET);
+            return;
+        }
+        print_tree_senders(bitc->tree->root, print_bitcoin_transactions);
     }
     // exit program
     else if (strcmp(words[0], "/exit") == 0) {
