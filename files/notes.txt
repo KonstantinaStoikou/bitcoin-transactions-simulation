@@ -1,0 +1,10 @@
+NOTES
+
+- delete tree
+- better hash functions
+- change hashtable sizes
+- pointers to structs vs ids for hashing
+- bitcoin id is int?
+- memcpy in list
+- 2 hashtable is data duplication?
+- hashtable for sender, receiver and store transactions file data

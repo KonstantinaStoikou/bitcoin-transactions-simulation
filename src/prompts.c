@@ -21,11 +21,11 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     }
     printf("\n");
 
-    // request a transaction
+    // Request a transaction
     if (strcmp(words[0], "/requestTransaction") == 0) {
         printf("a transaction was requested\n");
     }
-    // request multiple transactions
+    // Request multiple transactions
     else if (strcmp(words[0], "/requestTransactions") == 0) {
         printf("multiple transactions were requested\n");
         // check if transactions are from an input file (if only one extra
@@ -53,7 +53,7 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     // Show transaction history of a certain bitcoin
     else if (strcmp(words[0], "/traceCoin") == 0) {
         if (words[1] == NULL) {
-            printf(RED "Bitcoin if was not given\n\n" RESET);
+            printf(RED "Bitcoin id was not given\n\n" RESET);
             return;
         }
         int bitc_id = atoi(words[1]);
@@ -66,12 +66,12 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
         }
         print_tree_senders(bitc->tree->root, print_bitcoin_transactions);
     }
-    // exit program
+    // Exit program
     else if (strcmp(words[0], "/exit") == 0) {
         printf("Exit program\n");
     }
     // EXTRA PROMPTS FOR DEBUGGING:
-    // list all possible commands
+    // List all possible commands
     else if (strcmp(words[0], "/listCommands") == 0) {
         printf(
             CYAN
@@ -102,10 +102,30 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
             "- Show transaction history of a certain bitcoin :\n" RESET
             "\t/traceCoin bitCoinID\n\n" CYAN "- Exit program: \n" RESET
             "\t/exit\n\n");
-    } else if (strcmp(words[0], "/showBitcoins") == 0) {
+    }
+    // Print bitcoins hashtable
+    else if (strcmp(words[0], "/showBitcoins") == 0) {
         print_hashtable(*bitcoins_ht, print_bitcoin);
-    } else if (strcmp(words[0], "/showWallets") == 0) {
+    }
+    // Print wallets hashtable
+    else if (strcmp(words[0], "/showWallets") == 0) {
         print_hashtable(*wallets_ht, print_wallet);
+    }
+    // Print bitcoin tree (only data stored in tree, not pointers)
+    else if (strcmp(words[0], "/showBitcoinTree") == 0) {
+        if (words[1] == NULL) {
+            printf(RED "Bitcoin id was not given\n\n" RESET);
+            return;
+        }
+        int bitc_id = atoi(words[1]);
+        int pos = get_hash(get_bitcoin_hash, &bitc_id);
+        Bitcoin *bitc = (Bitcoin *)search_hashtable(bitcoins_ht, pos, &bitc_id,
+                                                    check_bitcoin_id);
+        if (bitc == NULL) {
+            printf(RED "There is no bitcoin with the given id\n\n" RESET);
+            return;
+        }
+        print_tree(bitc->tree->root, print_bitcoin_tree_data);
     } else {
         printf(RED "There is no such command\n" RESET);
     }
