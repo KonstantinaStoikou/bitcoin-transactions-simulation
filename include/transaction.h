@@ -13,4 +13,6 @@ typedef struct Transaction {
     struct tm *date;
 } Transaction;
 
+void print_transaction(void *data);
+
 #endif

@@ -19,10 +19,7 @@ Hashtable *initialize_hashtable(int num_of_entries, int bucket_size) {
     return ht;
 }
 
-int get_hash(int (*function)(void *), void *data) {
-    int num = (*function)(data);
-    return num;
-}
+int get_hash(int (*function)(void *), void *data) { return (*function)(data); }
 
 Bucket *initialize_bucket(int size, int sizeof_struct) {
     // allocate memory for bucket struct (size in bytes given as argument)
@@ -69,6 +66,21 @@ void *insert_hashtable_entry(Hashtable **ht, int position, void *data,
     memcpy(buck->data[0], data, sizeof_data_struct);
     bucket_node = add_list_node(&((*ht)->table[position]), buck);
     return buck->data[0];
+}
+
+void *search_hashtable(Hashtable **ht, int pos, void *data,
+                       int (*function)(void *, void *)) {
+    List_node *bucket_node = (*ht)->table[pos]->head;
+    while (bucket_node != NULL) {
+        Bucket *buck = (Bucket *)bucket_node->data;
+        for (int i = 0; i < buck->num_of_entries; i++) {
+            if ((*function)(buck->data[i], data) == 0) {
+                return buck->data[i];
+            }
+        }
+        bucket_node = bucket_node->next;
+    }
+    return NULL;
 }
 
 void print_hashtable(Hashtable *ht, void (*function)(void *)) {

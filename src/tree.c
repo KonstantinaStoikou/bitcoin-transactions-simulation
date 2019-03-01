@@ -1,6 +1,7 @@
 #include "../include/tree.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 Tree *initialize_tree(void) {
     Tree *tree = NULL;
@@ -10,26 +11,27 @@ Tree *initialize_tree(void) {
     return tree;
 }
 
-Tree_node *allocate_tree_node(void *data) {
+Tree_node *allocate_tree_node(void *data, int sizeof_data_struct) {
     Tree_node *new_node = (Tree_node *)malloc(sizeof(Tree_node));
-    new_node->data = data;
+    new_node->data = malloc(sizeof_data_struct);
+    memcpy(new_node->data, data, sizeof_data_struct);
     new_node->receiver = NULL;
     new_node->sender = NULL;
     return new_node;
 }
 
-Tree_node *add_receiver(Tree_node *node, void *data) {
+Tree_node *add_receiver(Tree_node *node, void *data, int sizeof_data_struct) {
     // Allocate memory for node
-    Tree_node *new_node = allocate_tree_node(data);
+    Tree_node *new_node = allocate_tree_node(data, sizeof_data_struct);
     // Make right child of given node point to it
     node->receiver = new_node;
 
     return 0;
 }
 
-Tree_node *add_sender(Tree_node *node, void *data) {
+Tree_node *add_sender(Tree_node *node, void *data, int sizeof_data_struct) {
     // Allocate memory for node
-    Tree_node *new_node = allocate_tree_node(data);
+    Tree_node *new_node = allocate_tree_node(data, sizeof_data_struct);
     // Make left child of given node point to it
     node->sender = new_node;
 
@@ -37,7 +39,7 @@ Tree_node *add_sender(Tree_node *node, void *data) {
 }
 
 // Give a printing function as argument depending on the data struct
-void print_tree(Tree_node *node, void (*function)(void *)) {
+void print_tree_senders(Tree_node *node, void (*function)(void *)) {
     if (node == NULL) {
         return;
     }
@@ -48,6 +50,8 @@ void print_tree(Tree_node *node, void (*function)(void *)) {
         (*function)(node->sender->data);
         printf("\n");
     }
-    print_tree(node->sender, function);
-    print_tree(node->receiver, function);
+    print_tree_senders(node->sender, function);
+    print_tree_senders(node->receiver, function);
 }
+
+// void print_tree(Tree_node *node, void (*function)(void *)) {}

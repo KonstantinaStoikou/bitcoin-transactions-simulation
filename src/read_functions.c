@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../include/bitcoin.h"
+#include "../include/bitcoin_tree_data.h"
 #include "../include/defines.h"
 #include "../include/transaction.h"
 #include "../include/wallet.h"
@@ -47,25 +48,37 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
     }
 
     while (getline(&line, &len, fp) != -1) {
-        Wallet *wal = malloc(sizeof(Wallet));
         printf("%s", line);
-
         char *word = strtok(line, " ");
+        // initialize wallet struct
+        Wallet *wal = malloc(sizeof(Wallet));
         strcpy(wal->wallet_id, word);
         wal->balance = 0;
         while (word) {
             word = strtok(NULL, " ");
             if (word) {
+                // initialize bitcoin struct
                 Bitcoin *bitc = malloc(sizeof(Bitcoin));
                 bitc->bitcoin_id = atoi(word);
                 bitc->unspent = bitcoin_value;
                 bitc->num_of_transactions = 0;
+                bitc->tree = initialize_tree();
+                // initialize bitcoin tree data struct
+                Bitcoin_tree_data *btd = malloc(sizeof(Bitcoin_tree_data));
+                btd->amount = bitcoin_value;
+                btd->transaction = NULL;
+                strcpy(btd->wallet_id, wal->wallet_id);
+                // add bitcoin tree data struct to bitcoin tree
+                bitc->tree->root =
+                    allocate_tree_node(btd, sizeof(Bitcoin_tree_data));
+                // add bitcoin struct to bitcoin hashtable
                 int bpos = get_hash(get_bitcoin_hash, &bitc->bitcoin_id);
                 insert_hashtable_entry(bitcoins, bpos, bitc, sizeof(Bitcoin));
                 free(bitc);
                 wal->balance += bitcoin_value;
             }
         }
+        // add wallet struct to wallet hashtable
         int wpos = get_hash(get_wallet_hash, wal->wallet_id);
         insert_hashtable_entry(wallets, wpos, wal, sizeof(Wallet));
         free(wal);

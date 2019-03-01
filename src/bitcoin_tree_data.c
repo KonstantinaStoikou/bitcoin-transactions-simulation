@@ -1,12 +1,16 @@
 #include "../include/bitcoin_tree_data.h"
 #include <stdio.h>
+#include "../include/transaction.h"
 
 void print_bitcoin_tree_data(void *data) {
     Bitcoin_tree_data *btd = (Bitcoin_tree_data *)data;
-    printf("%s %s %s %d", btd->transaction->transaction_id,
-           btd->transaction->sender_wallet_id,
-           btd->transaction->receiver_wallet_id, btd->transaction->value);
-    char buffer[20];
-    strftime(buffer, 20, "%d-%m-%Y %H:%M", btd->transaction->date);
-    printf("%s", buffer);
+    printf("%s %d %s", btd->wallet_id, btd->amount,
+           btd->transaction->transaction_id);
+}
+
+void print_bitcoin_transactions(void *data) {
+    Bitcoin_tree_data *btd = (Bitcoin_tree_data *)data;
+    if (btd->transaction != NULL) {
+        print_transaction(btd->transaction);
+    }
 }
