@@ -3,11 +3,12 @@
 
 #include <time.h>
 #include "defines.h"
+#include "wallet.h"
 
 typedef struct Transaction {
     char transaction_id[TRANSACTION_ID_SIZE];
-    char sender_wallet_id[WALLET_ID_SIZE];
-    char receiver_wallet_id[WALLET_ID_SIZE];
+    Wallet *sender_wallet;
+    Wallet *receiver_wallet;
     int value;
     // a struct to store both time and date
     struct tm *date;

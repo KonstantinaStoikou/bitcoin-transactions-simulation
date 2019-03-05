@@ -17,8 +17,10 @@ void read_arguments(int argc, char const *argv[], char **bitcoin_balances_file,
 // Read bitcoin balances file and store items in structures
 void read_bitcoin_balances_file(char *filename, int bitcoin_value,
                                 Hashtable **wallets, Hashtable **bitcoins);
-// Read transactions file and store items in structures
-void read_transaction_file(char *filename);
+// Read transactions file and store items in structures, return an integer that
+// shows the biggest transaction id that will be incremented by 1 for each new
+// transaction (after reading the file)
+int read_transaction_file(char *filename);
 // Convert a string to a tm struct and return the struct
 struct tm *ascii_to_tm(char *date, char *time);
 

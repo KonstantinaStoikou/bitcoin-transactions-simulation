@@ -100,8 +100,11 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
             "- Show info about a certain bitcoin :\n" RESET
             "\t/bitCoinStatus bitCoinID\n\n" CYAN
             "- Show transaction history of a certain bitcoin :\n" RESET
-            "\t/traceCoin bitCoinID\n\n" CYAN "- Exit program: \n" RESET
-            "\t/exit\n\n");
+            "\t/traceCoin bitCoinID\n\n" CYAN
+            "- Show wallets hashtable :\n" RESET "\t/showWallets\n\n" CYAN
+            "- Show bitcoins hashtable :\n" RESET "\t/showBitcoins\n\n" CYAN
+            "- List all possible commands :\n" RESET "\t/listCommands\n\n" CYAN
+            "- Exit program: \n" RESET "\t/exit\n\n");
     }
     // Print bitcoins hashtable
     else if (strcmp(words[0], "/showBitcoins") == 0) {

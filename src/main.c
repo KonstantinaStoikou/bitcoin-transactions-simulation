@@ -45,9 +45,7 @@ int main(int argc, char const *argv[]) {
         initialize_hashtable(BITCOIN_HT_SIZE, BITCOIN_BUCKET_SIZE);
     read_bitcoin_balances_file(bitcoin_balances_file, bitcoin_value,
                                &wallets_ht, &bitcoins_ht);
-    // read_transaction_file(transaction_file);
-    // print_hashtable(wallets_ht, print_wallet);
-    // print_hashtable(bitcoins_ht, print_bitcoin);
+    // int new_transaction_id = read_transaction_file(transaction_file);
 
     // ask for user input until user enters "exit"
     char prompt[BUF_SIZE];

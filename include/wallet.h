@@ -2,12 +2,12 @@
 #define WALLET_HEADER
 
 #include "defines.h"
+#include "list.h"
 
 typedef struct Wallet {
     char wallet_id[WALLET_ID_SIZE];
     int balance;
-    // deiktis se lista me bitcoin ids(i me deiktes se bticoins) (giati thelo na
-    // exo to ipoloipo gia kathe xristi)
+    List *bitcoins_list;
 } Wallet;
 
 void print_wallet(void *wallet);

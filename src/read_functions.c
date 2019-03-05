@@ -53,6 +53,7 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
         Wallet *wal = malloc(sizeof(Wallet));
         strcpy(wal->wallet_id, word);
         wal->balance = 0;
+        wal->bitcoins_list = initialize_list();
         while (word) {
             word = strtok(NULL, " ");
             if (word) {
@@ -87,7 +88,7 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
     fclose(fp);
 }
 
-void read_transaction_file(char *filename) {
+int read_transaction_file(char *filename) {
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
@@ -116,8 +117,9 @@ void read_transaction_file(char *filename) {
         // insert values into a transaction struct
         Transaction *transaction = malloc(sizeof(Transaction));
         strcpy(transaction->transaction_id, words[0]);
-        strcpy(transaction->sender_wallet_id, words[1]);
-        strcpy(transaction->receiver_wallet_id, words[2]);
+        // search in wallet hashtable for sender and receiver and point to them
+        // strcpy(transaction->sender_wallet_id, words[1]);
+        // strcpy(transaction->receiver_wallet_id, words[2]);
         transaction->value = atoi(words[3]);
         char buffer[26];
         struct tm *tm_info = ascii_to_tm(words[4], words[5]);
