@@ -12,5 +12,6 @@ typedef struct Wallet {
 
 void print_wallet(void *wallet);
 int get_wallet_hash(void *wallet_id);
+int check_wallet_id(void *data, void *wallet_id);
 
 #endif

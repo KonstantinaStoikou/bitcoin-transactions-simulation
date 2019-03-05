@@ -40,7 +40,8 @@ void *insert_hashtable_entry(Hashtable **ht, int position, void *data,
     if ((*ht)->table[position]->head == NULL) {
         Bucket *buck =
             initialize_bucket((*ht)->bucket_size, sizeof_data_struct);
-        bucket_node = add_list_node(&((*ht)->table[position]), buck);
+        bucket_node =
+            add_list_node(&((*ht)->table[position]), buck, sizeof(Bucket));
     } else {
         bucket_node = (*ht)->table[position]->head;
     }
@@ -64,7 +65,8 @@ void *insert_hashtable_entry(Hashtable **ht, int position, void *data,
     Bucket *buck = initialize_bucket((*ht)->bucket_size, sizeof_data_struct);
     buck->data[0] = malloc(sizeof_data_struct);
     memcpy(buck->data[0], data, sizeof_data_struct);
-    bucket_node = add_list_node(&((*ht)->table[position]), buck);
+    bucket_node =
+        add_list_node(&((*ht)->table[position]), buck, sizeof(Bucket));
     return buck->data[0];
 }
 

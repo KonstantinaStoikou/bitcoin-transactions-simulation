@@ -1,5 +1,5 @@
 #ifndef BITCOIN_HEADER
-#define BITCOINS_HEADER
+#define BITCOIN_HEADER
 
 #include "tree.h"
 

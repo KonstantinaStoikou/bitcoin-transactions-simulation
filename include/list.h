@@ -20,7 +20,7 @@ typedef struct List {
 // Allocate memory for a new list struct and return it
 List *initialize_list(void);
 // Insert new node at the beginning of the list and return the newly added node
-List_node *add_list_node(List **list, void *data);
+List_node *add_list_node(List **list, void *data, int sizeof_data_struct);
 // Delete a node with the given data, returns 1 if there was an error, else 0
 int delete_list_node(List **list, void *data);
 // Search for a node with the given data and return it

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../include/bitcoin.h"
+#include "../include/bitcoin_share.h"
 #include "../include/bitcoin_tree_data.h"
 #include "../include/defines.h"
 #include "../include/tree.h"
@@ -103,6 +104,10 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
             "\t/traceCoin bitCoinID\n\n" CYAN
             "- Show wallets hashtable :\n" RESET "\t/showWallets\n\n" CYAN
             "- Show bitcoins hashtable :\n" RESET "\t/showBitcoins\n\n" CYAN
+            "- Show bitcoin tree of a certain bitcoin :\n" RESET
+            "\t/showBitcoins bitCoinID\n\n" CYAN
+            "- Show bitcoin shares of a certain wallet :\n" RESET
+            "\t/showBitcoinShares walletID\n\n" CYAN
             "- List all possible commands :\n" RESET "\t/listCommands\n\n" CYAN
             "- Exit program: \n" RESET "\t/exit\n\n");
     }
@@ -114,10 +119,27 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     else if (strcmp(words[0], "/showWallets") == 0) {
         print_hashtable(*wallets_ht, print_wallet);
     }
-    // Print bitcoin tree (only data stored in tree, not pointers)
+    // Print bitcoin shares of a given wallet
+    else if (strcmp(words[0], "/showBitcoinShares") == 0) {
+        if (words[1] == NULL) {
+            perror(RED "Wallet id was not given\n\n" RESET);
+            return;
+        }
+        char *wal_id = words[1];
+        int pos = get_hash(get_wallet_hash, wal_id);
+        Wallet *wal = (Wallet *)search_hashtable(wallets_ht, pos, wal_id,
+                                                 check_wallet_id);
+        if (wal == NULL) {
+            perror(RED "There is no wallet with the given id\n\n" RESET);
+            return;
+        }
+        print_list(wal->bitcoins_list, print_bitcoin_share);
+    }
+    // Print bitcoin tree (only data stored in tree, not pointers) of a given
+    // bitcoin id
     else if (strcmp(words[0], "/showBitcoinTree") == 0) {
         if (words[1] == NULL) {
-            printf(RED "Bitcoin id was not given\n\n" RESET);
+            perror(RED "Bitcoin id was not given\n\n" RESET);
             return;
         }
         int bitc_id = atoi(words[1]);
@@ -125,7 +147,7 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
         Bitcoin *bitc = (Bitcoin *)search_hashtable(bitcoins_ht, pos, &bitc_id,
                                                     check_bitcoin_id);
         if (bitc == NULL) {
-            printf(RED "There is no bitcoin with the given id\n\n" RESET);
+            perror(RED "There is no bitcoin with the given id\n\n" RESET);
             return;
         }
         print_tree(bitc->tree->root, print_bitcoin_tree_data);

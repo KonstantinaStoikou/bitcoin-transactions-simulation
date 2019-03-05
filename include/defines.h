@@ -20,7 +20,7 @@
 // Define number of entries of wallets hashtable
 #define WALLET_HT_SIZE 20
 // Define size of buckets of wallets (in bytes)
-#define WALLET_BUCKET_SIZE 100
+#define WALLET_BUCKET_SIZE 200
 // Define number of entries of bitcoins hashtable
 #define BITCOIN_HT_SIZE 20
 // Define size of buckets of bitcoins (in bytes)
