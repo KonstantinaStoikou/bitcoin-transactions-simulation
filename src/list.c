@@ -86,7 +86,7 @@ void print_list(List *list, void (*function)(void *)) {
 }
 
 void delete_list(List **list, void (*function)(void **)) {
-        List_node *current = (*list)->head;
+    List_node *current = (*list)->head;
     List_node *next;
 
     while (current != NULL) {

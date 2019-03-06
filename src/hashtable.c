@@ -115,18 +115,23 @@ void delete_hashtable(Hashtable **ht, void (*function)(void **)) {
 
         while (current != NULL) {
             next = current->next;
-            delete_bucket(&current->data, function);
+            // delete bucket data
+            Bucket *bucket = (Bucket *)current->data;
+            for (int j = 0; j < bucket->num_of_entries; j++) {
+                if (bucket->data[j] != NULL) {
+                    (*function)(&bucket->data[j]);
+                }
+            }
+            // delete bucket
+            free(bucket->remaining_space);
+            free(bucket->data);
+            free(bucket);
+            // delete list node
+            free(current);
+            current = next;
         }
-        free(current);
-        current = next;
         free((*ht)->table[i]);
     }
     free((*ht)->table);
     free(*ht);
-}
-
-void delete_bucket(void **bucket, void (*function)(void **)) {
-    free(((Bucket *)(*bucket))->remaining_space);
-    (*function)(((Bucket *)bucket)->data);
-    free(((Bucket *)*bucket));
 }

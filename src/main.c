@@ -43,10 +43,10 @@ int main(int argc, char const *argv[]) {
         initialize_hashtable(WALLET_HT_SIZE, WALLET_BUCKET_SIZE);
     Hashtable *bitcoins_ht =
         initialize_hashtable(BITCOIN_HT_SIZE, BITCOIN_BUCKET_SIZE);
-    Hashtable *sender_ht =
-        initialize_hashtable(sender_hashtable_num_of_entries, bucket_size);
-    Hashtable *receiver_ht =
-        initialize_hashtable(receiver_hashtable_num_of_entries, bucket_size);
+    // Hashtable *sender_ht =
+    //     initialize_hashtable(sender_hashtable_num_of_entries, bucket_size);
+    // Hashtable *receiver_ht =
+    //     initialize_hashtable(receiver_hashtable_num_of_entries, bucket_size);
 
     // read input files and insert data in structs
     read_bitcoin_balances_file(bitcoin_balances_file, bitcoin_value,
@@ -72,6 +72,8 @@ int main(int argc, char const *argv[]) {
     free(transaction_file);
     delete_hashtable(&wallets_ht, delete_wallet);
     delete_hashtable(&bitcoins_ht, delete_bitcoin);
+    free(wallets_ht);
+    free(bitcoins_ht);
 
     return 0;
 }
