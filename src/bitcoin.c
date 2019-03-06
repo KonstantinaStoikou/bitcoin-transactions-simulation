@@ -29,6 +29,5 @@ void delete_bitcoin(void **bitcoin) {
     // pointing to
     printf("bitcoin id %d\n", ((Bitcoin *)(*bitcoin))->bitcoin_id);
     delete_tree(&((Bitcoin *)(*bitcoin))->tree->root, NULL);
-    free(((Bitcoin *)(*bitcoin))->tree);
     free((Bitcoin *)(*bitcoin));
 }

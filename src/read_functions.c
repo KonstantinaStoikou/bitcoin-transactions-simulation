@@ -100,6 +100,7 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
         free(wal);
     }
     printf("\n");
+    free(line);
     fclose(fp);
 }
 

@@ -42,6 +42,7 @@ void *insert_hashtable_entry(Hashtable **ht, int position, void *data,
             initialize_bucket((*ht)->bucket_size, sizeof_data_struct);
         bucket_node =
             add_list_node(&((*ht)->table[position]), buck, sizeof(Bucket));
+        free(buck);
     } else {
         bucket_node = (*ht)->table[position]->head;
     }
@@ -67,7 +68,8 @@ void *insert_hashtable_entry(Hashtable **ht, int position, void *data,
     memcpy(buck->data[0], data, sizeof_data_struct);
     bucket_node =
         add_list_node(&((*ht)->table[position]), buck, sizeof(Bucket));
-    return buck->data[0];
+    free(buck);
+    return bucket_node->data;
 }
 
 void *search_hashtable(Hashtable **ht, int pos, void *data,
@@ -119,7 +121,11 @@ void delete_hashtable(Hashtable **ht, void (*function)(void **)) {
             Bucket *bucket = (Bucket *)current->data;
             for (int j = 0; j < bucket->num_of_entries; j++) {
                 if (bucket->data[j] != NULL) {
-                    (*function)(&bucket->data[j]);
+                    if (*function != NULL) {
+                        (*function)(&bucket->data[j]);
+                    } else {
+                        free(bucket->data[j]);
+                    }
                 }
             }
             // delete bucket

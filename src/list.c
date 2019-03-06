@@ -93,8 +93,9 @@ void delete_list(List **list, void (*function)(void **)) {
         next = current->next;
         // if a delete function was given, delete data with it
         if (*function != NULL) {
-            (*function)(current->data);
+            (*function)(&current->data);
         }
+        free(current->data);
         free(current);
         current = next;
     }

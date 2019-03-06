@@ -30,6 +30,5 @@ void delete_wallet(void **wallet) {
     printf("wallet id is %s\n", ((Wallet *)(*wallet))->wallet_id);
 
     delete_list(&((Wallet *)(*wallet))->bitcoins_list, NULL);
-    free(((Wallet *)(*wallet))->bitcoins_list);
     free(((Wallet *)(*wallet)));
 }
