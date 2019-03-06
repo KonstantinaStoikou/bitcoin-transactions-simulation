@@ -76,15 +76,19 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     else if (strcmp(words[0], "/listCommands") == 0) {
         printf(
             CYAN
-            "- Request a transaction :\n" RESET
-            "\t/requestTransaction senderWalletID receiverWalletID amount date "
-            "time\n\n" CYAN "- Request mupliple transactions :\n" RESET
+            "- Request a transaction (optionally date and time) :\n" RESET
+            "\t/requestTransaction senderWalletID receiverWalletID amount "
+            "[date] "
+            "[time]\n\n" CYAN
+            "- Request mupliple transactions (optionally date and time) "
+            ":\n" RESET
             "\t/requestTransactions senderWalletID receiverWalletID amount "
-            "date "
+            "[date] "
             "time;\n"
-            "\tsenderWalletID2 receiverWalletID2 amount2 date2 time2;\n"
+            "\tsenderWalletID2 receiverWalletID2 amount2 [date2] [time2];\n"
             "\t...\n"
-            "\tsenderWalletIDn receiverWalletIDn amountn daten timen;\n\n" CYAN
+            "\tsenderWalletIDn receiverWalletIDn amountn [daten] "
+            "[timen];\n\n" CYAN
             "- Read transactions from an input file as :\n" RESET
             "\t/requestTransactions inputFile\n\n" CYAN
             "- Show received earnings of a certain user (optionally in a "
@@ -108,6 +112,8 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
             "\t/showBitcoins bitCoinID\n\n" CYAN
             "- Show bitcoin shares of a certain wallet :\n" RESET
             "\t/showBitcoinShares walletID\n\n" CYAN
+            "- Show transactions tree of a certain bitcoin :\n" RESET
+            "\t/showBitcoinTree bitCoinID\n\n" CYAN
             "- List all possible commands :\n" RESET "\t/listCommands\n\n" CYAN
             "- Exit program: \n" RESET "\t/exit\n\n");
     }

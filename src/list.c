@@ -75,25 +75,28 @@ List_node *search_list_prev_node(List **list, void *data) {
 }
 
 // Give a printing function as argument depending on the data struct
-void print_list(List *list, void (*fptr)(void *)) {
+void print_list(List *list, void (*function)(void *)) {
     List_node *current = list->head;
 
     while (current != NULL) {
-        (*fptr)(current->data);
+        (*function)(current->data);
         printf("\n");
         current = current->next;
     }
 }
 
-void delete_list(List **list, void (*function)(void *)) {
-    List_node *current = (*list)->head;
+void delete_list(List **list, void (*function)(void **)) {
+        List_node *current = (*list)->head;
+    List_node *next;
 
     while (current != NULL) {
+        next = current->next;
+        // if a delete function was given, delete data with it
         if (*function != NULL) {
             (*function)(current->data);
         }
         free(current);
-        current = current->next;
+        current = next;
     }
     free(*list);
 }

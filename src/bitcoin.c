@@ -1,5 +1,6 @@
 #include "../include/bitcoin.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include "../include/defines.h"
 
 void print_bitcoin(void *bitcoin) {
@@ -21,4 +22,11 @@ int check_bitcoin_id(void *data, void *bitcoin_id) {
     } else {
         return 0;
     }
+}
+
+void delete_bitcoin(void **bitcoin) {
+    // will delete bitcoin tree data nodes, but not transactions that are
+    // pointing to
+    delete_tree(&((Bitcoin *)(bitcoin))->tree->root, NULL);
+    free(((Bitcoin *)(*bitcoin))->tree);
 }

@@ -49,6 +49,8 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
     }
 
     while (getline(&line, &len, fp) != -1) {
+        // remove newline character from line
+        line[strcspn(line, "\r\n")] = 0;
         char *word = strtok(line, " ");
         // initialize wallet struct
         Wallet *wal = malloc(sizeof(Wallet));
@@ -97,7 +99,8 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
     fclose(fp);
 }
 
-int read_transaction_file(char *filename) {
+int read_transaction_file(char *filename, Hashtable *sender_ht,
+                          Hashtable **receiver_ht) {
     FILE *fp;
     char *line = NULL;
     size_t len = 0;

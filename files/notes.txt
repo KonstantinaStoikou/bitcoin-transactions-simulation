@@ -3,11 +3,9 @@ NOTES
 - delete tree
 - better hash functions
 - change hashtable sizes
-- pointers to structs vs ids for hashing (maybe pointer)
-- bitcoin id is int?
-- memcpy in list
-- 2 hashtable is data duplication?
+- pointers to structs vs ids for hashing (maybe pointers)
 - hashtable for sender, receiver and store transactions file data
 - make input validity checks (for prompts)
 - hashtable to store transaction ids only for reading file and then delete it
 - check if unique bitcoins ids, user ids and transaction ids
+- read transactions file and store to structs

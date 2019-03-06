@@ -1,5 +1,6 @@
 #include "../include/wallet.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "../include/defines.h"
 
@@ -21,4 +22,11 @@ int check_wallet_id(void *data, void *wallet_id) {
     } else {
         return 0;
     }
+}
+
+void delete_wallet(void **wallet) {
+    // will delete list of bitcoin shares, but not the actual bitcoins it points
+    // to
+    delete_list(&((Wallet *)(wallet))->bitcoins_list, NULL);
+    free(((Wallet *)(*wallet))->bitcoins_list);
 }

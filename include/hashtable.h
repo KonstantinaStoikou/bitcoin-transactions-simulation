@@ -45,8 +45,8 @@ void *search_hashtable(Hashtable **ht, int pos, void *data,
 // depending on the data struct
 void print_hashtable(Hashtable *ht, void (*function)(void *));
 // Release memory of hashtable
-void delete_hashtable(Hashtable **ht);
+void delete_hashtable(Hashtable **ht, void (*function)(void **));
 // Release memory of bucket
-void delete_bucket(void *bucket);
+void delete_bucket(void **bucket, void (*function)(void **));
 
 #endif

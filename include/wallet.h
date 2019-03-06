@@ -12,6 +12,9 @@ typedef struct Wallet {
 
 void print_wallet(void *wallet);
 int get_wallet_hash(void *wallet_id);
+// Check if given wallet struct has given wallet_id value (argument 1: wallet
+// struct, argument 2: wallet_id being search for)
 int check_wallet_id(void *data, void *wallet_id);
+void delete_wallet(void **wallet);
 
 #endif

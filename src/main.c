@@ -38,14 +38,21 @@ int main(int argc, char const *argv[]) {
            receiver_hashtable_num_of_entries);
     printf("bucket_size:                       %d\n" RESET, bucket_size);
 
-    // read input files and insert data in structs
+    // initialize structs that will store data later
     Hashtable *wallets_ht =
         initialize_hashtable(WALLET_HT_SIZE, WALLET_BUCKET_SIZE);
     Hashtable *bitcoins_ht =
         initialize_hashtable(BITCOIN_HT_SIZE, BITCOIN_BUCKET_SIZE);
+    Hashtable *sender_ht =
+        initialize_hashtable(sender_hashtable_num_of_entries, bucket_size);
+    Hashtable *receiver_ht =
+        initialize_hashtable(receiver_hashtable_num_of_entries, bucket_size);
+
+    // read input files and insert data in structs
     read_bitcoin_balances_file(bitcoin_balances_file, bitcoin_value,
                                &wallets_ht, &bitcoins_ht);
-    // int new_transaction_id = read_transaction_file(transaction_file);
+    // int new_transaction_id =
+    //     read_transaction_file(transaction_file, &sender_ht, &receiver_ht);
 
     // ask for user input until user enters "exit"
     char prompt[BUF_SIZE];
@@ -63,8 +70,8 @@ int main(int argc, char const *argv[]) {
     // Free allocated memory
     free(bitcoin_balances_file);
     free(transaction_file);
-    delete_hashtable(&wallets_ht);
-    delete_hashtable(&bitcoins_ht);
+    delete_hashtable(&wallets_ht, delete_wallet);
+    delete_hashtable(&bitcoins_ht, delete_bitcoin);
 
     return 0;
 }

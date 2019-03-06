@@ -29,9 +29,9 @@ List_node *search_list_node(List **list, void *data);
 List_node *search_list_prev_node(List **list, void *data);
 // Print all nodes of the list giving a printing function as argument depending
 // on the data struct
-void print_list(List *list, void (*fptr)(void *));
+void print_list(List *list, void (*function)(void *));
 // Release memory of list giving a delete function as argument depending on the
 // data struct
-void delete_list(List **list, void (*fptr)(void *));
+void delete_list(List **list, void (*function)(void **));
 
 #endif
