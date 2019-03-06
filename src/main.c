@@ -72,8 +72,8 @@ int main(int argc, char const *argv[]) {
     free(transaction_file);
     delete_hashtable(&wallets_ht, delete_wallet);
     delete_hashtable(&bitcoins_ht, delete_bitcoin);
-    free(wallets_ht);
-    free(bitcoins_ht);
+    // free(wallets_ht);
+    // free(bitcoins_ht);
 
     return 0;
 }
