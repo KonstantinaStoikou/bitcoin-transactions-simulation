@@ -15,5 +15,12 @@ typedef struct Transaction {
 } Transaction;
 
 void print_transaction(void *data);
+// Find position of a wallet's transactions in the hashtable array with wallet
+// id as key
+int get_transaction_hash(void *wallet_id, int size);
+// Find position of a transaction id in the hashtable array with transaction id
+// as key
+int get_transaction_id_hash(void *transaction_id);
+int check_transaction_id(void *data, void *transaction_id);
 
 #endif

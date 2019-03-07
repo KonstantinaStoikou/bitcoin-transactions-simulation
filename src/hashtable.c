@@ -78,8 +78,10 @@ void *search_hashtable(Hashtable **ht, int pos, void *data,
     while (bucket_node != NULL) {
         Bucket *buck = (Bucket *)bucket_node->data;
         for (int i = 0; i < buck->num_of_entries; i++) {
-            if ((*function)(buck->data[i], data) == 1) {
-                return buck->data[i];
+            if (buck->data[i] != NULL) {
+                if ((*function)(buck->data[i], data) == 1) {
+                    return buck->data[i];
+                }
             }
         }
         bucket_node = bucket_node->next;

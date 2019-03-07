@@ -27,7 +27,6 @@ int check_bitcoin_id(void *data, void *bitcoin_id) {
 void delete_bitcoin(void **bitcoin) {
     // will delete bitcoin tree data nodes, but not transactions that are
     // pointing to
-    printf("bitcoin id %d\n", ((Bitcoin *)(*bitcoin))->bitcoin_id);
     delete_tree(&((Bitcoin *)(*bitcoin))->tree->root, NULL);
     free((Bitcoin *)(*bitcoin));
 }

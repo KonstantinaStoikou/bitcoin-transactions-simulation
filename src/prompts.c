@@ -80,7 +80,7 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
             "\t/requestTransaction senderWalletID receiverWalletID amount "
             "[date] "
             "[time]\n\n" CYAN
-            "- Request mupliple transactions (optionally date and time) "
+            "- Request multiple transactions (optionally date and time) "
             ":\n" RESET
             "\t/requestTransactions senderWalletID receiverWalletID amount "
             "[date] "
@@ -108,8 +108,6 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
             "\t/traceCoin bitCoinID\n\n" CYAN
             "- Show wallets hashtable :\n" RESET "\t/showWallets\n\n" CYAN
             "- Show bitcoins hashtable :\n" RESET "\t/showBitcoins\n\n" CYAN
-            "- Show bitcoin tree of a certain bitcoin :\n" RESET
-            "\t/showBitcoins bitCoinID\n\n" CYAN
             "- Show bitcoin shares of a certain wallet :\n" RESET
             "\t/showBitcoinShares walletID\n\n" CYAN
             "- Show transactions tree of a certain bitcoin :\n" RESET

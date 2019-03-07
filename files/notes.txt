@@ -1,11 +1,11 @@
 NOTES
 
-- delete tree
 - better hash functions
 - change hashtable sizes
 - pointers to structs vs ids for hashing (maybe pointers)
 - hashtable for sender, receiver and store transactions file data
 - make input validity checks (for prompts)
-- hashtable to store transaction ids only for reading file and then delete it
 - check if unique bitcoins ids, user ids and transaction ids
-- read transactions file and store to structs
+- make function to make transaction (request) and maybe call it when reading file also
+- drop only invalid transaction (not exiting program)\
+- better error messages

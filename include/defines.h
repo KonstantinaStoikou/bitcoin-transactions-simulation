@@ -29,5 +29,9 @@
 #define WALLET_ID_SIZE 50
 // Define size of transaction id string
 #define TRANSACTION_ID_SIZE 10
+// Define number of entries of transaction hashtable
+#define TRANSACTION_HT_SIZE 20
+// Define size of buckets of transactions (in bytes)
+#define TRANSACTION_BUCKET_SIZE 100
 
 #endif

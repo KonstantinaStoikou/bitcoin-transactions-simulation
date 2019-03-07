@@ -104,8 +104,8 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
     fclose(fp);
 }
 
-int read_transaction_file(char *filename, Hashtable *sender_ht,
-                          Hashtable **receiver_ht) {
+int read_transaction_file(char *filename, Hashtable **sender_ht,
+                          Hashtable **receiver_ht, Hashtable **wallets) {
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
@@ -119,8 +119,13 @@ int read_transaction_file(char *filename, Hashtable *sender_ht,
         exit(EXIT_FAILURE);
     }
 
+    // create a hashtable to store transaction ids (and use transaction id as
+    // key) to check easily if a given transaction id is unique
+    Hashtable *transaction_ids =
+        initialize_hashtable(TRANSACTION_HT_SIZE, TRANSACTION_BUCKET_SIZE);
+
     while (getline(&line, &len, fp) != -1) {
-        printf("%s", line);
+        printf("line is : %s", line);
 
         char *words[6];  // maximum number of words for a line of that file is 6
         int count = 0;
@@ -134,22 +139,45 @@ int read_transaction_file(char *filename, Hashtable *sender_ht,
         // insert values into a transaction struct
         Transaction *transaction = malloc(sizeof(Transaction));
         strcpy(transaction->transaction_id, words[0]);
-        // search in wallet hashtable for sender and receiver and point to them
-        // strcpy(transaction->sender_wallet_id, words[1]);
-        // strcpy(transaction->receiver_wallet_id, words[2]);
-        transaction->value = atoi(words[3]);
-        char buffer[26];
-        struct tm *tm_info = ascii_to_tm(words[4], words[5]);
 
-        strftime(buffer, 26, "%d-%m-%Y %H:%M", tm_info);
-        puts(buffer);
+        // search in wallet hashtable for sender and receiver and point to them
+        char *sender_wal_id = words[1];
+        int pos = get_hash(get_wallet_hash, sender_wal_id);
+        Wallet *sender_wal = (Wallet *)search_hashtable(
+            wallets, pos, sender_wal_id, check_wallet_id);
+        if (sender_wal == NULL) {
+            printf(RED "There is no sender wallet with id: %s\n\n" RESET,
+                   sender_wal_id);
+            return NULL;
+        }
+        transaction->sender_wallet = sender_wal;
+
+        char *receiver_wal_id = words[2];
+        pos = get_hash(get_wallet_hash, receiver_wal_id);
+        Wallet *receiver_wal = (Wallet *)search_hashtable(
+            wallets, pos, receiver_wal_id, check_wallet_id);
+        if (receiver_wal == NULL) {
+            printf(RED "There is no sender wallet with id: %s\n\n" RESET,
+                   receiver_wal_id);
+            return NULL;
+        }
+        transaction->receiver_wallet = receiver_wal;
+
+        transaction->value = atoi(words[3]);
+        struct tm *tm_info = ascii_to_tm(words[4], words[5]);
+        transaction->date = tm_info;
+        // char buffer[26];
+        // strftime(buffer, 26, "%d-%m-%Y %H:%M", tm_info);
+        // puts(buffer);
+        print_transaction(transaction);
+        printf("\n");
     }
     printf("\n");
     fclose(fp);
 }
 
 struct tm *ascii_to_tm(char *date_str, char *time_str) {
-    struct tm *tm;
+    struct tm *tm = malloc(sizeof(struct tm));
     char *date[3];  // maximum number of members of date is 3 (DD-MM-YYYY)
     int count = 0;
     char *d = strtok(date_str, "-");  // split prompt by spaces
