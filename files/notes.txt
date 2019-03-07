@@ -8,4 +8,4 @@ NOTES
 - check if unique bitcoins ids, user ids and transaction ids
 - make function to make transaction (request) and maybe call it when reading file also
 - drop only invalid transaction (not exiting program)\
-- better error messages
+- better error messages, use perror for error messages without variables

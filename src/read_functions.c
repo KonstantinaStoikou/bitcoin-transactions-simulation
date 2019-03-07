@@ -124,6 +124,8 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
     Hashtable *transaction_ids =
         initialize_hashtable(TRANSACTION_HT_SIZE, TRANSACTION_BUCKET_SIZE);
 
+    int pos;  // variable to store positions found for hashtables
+
     while (getline(&line, &len, fp) != -1) {
         printf("line is : %s", line);
 
@@ -132,21 +134,32 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
         char *w = strtok(line, " ");  // split prompt by spaces
         while (w) {
             words[count] = w;
-            printf("token #%d is : %s\n", count, words[count]);
             count++;
             w = strtok(NULL, " ");
         }
+        char *tr_id = words[0];
+        // check if transaction id already exists (in hashtable), else add it to
+        // hashtable
+        pos = get_hash(get_transaction_id_hash, tr_id);
+        char *tr_id_stored = (char *)search_hashtable(
+            &transaction_ids, pos, tr_id, check_transaction_id);
+        if (tr_id_stored == NULL) {
+            insert_hashtable_entry(&transaction_ids, pos, tr_id,
+                                   sizeof(char *));
+        } else {
+            printf(RED "Transaction with id: %s already exists." RESET, tr_id);
+            return NULL;
+        }
         // insert values into a transaction struct
         Transaction *transaction = malloc(sizeof(Transaction));
-        strcpy(transaction->transaction_id, words[0]);
-
+        strcpy(transaction->transaction_id, tr_id);
         // search in wallet hashtable for sender and receiver and point to them
         char *sender_wal_id = words[1];
-        int pos = get_hash(get_wallet_hash, sender_wal_id);
+        pos = get_hash(get_wallet_hash, sender_wal_id);
         Wallet *sender_wal = (Wallet *)search_hashtable(
             wallets, pos, sender_wal_id, check_wallet_id);
         if (sender_wal == NULL) {
-            printf(RED "There is no sender wallet with id: %s\n\n" RESET,
+            printf(RED "There is no sender wallet with id: %s.\n\n" RESET,
                    sender_wal_id);
             return NULL;
         }
@@ -157,7 +170,7 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
         Wallet *receiver_wal = (Wallet *)search_hashtable(
             wallets, pos, receiver_wal_id, check_wallet_id);
         if (receiver_wal == NULL) {
-            printf(RED "There is no sender wallet with id: %s\n\n" RESET,
+            printf(RED "There is no receiver wallet with id: %s.\n\n" RESET,
                    receiver_wal_id);
             return NULL;
         }
@@ -166,11 +179,10 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
         transaction->value = atoi(words[3]);
         struct tm *tm_info = ascii_to_tm(words[4], words[5]);
         transaction->date = tm_info;
-        // char buffer[26];
-        // strftime(buffer, 26, "%d-%m-%Y %H:%M", tm_info);
-        // puts(buffer);
         print_transaction(transaction);
-        printf("\n");
+        printf("\n\n");
+
+        // pos = get_hash(get_transaction_hash, sender_wal_id);
     }
     printf("\n");
     fclose(fp);
@@ -183,7 +195,6 @@ struct tm *ascii_to_tm(char *date_str, char *time_str) {
     char *d = strtok(date_str, "-");  // split prompt by spaces
     while (d) {
         date[count] = d;
-        printf("token #%d is : %s\n", count, date[count]);
         count++;
         d = strtok(NULL, "-");
     }
@@ -192,7 +203,6 @@ struct tm *ascii_to_tm(char *date_str, char *time_str) {
     char *t = strtok(time_str, ":");  // split prompt by spaces
     while (t) {
         time[count] = t;
-        printf("token #%d is : %s\n", count, time[count]);
         count++;
         t = strtok(NULL, ":");
     }
