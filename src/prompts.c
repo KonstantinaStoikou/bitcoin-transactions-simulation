@@ -6,11 +6,13 @@
 #include "../include/bitcoin_share.h"
 #include "../include/bitcoin_tree_data.h"
 #include "../include/defines.h"
+#include "../include/transaction_hashtable_data.h"
 #include "../include/tree.h"
 #include "../include/wallet.h"
 
 void execute_prompt(char *prompt, Hashtable **wallets_ht,
-                    Hashtable **bitcoins_ht) {
+                    Hashtable **bitcoins_ht, Hashtable **sender_ht,
+                    Hashtable **receiver_ht) {
     // break prompt into words
     char *words[6];  // maximum number of words for a prompt is 6
     int count = 0;
@@ -122,6 +124,14 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     // Print wallets hashtable
     else if (strcmp(words[0], "/showWallets") == 0) {
         print_hashtable(*wallets_ht, print_wallet);
+    }
+    // Print sender transactions hashtable
+    else if (strcmp(words[0], "/showSenders") == 0) {
+        print_hashtable(*sender_ht, print_transaction_hashtable_data);
+    }
+    // Print receiver transactions hashtable
+    else if (strcmp(words[0], "/showReceivers") == 0) {
+        print_hashtable(*receiver_ht, print_transaction_hashtable_data);
     }
     // Print bitcoin shares of a given wallet
     else if (strcmp(words[0], "/showBitcoinShares") == 0) {

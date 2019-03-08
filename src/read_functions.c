@@ -125,6 +125,8 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
         insert_hashtable_entry(receiver_ht, tpos, receiver_thd,
                                sizeof(Transaction_hashtable_data));
         free(wal);
+        free(sender_thd);
+        free(receiver_thd);
     }
     printf("\n");
     free(line);
@@ -154,7 +156,9 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
     int pos;  // variable to store positions found for hashtables
 
     while (getline(&line, &len, fp) != -1) {
-        printf("line is : %s", line);
+        printf("line: %s\n", line);
+        // remove newline character from line
+        line[strcspn(line, "\r\n")] = 0;
 
         char *words[6];  // maximum number of words for a line of that file is 6
         int count = 0;
@@ -174,7 +178,8 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
             insert_hashtable_entry(&transaction_ids, pos, tr_id,
                                    sizeof(char *));
         } else {
-            printf(RED "Transaction with id: %s already exists." RESET, tr_id);
+            printf(RED "Transaction with id: %s already exists.\n" RESET,
+                   tr_id);
             return NULL;
         }
         // insert values into a transaction struct
@@ -204,8 +209,6 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
         transaction->value = atoi(words[3]);
         struct tm *tm_info = ascii_to_tm(words[4], words[5]);
         transaction->date = tm_info;
-        print_transaction(transaction);
-        printf("\n\n");
 
         // insert transaction to both sender and receiver hashtables
         pos = get_transaction_hash(sender_wal_id, (*sender_ht)->num_of_entries);
@@ -221,8 +224,12 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
                 receiver_ht, pos, receiver_wal_id, check_transaction_wallet);
         add_list_node(&receiver_thd->transactions, transaction,
                       sizeof(Transaction));
+
+        free(transaction);
     }
+    delete_hashtable(&transaction_ids, NULL);
     printf("\n");
+    free(line);
     fclose(fp);
     return NULL;
 }

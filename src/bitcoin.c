@@ -28,5 +28,6 @@ void delete_bitcoin(void **bitcoin) {
     // will delete bitcoin tree data nodes, but not transactions that are
     // pointing to
     delete_tree(&((Bitcoin *)(*bitcoin))->tree->root, NULL);
+    // free(((Bitcoin *)(*bitcoin))->tree);
     free((Bitcoin *)(*bitcoin));
 }

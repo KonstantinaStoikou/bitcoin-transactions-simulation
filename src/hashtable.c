@@ -72,7 +72,7 @@ void *insert_hashtable_entry(Hashtable **ht, int position, void *data,
     bucket_node =
         add_list_node(&((*ht)->table[position]), buck, sizeof(Bucket));
     free(buck);
-    return bucket_node->data;
+    return ((Bucket *)bucket_node->data)->data[0];
 }
 
 void *search_hashtable(Hashtable **ht, int pos, void *data,

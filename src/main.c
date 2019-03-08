@@ -6,6 +6,7 @@
 #include "../include/hashtable.h"
 #include "../include/prompts.h"
 #include "../include/read_functions.h"
+#include "../include/transaction_hashtable_data.h"
 #include "../include/wallet.h"
 
 int main(int argc, char const *argv[]) {
@@ -23,7 +24,7 @@ int main(int argc, char const *argv[]) {
         transaction_file = malloc(strlen("files/transactionsFile.txt") + 1);
         strcpy(transaction_file, "files/transactionsFile.txt");
         bitcoin_value = 50;
-        sender_hashtable_num_of_entries = 10;
+        sender_hashtable_num_of_entries = 15;
         receiver_hashtable_num_of_entries = 15;
         bucket_size = 100;
     }
@@ -52,6 +53,9 @@ int main(int argc, char const *argv[]) {
     read_bitcoin_balances_file(bitcoin_balances_file, bitcoin_value,
                                &wallets_ht, &bitcoins_ht, &sender_ht,
                                &receiver_ht);
+    print_hashtable(sender_ht, print_transaction_hashtable_data);
+    printf("\n\n\n");
+    print_hashtable(receiver_ht, print_transaction_hashtable_data);
     int new_transaction_id = read_transaction_file(transaction_file, &sender_ht,
                                                    &receiver_ht, &wallets_ht);
 
@@ -65,7 +69,8 @@ int main(int argc, char const *argv[]) {
         // remove newline character from prompt string
         prompt[strcspn(prompt, "\r\n")] = 0;
         // call function to execute prompts given on the graph
-        execute_prompt(prompt, &wallets_ht, &bitcoins_ht);
+        execute_prompt(prompt, &wallets_ht, &bitcoins_ht, &sender_ht,
+                       &receiver_ht);
     } while (strcmp(prompt, "/exit") != 0);
 
     // Free allocated memory
