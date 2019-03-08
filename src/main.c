@@ -53,9 +53,6 @@ int main(int argc, char const *argv[]) {
     read_bitcoin_balances_file(bitcoin_balances_file, bitcoin_value,
                                &wallets_ht, &bitcoins_ht, &sender_ht,
                                &receiver_ht);
-    print_hashtable(sender_ht, print_transaction_hashtable_data);
-    printf("\n\n\n");
-    print_hashtable(receiver_ht, print_transaction_hashtable_data);
     int new_transaction_id = read_transaction_file(transaction_file, &sender_ht,
                                                    &receiver_ht, &wallets_ht);
 

@@ -108,8 +108,12 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
             "\t/bitCoinStatus bitCoinID\n\n" CYAN
             "- Show transaction history of a certain bitcoin :\n" RESET
             "\t/traceCoin bitCoinID\n\n" CYAN
-            "- Show wallets hashtable :\n" RESET "\t/showWallets\n\n" CYAN
-            "- Show bitcoins hashtable :\n" RESET "\t/showBitcoins\n\n" CYAN
+            "- Show wallets' hashtable :\n" RESET "\t/showWallets\n\n" CYAN
+            "- Show senders' transactions hashtable :\n" RESET
+            "\t/showSenders\n\n" CYAN
+            "- Show receivers' transactions hashtable :\n" RESET
+            "\t/showReceivers\n\n" CYAN "- Show bitcoins hashtable :\n" RESET
+            "\t/showBitcoins\n\n" CYAN
             "- Show bitcoin shares of a certain wallet :\n" RESET
             "\t/showBitcoinShares walletID\n\n" CYAN
             "- Show transactions tree of a certain bitcoin :\n" RESET

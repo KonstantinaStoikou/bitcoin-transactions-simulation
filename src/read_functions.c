@@ -156,7 +156,6 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
     int pos;  // variable to store positions found for hashtables
 
     while (getline(&line, &len, fp) != -1) {
-        printf("line: %s\n", line);
         // remove newline character from line
         line[strcspn(line, "\r\n")] = 0;
 
