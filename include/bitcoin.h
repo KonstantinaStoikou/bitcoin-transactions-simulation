@@ -16,7 +16,8 @@ typedef struct Bitcoin {
 void print_bitcoin(void *bitcoin);
 int get_bitcoin_hash(void *bitcoin_id);
 // Check if given bitcoin struct has given bitcoin_id value (argument 1: bitcoin
-// struct, argument 2: bitcoin_id being search for)
+// struct, argument 2: bitcoin_id being search for) return 1 if same data, else
+// 0
 int check_bitcoin_id(void *data, void *bitcoin_id);
 // Delete bitcoin tree
 void delete_bitcoin(void **bitcoin);

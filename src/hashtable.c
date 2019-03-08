@@ -26,6 +26,9 @@ Bucket *initialize_bucket(int size, int sizeof_struct) {
     Bucket *buck = malloc(sizeof(Bucket));
     buck->num_of_entries = (size - sizeof(Bucket)) / sizeof_struct;
     buck->data = malloc(sizeof_struct * buck->num_of_entries);
+    for (int i = 0; i < buck->num_of_entries; i++) {
+        buck->data[i] = NULL;
+    }
     // allocate remaining space in bucket so that:
     // bucket size + size of data array = given size in bytes
     buck->remaining_space = malloc((size - sizeof(Bucket)) % sizeof_struct);

@@ -16,7 +16,8 @@ void read_arguments(int argc, char const *argv[], char **bitcoin_balances_file,
                     int *receiver_hashtable_num_of_entries, int *bucket_size);
 // Read bitcoin balances file and store items in structures
 void read_bitcoin_balances_file(char *filename, int bitcoin_value,
-                                Hashtable **wallets, Hashtable **bitcoins);
+                                Hashtable **wallets, Hashtable **bitcoins,
+                                Hashtable **sender_ht, Hashtable **receiver_ht);
 // Read transactions file and store items in structures, return an integer that
 // shows the biggest transaction id that will be incremented by 1 for each new
 // transaction (after reading the file)

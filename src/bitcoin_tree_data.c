@@ -5,6 +5,7 @@
 void print_bitcoin_tree_data(void *data) {
     Bitcoin_tree_data *btd = (Bitcoin_tree_data *)data;
     printf("%s %d", btd->wallet_id, btd->amount);
+    // check if not root node (because root does not point in any transaction)
     if (btd->transaction != NULL) {
         printf("%s", btd->transaction->transaction_id);
     }

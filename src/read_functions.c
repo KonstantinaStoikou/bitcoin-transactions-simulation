@@ -8,6 +8,7 @@
 #include "../include/bitcoin_tree_data.h"
 #include "../include/defines.h"
 #include "../include/transaction.h"
+#include "../include/transaction_hashtable_data.h"
 #include "../include/wallet.h"
 
 void read_arguments(int argc, char const *argv[], char **bitcoin_balances_file,
@@ -34,12 +35,14 @@ void read_arguments(int argc, char const *argv[], char **bitcoin_balances_file,
 }
 
 void read_bitcoin_balances_file(char *filename, int bitcoin_value,
-                                Hashtable **wallets, Hashtable **bitcoins) {
+                                Hashtable **wallets, Hashtable **bitcoins,
+                                Hashtable **sender_ht,
+                                Hashtable **receiver_ht) {
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
     // format path because of folder structure
-    char filepath[strlen(filename) + 4];
+    char filepath[strlen(filename) + 3];
     snprintf(filepath, sizeof(filepath), "%s%s", "./", filename);
 
     fp = fopen(filepath, "r");
@@ -96,7 +99,31 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
         }
         // add wallet struct to wallet hashtable
         int wpos = get_hash(get_wallet_hash, wal->wallet_id);
-        insert_hashtable_entry(wallets, wpos, wal, sizeof(Wallet));
+        Wallet *inserted_wal = (Wallet *)insert_hashtable_entry(
+            wallets, wpos, wal, sizeof(Wallet));
+
+        // initialize transaction hashtable data for sender and receiver
+        // hashtables for this wallet
+        List *sender_t_list = initialize_list();
+        List *receiver_t_list = initialize_list();
+        Transaction_hashtable_data *sender_thd =
+            malloc(sizeof(Transaction_hashtable_data));
+        Transaction_hashtable_data *receiver_thd =
+            malloc(sizeof(Transaction_hashtable_data));
+        sender_thd->wallet = inserted_wal;
+        sender_thd->transactions = sender_t_list;
+        receiver_thd->wallet = inserted_wal;
+        receiver_thd->transactions = receiver_t_list;
+
+        // insert transaction hashtable data in sender/receiver hashtables
+        int tpos =
+            get_transaction_hash(wal->wallet_id, (*sender_ht)->num_of_entries);
+        insert_hashtable_entry(sender_ht, tpos, sender_thd,
+                               sizeof(Transaction_hashtable_data));
+        tpos = get_transaction_hash(wal->wallet_id,
+                                    (*receiver_ht)->num_of_entries);
+        insert_hashtable_entry(receiver_ht, tpos, receiver_thd,
+                               sizeof(Transaction_hashtable_data));
         free(wal);
     }
     printf("\n");
@@ -142,7 +169,7 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
         // hashtable
         pos = get_hash(get_transaction_id_hash, tr_id);
         char *tr_id_stored = (char *)search_hashtable(
-            &transaction_ids, pos, tr_id, check_transaction_id);
+            &transaction_ids, pos, tr_id, check_transaction_id_only);
         if (tr_id_stored == NULL) {
             insert_hashtable_entry(&transaction_ids, pos, tr_id,
                                    sizeof(char *));
@@ -164,7 +191,6 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
             return NULL;
         }
         transaction->sender_wallet = sender_wal;
-
         char *receiver_wal_id = words[2];
         pos = get_hash(get_wallet_hash, receiver_wal_id);
         Wallet *receiver_wal = (Wallet *)search_hashtable(
@@ -175,17 +201,30 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
             return NULL;
         }
         transaction->receiver_wallet = receiver_wal;
-
         transaction->value = atoi(words[3]);
         struct tm *tm_info = ascii_to_tm(words[4], words[5]);
         transaction->date = tm_info;
         print_transaction(transaction);
         printf("\n\n");
 
-        // pos = get_hash(get_transaction_hash, sender_wal_id);
+        // insert transaction to both sender and receiver hashtables
+        pos = get_transaction_hash(sender_wal_id, (*sender_ht)->num_of_entries);
+        Transaction_hashtable_data *sender_thd =
+            (Transaction_hashtable_data *)search_hashtable(
+                sender_ht, pos, sender_wal_id, check_transaction_wallet);
+        add_list_node(&sender_thd->transactions, transaction,
+                      sizeof(Transaction));
+        pos = get_transaction_hash(receiver_wal_id,
+                                   (*receiver_ht)->num_of_entries);
+        Transaction_hashtable_data *receiver_thd =
+            (Transaction_hashtable_data *)search_hashtable(
+                receiver_ht, pos, receiver_wal_id, check_transaction_wallet);
+        add_list_node(&receiver_thd->transactions, transaction,
+                      sizeof(Transaction));
     }
     printf("\n");
     fclose(fp);
+    return NULL;
 }
 
 struct tm *ascii_to_tm(char *date_str, char *time_str) {

@@ -21,6 +21,16 @@ int get_transaction_id_hash(void *transaction_id) {
     return t[0] % TRANSACTION_HT_SIZE;
 }
 
+int check_transaction_id_only(void *data, void *transaction_id) {
+    char *t = (char *)data;
+    char *id = (char *)transaction_id;
+    if (!strcmp(t, id)) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 int check_transaction_id(void *data, void *transaction_id) {
     Transaction *t = (Transaction *)data;
     char *id = (char *)transaction_id;

@@ -18,9 +18,9 @@ int main(int argc, char const *argv[]) {
 
     if (argc == 1) {
         bitcoin_balances_file =
-            malloc(strlen("files/bitCoinBalancesFile.txt" + 1));
+            malloc(strlen("files/bitCoinBalancesFile.txt") + 1);
         strcpy(bitcoin_balances_file, "files/bitCoinBalancesFile.txt");
-        transaction_file = malloc(strlen("files/transactionsFile.txt" + 1));
+        transaction_file = malloc(strlen("files/transactionsFile.txt") + 1);
         strcpy(transaction_file, "files/transactionsFile.txt");
         bitcoin_value = 50;
         sender_hashtable_num_of_entries = 10;
@@ -50,7 +50,8 @@ int main(int argc, char const *argv[]) {
 
     // read input files and insert data in structs
     read_bitcoin_balances_file(bitcoin_balances_file, bitcoin_value,
-                               &wallets_ht, &bitcoins_ht);
+                               &wallets_ht, &bitcoins_ht, &sender_ht,
+                               &receiver_ht);
     int new_transaction_id = read_transaction_file(transaction_file, &sender_ht,
                                                    &receiver_ht, &wallets_ht);
 

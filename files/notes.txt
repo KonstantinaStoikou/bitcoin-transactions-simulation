@@ -1,5 +1,7 @@
 NOTES
 
+- what exactly does memcpy do?
+- transaction key change in function
 - better hash functions
 - change hashtable sizes
 - pointers to structs vs ids for hashing (maybe pointers)
@@ -9,3 +11,5 @@ NOTES
 - make function to make transaction (request) and maybe call it when reading file also
 - drop only invalid transaction (not exiting program)\
 - better error messages, use perror for error messages without variables
+- maybe change some pointers to pointer to single pointer
+- maybe better project structure
