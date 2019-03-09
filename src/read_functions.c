@@ -57,10 +57,10 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
         char *word = strtok(line, " ");
 
         // check if wallet id already exists
-        int pos = get_hash(get_wallet_hash, word);
-        Wallet *wal =
-            (Wallet *)search_hashtable(wallets, pos, word, check_wallet_id);
-        if (wal != NULL) {
+        int unique_wpos = get_hash(get_wallet_hash, word);
+        Wallet *unique_wal = (Wallet *)search_hashtable(wallets, unique_wpos,
+                                                        word, check_wallet_id);
+        if (unique_wal != NULL) {
             printf(RED "%s: A wallet with this id already exists.\n" RESET,
                    word);
         } else {
@@ -72,39 +72,54 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
             while (word) {
                 word = strtok(NULL, " ");
                 if (word) {
-                    // initialize bitcoin share struct
-                    Bitcoin_share *bitc_share = malloc(sizeof(Bitcoin_share));
-                    // initialize bitcoin struct
-                    Bitcoin *bitc = malloc(sizeof(Bitcoin));
-                    bitc->bitcoin_id = atoi(word);
-                    bitc->unspent = bitcoin_value;
-                    bitc->num_of_transactions = 0;
-                    bitc->tree = initialize_tree();
-                    // initialize bitcoin tree data struct
-                    Bitcoin_tree_data *btd = malloc(sizeof(Bitcoin_tree_data));
-                    btd->amount = bitcoin_value;
-                    btd->transaction = NULL;
-                    strcpy(btd->wallet_id, wal->wallet_id);
-                    // add bitcoin tree data struct to bitcoin tree
-                    bitc->tree->root =
-                        allocate_tree_node(btd, sizeof(Bitcoin_tree_data));
-                    // add bitcoin struct to bitcoin hashtable and make bitcoin
-                    // share point to it
-                    int bpos = get_hash(get_bitcoin_hash, &bitc->bitcoin_id);
-                    bitc_share->bitcoin = insert_hashtable_entry(
-                        bitcoins, bpos, bitc, sizeof(Bitcoin));
-                    bitc_share->share = bitcoin_value;
-                    add_list_node(&wal->bitcoins_list, bitc_share,
-                                  sizeof(Bitcoin_share));
-                    free(btd);
-                    free(bitc->tree->root->data);
-                    free(bitc->tree->root);
-                    free(bitc->tree);
-                    free(bitc);
-                    free(bitc_share);
-                    // increase total balance of wallet by one full bitcoin
-                    // value
-                    wal->balance += bitcoin_value;
+                    // check if bitcoin already exists
+                    int b_id = atoi(word);
+                    int unique_bpos = get_hash(get_bitcoin_hash, &b_id);
+                    Bitcoin *unique_bitc = (Bitcoin *)search_hashtable(
+                        bitcoins, unique_bpos, &b_id, check_bitcoin_id);
+                    if (unique_bitc != NULL) {
+                        printf(RED
+                               "%d: A bitcoin with this id already "
+                               "exists.\n\n" RESET,
+                               b_id);
+                    } else {
+                        // initialize bitcoin share struct
+                        Bitcoin_share *bitc_share =
+                            malloc(sizeof(Bitcoin_share));
+                        // initialize bitcoin struct
+                        Bitcoin *bitc = malloc(sizeof(Bitcoin));
+                        bitc->bitcoin_id = b_id;
+                        bitc->unspent = bitcoin_value;
+                        bitc->num_of_transactions = 0;
+                        bitc->tree = initialize_tree();
+                        // initialize bitcoin tree data struct
+                        Bitcoin_tree_data *btd =
+                            malloc(sizeof(Bitcoin_tree_data));
+                        btd->amount = bitcoin_value;
+                        btd->transaction = NULL;
+                        strcpy(btd->wallet_id, wal->wallet_id);
+                        // add bitcoin tree data struct to bitcoin tree
+                        bitc->tree->root =
+                            allocate_tree_node(btd, sizeof(Bitcoin_tree_data));
+                        // add bitcoin struct to bitcoin hashtable and make
+                        // bitcoin share point to it
+                        int bpos =
+                            get_hash(get_bitcoin_hash, &bitc->bitcoin_id);
+                        bitc_share->bitcoin = insert_hashtable_entry(
+                            bitcoins, bpos, bitc, sizeof(Bitcoin));
+                        bitc_share->share = bitcoin_value;
+                        add_list_node(&wal->bitcoins_list, bitc_share,
+                                      sizeof(Bitcoin_share));
+                        free(btd);
+                        free(bitc->tree->root->data);
+                        free(bitc->tree->root);
+                        free(bitc->tree);
+                        free(bitc);
+                        free(bitc_share);
+                        // increase total balance of wallet by one full bitcoin
+                        // value
+                        wal->balance += bitcoin_value;
+                    }
                 }
             }
             // add wallet struct to wallet hashtable
