@@ -5,8 +5,7 @@ NOTES
 - transaction key change in function
 - better hash functions
 - change hashtable sizes
-- pointers to structs vs ids for hashing (maybe pointers)
 - make input validity checks (for prompts)
-- check if unique bitcoins ids, user ids and transaction ids
-- better error messages, use perror for error messages without variables
+- check if unique transaction ids
 - maybe better project structure
+- check if command line arguments work

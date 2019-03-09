@@ -2,12 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../include/bitcoin.h"
 #include "../include/bitcoin_share.h"
 #include "../include/bitcoin_tree_data.h"
-#include "../include/defines.h"
 #include "../include/request_transaction_functions.h"
-#include "../include/transaction.h"
 #include "../include/transaction_hashtable_data.h"
 #include "../include/wallet.h"
 
@@ -47,7 +44,7 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
 
     fp = fopen(filepath, "r");
     if (fp == NULL) {
-        perror(RED "Balances file cannot be opened" RESET);
+        perror(RED "Balances file cannot be opened." RESET);
         exit(EXIT_FAILURE);
     }
 
@@ -170,7 +167,7 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
 
     fp = fopen(filepath, "r");
     if (fp == NULL) {
-        perror(RED "Transactions file cannot be opened" RESET);
+        perror(RED "Transactions file cannot be opened." RESET);
         exit(EXIT_FAILURE);
     }
 
@@ -214,5 +211,5 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
     printf("\n");
     free(line);
     fclose(fp);
-    return NULL;
+    return 0;
 }

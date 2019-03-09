@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../include/bitcoin.h"
-#include "../include/defines.h"
-#include "../include/hashtable.h"
 #include "../include/prompts.h"
 #include "../include/read_functions.h"
 #include "../include/transaction_hashtable_data.h"
