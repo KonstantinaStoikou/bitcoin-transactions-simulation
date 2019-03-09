@@ -33,11 +33,11 @@ int main(int argc, char const *argv[]) {
            bitcoin_balances_file);
     printf("transaction_file:                  %s\n", transaction_file);
     printf("bitcoin_value:                     %d\n", bitcoin_value);
-    printf("sender_hashtanewline character linuxble_num_of_entries:   %d\n",
+    printf("sender_hashtable_num_of_entries:   %d\n",
            sender_hashtable_num_of_entries);
-    printf("receiver_hashnewline character linuxtable_num_of_entries: %d\n",
+    printf("receiver_hashtable_num_of_entries: %d\n",
            receiver_hashtable_num_of_entries);
-    printf("bucket_size:                       %d\n" RESET, bucket_size);
+    printf("bucket_size:                       %d\n\n" RESET, bucket_size);
 
     // initialize structs that will store data later
     Hashtable *wallets_ht =

@@ -8,8 +8,5 @@ NOTES
 - pointers to structs vs ids for hashing (maybe pointers)
 - make input validity checks (for prompts)
 - check if unique bitcoins ids, user ids and transaction ids
-- make function to make transaction (request) and maybe call it when reading file also
-- drop only invalid transaction (not exiting program)
 - better error messages, use perror for error messages without variables
-- maybe change some pointers to pointer to single pointer
 - maybe better project structure

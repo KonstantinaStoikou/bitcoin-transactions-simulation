@@ -1,5 +1,6 @@
 /**
- * Functions to insert transaction data in all corresponding data structures.
+ * Functions to insert data about a transaction in sender/receiver hashtables
+ * and bitcoin trees.
  *
  */
 

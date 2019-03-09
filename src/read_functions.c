@@ -55,78 +55,89 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
         // remove newline character from line
         line[strcspn(line, "\r\n")] = 0;
         char *word = strtok(line, " ");
-        // initialize wallet struct
-        Wallet *wal = malloc(sizeof(Wallet));
-        strcpy(wal->wallet_id, word);
-        wal->balance = 0;
-        wal->bitcoins_list = initialize_list();
-        while (word) {
-            word = strtok(NULL, " ");
-            if (word) {
-                // initialize bitcoin share struct
-                Bitcoin_share *bitc_share = malloc(sizeof(Bitcoin_share));
-                // initialize bitcoin struct
-                Bitcoin *bitc = malloc(sizeof(Bitcoin));
-                bitc->bitcoin_id = atoi(word);
-                bitc->unspent = bitcoin_value;
-                bitc->num_of_transactions = 0;
-                bitc->tree = initialize_tree();
-                // initialize bitcoin tree data struct
-                Bitcoin_tree_data *btd = malloc(sizeof(Bitcoin_tree_data));
-                btd->amount = bitcoin_value;
-                btd->transaction = NULL;
-                strcpy(btd->wallet_id, wal->wallet_id);
-                // add bitcoin tree data struct to bitcoin tree
-                bitc->tree->root =
-                    allocate_tree_node(btd, sizeof(Bitcoin_tree_data));
-                // add bitcoin struct to bitcoin hashtable and make bitcoin
-                // share point to it
-                int bpos = get_hash(get_bitcoin_hash, &bitc->bitcoin_id);
-                bitc_share->bitcoin = insert_hashtable_entry(
-                    bitcoins, bpos, bitc, sizeof(Bitcoin));
-                bitc_share->share = bitcoin_value;
-                add_list_node(&wal->bitcoins_list, bitc_share,
-                              sizeof(Bitcoin_share));
-                free(btd);
-                free(bitc->tree->root->data);
-                free(bitc->tree->root);
-                free(bitc->tree);
-                free(bitc);
-                free(bitc_share);
-                // increase total balance of wallet by one full bitcoin value
-                wal->balance += bitcoin_value;
+
+        // check if wallet id already exists
+        int pos = get_hash(get_wallet_hash, word);
+        Wallet *wal =
+            (Wallet *)search_hashtable(wallets, pos, word, check_wallet_id);
+        if (wal != NULL) {
+            printf(RED "%s: A wallet with this id already exists.\n" RESET,
+                   word);
+        } else {
+            // initialize wallet struct
+            Wallet *wal = malloc(sizeof(Wallet));
+            strcpy(wal->wallet_id, word);
+            wal->balance = 0;
+            wal->bitcoins_list = initialize_list();
+            while (word) {
+                word = strtok(NULL, " ");
+                if (word) {
+                    // initialize bitcoin share struct
+                    Bitcoin_share *bitc_share = malloc(sizeof(Bitcoin_share));
+                    // initialize bitcoin struct
+                    Bitcoin *bitc = malloc(sizeof(Bitcoin));
+                    bitc->bitcoin_id = atoi(word);
+                    bitc->unspent = bitcoin_value;
+                    bitc->num_of_transactions = 0;
+                    bitc->tree = initialize_tree();
+                    // initialize bitcoin tree data struct
+                    Bitcoin_tree_data *btd = malloc(sizeof(Bitcoin_tree_data));
+                    btd->amount = bitcoin_value;
+                    btd->transaction = NULL;
+                    strcpy(btd->wallet_id, wal->wallet_id);
+                    // add bitcoin tree data struct to bitcoin tree
+                    bitc->tree->root =
+                        allocate_tree_node(btd, sizeof(Bitcoin_tree_data));
+                    // add bitcoin struct to bitcoin hashtable and make bitcoin
+                    // share point to it
+                    int bpos = get_hash(get_bitcoin_hash, &bitc->bitcoin_id);
+                    bitc_share->bitcoin = insert_hashtable_entry(
+                        bitcoins, bpos, bitc, sizeof(Bitcoin));
+                    bitc_share->share = bitcoin_value;
+                    add_list_node(&wal->bitcoins_list, bitc_share,
+                                  sizeof(Bitcoin_share));
+                    free(btd);
+                    free(bitc->tree->root->data);
+                    free(bitc->tree->root);
+                    free(bitc->tree);
+                    free(bitc);
+                    free(bitc_share);
+                    // increase total balance of wallet by one full bitcoin
+                    // value
+                    wal->balance += bitcoin_value;
+                }
             }
+            // add wallet struct to wallet hashtable
+            int wpos = get_hash(get_wallet_hash, wal->wallet_id);
+            Wallet *inserted_wal = (Wallet *)insert_hashtable_entry(
+                wallets, wpos, wal, sizeof(Wallet));
+
+            // initialize transaction hashtable data for sender and receiver
+            // hashtables for this wallet
+            List *sender_t_list = initialize_list();
+            List *receiver_t_list = initialize_list();
+            Transaction_hashtable_data *sender_thd =
+                malloc(sizeof(Transaction_hashtable_data));
+            Transaction_hashtable_data *receiver_thd =
+                malloc(sizeof(Transaction_hashtable_data));
+            sender_thd->wallet = inserted_wal;
+            sender_thd->transactions = sender_t_list;
+            receiver_thd->wallet = inserted_wal;
+            receiver_thd->transactions = receiver_t_list;
+
+            // insert transaction hashtable data in sender/receiver hashtables
+            int tpos = get_transaction_hash(wal->wallet_id,
+                                            (*sender_ht)->num_of_entries);
+            insert_hashtable_entry(sender_ht, tpos, sender_thd,
+                                   sizeof(Transaction_hashtable_data));
+            tpos = get_transaction_hash(wal->wallet_id,
+                                        (*receiver_ht)->num_of_entries);
+            insert_hashtable_entry(receiver_ht, tpos, receiver_thd,
+                                   sizeof(Transaction_hashtable_data));
+            free(wal);
+            free(sender_thd);
+            free(receiver_thd);
         }
-        // add wallet struct to wallet hashtable
-        int wpos = get_hash(get_wallet_hash, wal->wallet_id);
-        Wallet *inserted_wal = (Wallet *)insert_hashtable_entry(
-            wallets, wpos, wal, sizeof(Wallet));
-
-        // initialize transaction hashtable data for sender and receiver
-        // hashtables for this wallet
-        List *sender_t_list = initialize_list();
-        List *receiver_t_list = initialize_list();
-        Transaction_hashtable_data *sender_thd =
-            malloc(sizeof(Transaction_hashtable_data));
-        Transaction_hashtable_data *receiver_thd =
-            malloc(sizeof(Transaction_hashtable_data));
-        sender_thd->wallet = inserted_wal;
-        sender_thd->transactions = sender_t_list;
-        receiver_thd->wallet = inserted_wal;
-        receiver_thd->transactions = receiver_t_list;
-
-        // insert transaction hashtable data in sender/receiver hashtables
-        int tpos =
-            get_transaction_hash(wal->wallet_id, (*sender_ht)->num_of_entries);
-        insert_hashtable_entry(sender_ht, tpos, sender_thd,
-                               sizeof(Transaction_hashtable_data));
-        tpos = get_transaction_hash(wal->wallet_id,
-                                    (*receiver_ht)->num_of_entries);
-        insert_hashtable_entry(receiver_ht, tpos, receiver_thd,
-                               sizeof(Transaction_hashtable_data));
-        free(wal);
-        free(sender_thd);
-        free(receiver_thd);
     }
     printf("\n");
     free(line);
@@ -180,7 +191,7 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
             insert_hashtable_entry(&transaction_ids, pos, tr_id,
                                    sizeof(char *));
         } else {
-            printf(RED "Transaction with id: %s already exists.\n" RESET,
+            printf(RED "%s: A transaction with this id already exists.\n" RESET,
                    tr_id);
         }
     }

@@ -18,7 +18,7 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
     Wallet *sender_wal = (Wallet *)search_hashtable(wallets, pos, sender_wal_id,
                                                     check_wallet_id);
     if (sender_wal == NULL) {
-        printf(RED "There is no sender wallet with id: %s.\n\n" RESET,
+        printf(RED "%s: There is no sender wallet with this id.\n\n" RESET,
                sender_wal_id);
         return;
     }
@@ -27,7 +27,7 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
     Wallet *receiver_wal = (Wallet *)search_hashtable(
         wallets, pos, receiver_wal_id, check_wallet_id);
     if (receiver_wal == NULL) {
-        printf(RED "There is no receiver wallet with id: %s.\n\n" RESET,
+        printf(RED "%s: There is no receiver wallet with this id.\n\n" RESET,
                receiver_wal_id);
         return;
     }
