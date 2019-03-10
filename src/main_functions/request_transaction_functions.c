@@ -69,15 +69,16 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
     receiver_thd->transactions->head = new_node;
 
     free(transaction);
+    free(new_node);
 
     // break tree and point to these transactions
-    // List_node *current_share = (List_node *)sender_wal->bitcoins_list->head;
-    // while (current_share != NULL && value != 0) {
-    //     traverse_bitcoin_tree(
-    //         &((Bitcoin_share *)current_share)->bitcoin->tree->root,
-    //         &inserted_transaction, &value);
-    //     current_share = current_share->
-    // }
+    List_node *current_share = (List_node *)sender_wal->bitcoins_list->head;
+    while (current_share != NULL && value != 0) {
+        Transaction *t = (Transaction *)inserted_transaction->data;
+        Bitcoin_share *share = (Bitcoin_share *)current_share->data;
+        traverse_bitcoin_tree(share->bitcoin->tree->root, &t, &value);
+        current_share = current_share->next;
+    }
 }
 
 struct tm *ascii_to_tm(char *date_str, char *time_str) {
@@ -107,16 +108,16 @@ struct tm *ascii_to_tm(char *date_str, char *time_str) {
     return tm;
 }
 
-void traverse_bitcoin_tree(Tree_node **node, Transaction **transaction,
+void traverse_bitcoin_tree(Tree_node *node, Transaction **transaction,
                            int *value) {
-    if (*node == NULL) {
+    if (node == NULL) {
         return;
     }
 
     // check if this node is a leaf (check either sender or receiver if null)
-    if ((*node)->sender == NULL) {
+    if (node->sender == NULL) {
         // check if wallet id is the same as the sender of this transaction
-        Bitcoin_tree_data *btd = (Bitcoin_tree_data *)(*node)->data;
+        Bitcoin_tree_data *btd = (Bitcoin_tree_data *)node->data;
         if (!strcmp(btd->wallet_id, (*transaction)->sender_wallet->wallet_id)) {
             // create new node data for sender and receiver
             Bitcoin_tree_data *new_sender_btd =
@@ -136,14 +137,17 @@ void traverse_bitcoin_tree(Tree_node **node, Transaction **transaction,
             new_receiver_btd->transaction = *transaction;
             new_receiver_btd->amount = btd->amount - new_sender_btd->amount;
             // add nodes to tree
-            add_sender(*node, new_sender_btd, sizeof(Bitcoin_tree_data));
-            add_receiver(*node, new_receiver_btd, sizeof(Bitcoin_tree_data));
+            add_sender(node, new_sender_btd, sizeof(Bitcoin_tree_data));
+            add_receiver(node, new_receiver_btd, sizeof(Bitcoin_tree_data));
             // decrease remaining value of transaction by the amount of bitcoin
             // node used
             *value -= new_sender_btd->amount;
+            free(new_sender_btd);
+            free(new_receiver_btd);
         }
+        return;
     }
 
-    traverse_bitcoin_tree(&(*node)->sender, transaction, value);
-    traverse_bitcoin_tree(&(*node)->receiver, transaction, value);
+    traverse_bitcoin_tree(node->sender, transaction, value);
+    traverse_bitcoin_tree(node->receiver, transaction, value);
 }

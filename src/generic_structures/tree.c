@@ -4,8 +4,7 @@
 #include <string.h>
 
 Tree *initialize_tree(void) {
-    Tree *tree = NULL;
-    tree = malloc(sizeof(Tree));
+    Tree *tree = malloc(sizeof(Tree));
     tree->root = NULL;
 
     return tree;
@@ -64,16 +63,16 @@ void print_tree(Tree_node *node, void (*function)(void *)) {
     print_tree_senders(node->receiver, function);
 }
 
-void delete_tree(Tree_node **node, void (*function)(void **)) {
-    if (*node == NULL) {
+void delete_tree(Tree_node *node, void (*function)(void **)) {
+    if (node == NULL) {
         return;
     }
 
-    delete_tree(&(*node)->sender, function);
-    delete_tree(&(*node)->receiver, function);
+    delete_tree(node->sender, function);
+    delete_tree(node->receiver, function);
     // if a delete function was given, delete data with it
     if (*function != NULL) {
-        (*function)(&(*node)->data);
+        (*function)(node->data);
     }
     // free(node);
 }

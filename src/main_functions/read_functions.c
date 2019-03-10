@@ -98,6 +98,8 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
                         // add bitcoin tree data struct to bitcoin tree
                         bitc->tree->root =
                             allocate_tree_node(btd, sizeof(Bitcoin_tree_data));
+                        bitc->tree->root->sender = NULL;
+                        bitc->tree->root->receiver = NULL;
                         // add bitcoin struct to bitcoin hashtable and make
                         // bitcoin share point to it
                         int bpos =
@@ -108,9 +110,9 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
                         add_list_node(&wal->bitcoins_list, bitc_share,
                                       sizeof(Bitcoin_share));
                         free(btd);
-                        free(bitc->tree->root->data);
-                        free(bitc->tree->root);
-                        free(bitc->tree);
+                        // free(bitc->tree->root->data);
+                        // free(bitc->tree->root);
+                        // free(bitc->tree);
                         free(bitc);
                         free(bitc_share);
                         // increase total balance of wallet by one full bitcoin

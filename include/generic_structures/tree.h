@@ -37,6 +37,6 @@ void print_tree_senders(Tree_node *node, void (*fptr)(void *));
 void print_tree(Tree_node *node, void (*function)(void *));
 // Release memory of tree (first argument root of the tree) giving a delete
 // function as argument depending on the data struct
-void delete_tree(Tree_node **node, void (*function)(void **));
+void delete_tree(Tree_node *node, void (*function)(void **));
 
 #endif
