@@ -6,6 +6,4 @@ NOTES
 - better hash functions
 - change hashtable sizes
 - make input validity checks (for prompts)
-- check if unique transaction ids
-- maybe better project structure
 - check if command line arguments work

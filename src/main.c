@@ -21,7 +21,7 @@ int main(int argc, char const *argv[]) {
         strcpy(bitcoin_balances_file, "files/bitCoinBalancesFile.txt");
         transaction_file = malloc(strlen("files/transactionsFile.txt") + 1);
         strcpy(transaction_file, "files/transactionsFile.txt");
-        bitcoin_value = 50;
+        bitcoin_value = 10;
         sender_hashtable_num_of_entries = 15;
         receiver_hashtable_num_of_entries = 15;
         bucket_size = 100;

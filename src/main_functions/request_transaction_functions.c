@@ -28,7 +28,15 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
         return;
     }
 
-    // check if sender has the amount of the transaction else return
+    // check if sender has the amount of the transaction in their balance, else
+    // return
+    if (sender_wal->balance < value) {
+        printf(RED
+               "%s: The balance in this wallet is not sufficient for the "
+               "transaction.\n\n" RESET,
+               sender_wal_id);
+        return;
+    }
 
     // first insert values into transaction struct and insert to hashtables then
     // break tree and point to these transactions
