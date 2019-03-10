@@ -132,12 +132,11 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     }
     // Print sender transactions hashtable
     else if (strcmp(words[0], "/showSenders") == 0) {
-        print_hashtable(*sender_ht, print_sender_transaction_hashtable_data);
+        print_hashtable(*sender_ht, print_transaction_hashtable_data);
     }
     // Print receiver transactions hashtable
     else if (strcmp(words[0], "/showReceivers") == 0) {
-        print_hashtable(*receiver_ht,
-                        print_receiver_transaction_hashtable_data);
+        print_hashtable(*receiver_ht, print_transaction_hashtable_data);
     }
     // Print bitcoin shares of a given wallet
     else if (strcmp(words[0], "/showBitcoinShares") == 0) {

@@ -4,16 +4,10 @@
 #include "../../include/data_structs/transaction.h"
 #include "../../include/generic_structures/list.h"
 
-void print_sender_transaction_hashtable_data(void *data) {
+void print_transaction_hashtable_data(void *data) {
     Transaction_hashtable_data *thd = (Transaction_hashtable_data *)data;
     printf("%s: \n", thd->wallet->wallet_id);
     print_list(thd->transactions, print_transaction);
-}
-
-void print_receiver_transaction_hashtable_data(void *data) {
-    Transaction_hashtable_data *thd = (Transaction_hashtable_data *)data;
-    printf("%s: \n", thd->wallet->wallet_id);
-    print_list(thd->transactions, print_transaction_pointer);
 }
 
 int check_transaction_wallet(void *data, void *wallet_id) {

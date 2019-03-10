@@ -15,7 +15,6 @@ typedef struct Transaction {
 } Transaction;
 
 void print_transaction(void *data);
-void print_transaction_pointer(void *data);
 // Find position of a wallet's transactions in the hashtable array with wallet
 // id as key
 int get_transaction_hash(void *wallet_id, int size);
