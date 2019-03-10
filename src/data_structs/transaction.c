@@ -11,6 +11,15 @@ void print_transaction(void *data) {
     printf("%s", buffer);
 }
 
+void print_transaction_pointer(void *data) {
+    Transaction **t = (Transaction **)data;
+    printf("%s %s %s %d ", (*t)->transaction_id, (*t)->sender_wallet->wallet_id,
+           (*t)->receiver_wallet->wallet_id, (*t)->value);
+    char buffer[20];
+    strftime(buffer, 20, "%d-%m-%Y %H:%M", (*t)->date);
+    printf("%s", buffer);
+}
+
 int get_transaction_hash(void *wallet_id, int size) {
     char *w = (char *)wallet_id;
     return w[0] % size;

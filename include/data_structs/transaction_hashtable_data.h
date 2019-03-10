@@ -11,7 +11,8 @@ typedef struct Transaction_hashtable_data {
     List *transactions;
 } Transaction_hashtable_data;
 
-void print_transaction_hashtable_data(void *data);
+void print_sender_transaction_hashtable_data(void *data);
+void print_receiver_transaction_hashtable_data(void *data);
 // Check if given transaction hashtable data struct has given wallet_id value
 // (argument 1: transaction hashtable data struct, argument 2: wallet_id being
 // search for), return 1 if same data, else 0

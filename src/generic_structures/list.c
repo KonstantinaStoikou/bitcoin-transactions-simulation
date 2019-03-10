@@ -15,7 +15,6 @@ List *initialize_list(void) {
 List_node *add_list_node(List **list, void *data, int sizeof_data_struct) {
     // Allocate memory for node
     List_node *new_node = (List_node *)malloc(sizeof(List_node));
-    // new_node->data = data;
     new_node->data = malloc(sizeof_data_struct);
     memcpy(new_node->data, data, sizeof_data_struct);
     new_node->next = (*list)->head;

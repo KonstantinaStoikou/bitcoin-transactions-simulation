@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../../include/data_structs/bitcoin_share.h"
 #include "../../include/data_structs/transaction.h"
 #include "../../include/data_structs/transaction_hashtable_data.h"
 #include "../../include/data_structs/wallet.h"
@@ -28,8 +29,7 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
         return;
     }
 
-    // check if sender has the amount of the transaction in their balance, else
-    // return
+    // check if sender has the amount of the transaction in their balance
     if (sender_wal->balance < value) {
         printf(RED
                "%s: The balance in this wallet is not sufficient for the "
@@ -37,9 +37,6 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
                sender_wal_id);
         return;
     }
-
-    // first insert values into transaction struct and insert to hashtables then
-    // break tree and point to these transactions
 
     // insert values into a transaction struct
     Transaction *transaction = malloc(sizeof(Transaction));
@@ -55,15 +52,30 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
     Transaction_hashtable_data *sender_thd =
         (Transaction_hashtable_data *)search_hashtable(
             sender_ht, pos, sender_wal_id, check_transaction_wallet);
-    add_list_node(&sender_thd->transactions, transaction, sizeof(Transaction));
+    Transaction *inserted_transaction = add_list_node(
+        &sender_thd->transactions, transaction, sizeof(Transaction));
     pos = get_transaction_hash(receiver_wal_id, (*receiver_ht)->num_of_entries);
     Transaction_hashtable_data *receiver_thd =
         (Transaction_hashtable_data *)search_hashtable(
             receiver_ht, pos, receiver_wal_id, check_transaction_wallet);
-    add_list_node(&receiver_thd->transactions, transaction,
-                  sizeof(Transaction));
+    // add_list_node(&receiver_thd->transactions, inserted_transaction,
+    //               sizeof(Transaction *));
+    // Allocate memory for node (cannot use add_list_node because of memcpy)
+    List_node *new_node = (List_node *)malloc(sizeof(List_node));
+    new_node->data = malloc(sizeof(Transaction *));
+    new_node->data = inserted_transaction;
+    new_node->next = receiver_thd->transactions->head;
+    // Change head pointer as new node is added at the beginning
+    receiver_thd->transactions->head = new_node;
 
     free(transaction);
+
+    // break tree and point to these transactions
+    // Bitcoin_share *current_share =
+    //     (Bitcoin_share *)sender_wal->bitcoins_list->head;
+    // while (current_share != NULL && value != 0) {
+    //     traverse_bitcoin_tree(current_share->bitcoin->tree->root, )
+    // }
 }
 
 struct tm *ascii_to_tm(char *date_str, char *time_str) {
@@ -92,3 +104,6 @@ struct tm *ascii_to_tm(char *date_str, char *time_str) {
     tm->tm_min = atoi(time[1]);
     return tm;
 }
+
+void traverse_bitcoin_tree(Tree_node **node, Transaction **transaction,
+                           int *value) {}
