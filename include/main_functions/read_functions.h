@@ -7,7 +7,7 @@
 #define READ_FUNCTIONS_HEADER
 
 #include <time.h>
-#include "../include/hashtable.h"
+#include "../generic_structures/hashtable.h"
 
 // Read command line arguments and initialize corresponding variables
 void read_arguments(int argc, char const *argv[], char **bitcoin_balances_file,

@@ -2,7 +2,7 @@
 #define TRANSACTION_HEADER
 
 #include <time.h>
-#include "defines.h"
+#include "../defines.h"
 #include "wallet.h"
 
 typedef struct Transaction {

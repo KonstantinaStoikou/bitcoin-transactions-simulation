@@ -1,7 +1,7 @@
 #ifndef BITCOIN_HEADER
 #define BITCOIN_HEADER
 
-#include "tree.h"
+#include "../generic_structures/tree.h"
 
 typedef struct Bitcoin {
     int bitcoin_id;

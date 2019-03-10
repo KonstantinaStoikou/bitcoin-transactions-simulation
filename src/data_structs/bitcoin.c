@@ -1,7 +1,7 @@
-#include "../include/bitcoin.h"
+#include "../../include/data_structs/bitcoin.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/defines.h"
+#include "../../include/defines.h"
 
 void print_bitcoin(void *bitcoin) {
     Bitcoin *b = (Bitcoin *)bitcoin;

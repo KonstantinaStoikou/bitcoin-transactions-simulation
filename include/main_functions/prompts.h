@@ -6,7 +6,7 @@
 #ifndef PROMPTS_HEADER
 #define PROMPTS_HEADER
 
-#include "../include/hashtable.h"
+#include "../generic_structures/hashtable.h"
 
 // Execute a command given by the user
 void execute_prompt(char *prompt, Hashtable **wallets_ht,

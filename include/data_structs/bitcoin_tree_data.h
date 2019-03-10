@@ -1,7 +1,7 @@
 #ifndef BITCOIN_TREE_DATA_HEADER
 #define BITCOIN_TREE_DATA_HEADER
 
-#include "defines.h"
+#include "../defines.h"
 #include "transaction.h"
 
 // The bitcoin data struct stored in the tree

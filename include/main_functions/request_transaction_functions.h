@@ -8,7 +8,7 @@
 #define REQUEST_TRANSACTION_FUNCTIONS_HEADER
 
 #include <time.h>
-#include "../include/hashtable.h"
+#include "../generic_structures/hashtable.h"
 
 void make_transaction(char *transaction_id, char *sender_wal_id,
                       char *receiver_wal_id, int value, char *date, char *time,

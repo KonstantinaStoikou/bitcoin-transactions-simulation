@@ -1,8 +1,8 @@
-#include "../include/list.h"
+#include "../../include/generic_structures/list.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../include/defines.h"
+#include "../../include/defines.h"
 
 List *initialize_list(void) {
     List *list = NULL;

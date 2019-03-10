@@ -1,8 +1,8 @@
-#include "../include/wallet.h"
+#include "../../include/data_structs/wallet.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../include/defines.h"
+#include "../../include/defines.h"
 
 void print_wallet(void *wallet) {
     Wallet *w = (Wallet *)wallet;

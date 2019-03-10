@@ -1,8 +1,8 @@
-#include "../include/transaction_hashtable_data.h"
+#include "../../include/data_structs/transaction_hashtable_data.h"
 #include <stdio.h>
 #include <string.h>
-#include "../include/list.h"
-#include "../include/transaction.h"
+#include "../../include/data_structs/transaction.h"
+#include "../../include/generic_structures/list.h"
 
 void print_transaction_hashtable_data(void *data) {
     Transaction_hashtable_data *thd = (Transaction_hashtable_data *)data;

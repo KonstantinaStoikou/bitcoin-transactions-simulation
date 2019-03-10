@@ -1,6 +1,6 @@
-#include "../include/bitcoin_tree_data.h"
+#include "../../include/data_structs/bitcoin_tree_data.h"
 #include <stdio.h>
-#include "../include/transaction.h"
+#include "../../include/data_structs/transaction.h"
 
 void print_bitcoin_tree_data(void *data) {
     Bitcoin_tree_data *btd = (Bitcoin_tree_data *)data;

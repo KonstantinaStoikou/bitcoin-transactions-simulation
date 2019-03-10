@@ -1,4 +1,4 @@
-#include "../include/bitcoin_share.h"
+#include "../../include/data_structs/bitcoin_share.h"
 #include <stdio.h>
 
 void print_bitcoin_share(void *data) {

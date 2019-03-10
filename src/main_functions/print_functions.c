@@ -1,4 +1,4 @@
-#include "../include/print_functions.h"
+#include "../../include/main_functions/print_functions.h"
 #include <stdio.h>
 
 // Function to print an integer

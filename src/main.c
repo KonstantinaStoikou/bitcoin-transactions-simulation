@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../include/bitcoin.h"
-#include "../include/prompts.h"
-#include "../include/read_functions.h"
-#include "../include/transaction_hashtable_data.h"
-#include "../include/wallet.h"
+#include "../include/data_structs/bitcoin.h"
+#include "../include/data_structs/transaction_hashtable_data.h"
+#include "../include/data_structs/wallet.h"
+#include "../include/main_functions/prompts.h"
+#include "../include/main_functions/read_functions.h"
 
 int main(int argc, char const *argv[]) {
     char *bitcoin_balances_file, *transaction_file;

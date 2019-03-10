@@ -1,8 +1,8 @@
 #ifndef WALLET_HEADER
 #define WALLET_HEADER
 
-#include "defines.h"
-#include "list.h"
+#include "../defines.h"
+#include "../generic_structures/list.h"
 
 typedef struct Wallet {
     char wallet_id[WALLET_ID_SIZE];

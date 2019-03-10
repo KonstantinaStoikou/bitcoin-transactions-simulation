@@ -1,8 +1,8 @@
-#include "../include/hashtable.h"
+#include "../../include/generic_structures/hashtable.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../include/defines.h"
+#include "../../include/defines.h"
 
 Hashtable *initialize_hashtable(int num_of_entries, int bucket_size) {
     // allocate memory for hashtable struct

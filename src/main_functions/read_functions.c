@@ -1,12 +1,12 @@
-#include "../include/read_functions.h"
+#include "../../include/main_functions/read_functions.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../include/bitcoin_share.h"
-#include "../include/bitcoin_tree_data.h"
-#include "../include/request_transaction_functions.h"
-#include "../include/transaction_hashtable_data.h"
-#include "../include/wallet.h"
+#include "../../include/data_structs/bitcoin_share.h"
+#include "../../include/data_structs/bitcoin_tree_data.h"
+#include "../../include/data_structs/transaction_hashtable_data.h"
+#include "../../include/data_structs/wallet.h"
+#include "../../include/main_functions/request_transaction_functions.h"
 
 void read_arguments(int argc, char const *argv[], char **bitcoin_balances_file,
                     char **transaction_file, int *bitcoin_value,

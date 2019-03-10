@@ -1,19 +1,16 @@
-#include "../include/request_transaction_functions.h"
+#include "../../include/main_functions/request_transaction_functions.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../include/transaction.h"
-#include "../include/transaction_hashtable_data.h"
-#include "../include/wallet.h"
+#include "../../include/data_structs/transaction.h"
+#include "../../include/data_structs/transaction_hashtable_data.h"
+#include "../../include/data_structs/wallet.h"
 
 void make_transaction(char *transaction_id, char *sender_wal_id,
                       char *receiver_wal_id, int value, char *date, char *time,
                       Hashtable **wallets, Hashtable **sender_ht,
                       Hashtable **receiver_ht) {
-    // insert values into a transaction struct
-    Transaction *transaction = malloc(sizeof(Transaction));
-    strcpy(transaction->transaction_id, transaction_id);
-    // search in wallet hashtable for sender and receiver and point to them
+    // check if sender and receiver exist
     int pos = get_hash(get_wallet_hash, sender_wal_id);
     Wallet *sender_wal = (Wallet *)search_hashtable(wallets, pos, sender_wal_id,
                                                     check_wallet_id);
@@ -22,7 +19,6 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
                sender_wal_id);
         return;
     }
-    transaction->sender_wallet = sender_wal;
     pos = get_hash(get_wallet_hash, receiver_wal_id);
     Wallet *receiver_wal = (Wallet *)search_hashtable(
         wallets, pos, receiver_wal_id, check_wallet_id);
@@ -31,6 +27,16 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
                receiver_wal_id);
         return;
     }
+
+    // check if sender has the amount of the transaction else return
+
+    // first insert values into transaction struct and insert to hashtables then
+    // break tree and point to these transactions
+
+    // insert values into a transaction struct
+    Transaction *transaction = malloc(sizeof(Transaction));
+    strcpy(transaction->transaction_id, transaction_id);
+    transaction->sender_wallet = sender_wal;
     transaction->receiver_wallet = receiver_wal;
     transaction->value = value;
     struct tm *tm_info = ascii_to_tm(date, time);

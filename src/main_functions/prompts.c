@@ -1,14 +1,13 @@
-#include "../include/prompts.h"
+#include "../../include/main_functions/prompts.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../include/bitcoin.h"
-#include "../include/bitcoin_share.h"
-#include "../include/bitcoin_tree_data.h"
-#include "../include/defines.h"
-#include "../include/transaction_hashtable_data.h"
-#include "../include/tree.h"
-#include "../include/wallet.h"
+#include "../../include/data_structs/bitcoin_share.h"
+#include "../../include/data_structs/bitcoin_tree_data.h"
+#include "../../include/data_structs/transaction_hashtable_data.h"
+#include "../../include/data_structs/wallet.h"
+#include "../../include/defines.h"
+#include "../../include/generic_structures/tree.h"
 
 void execute_prompt(char *prompt, Hashtable **wallets_ht,
                     Hashtable **bitcoins_ht, Hashtable **sender_ht,
