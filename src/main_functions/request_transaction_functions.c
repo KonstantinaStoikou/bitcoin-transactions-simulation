@@ -69,7 +69,6 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
     receiver_thd->transactions->head = new_node;
 
     free(transaction);
-    free(new_node);
 
     // break tree and point to these transactions
     List_node *current_share = (List_node *)sender_wal->bitcoins_list->head;
@@ -81,6 +80,9 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
         // share->bitcoin->unspent;
         current_share = current_share->next;
     }
+
+    sender_wal->balance -= value;
+    receiver_wal->balance += value;
 }
 
 struct tm *ascii_to_tm(char *date_str, char *time_str) {

@@ -42,8 +42,6 @@ void print_tree_senders(Tree_node *node, void (*function)(void *)) {
     if (node == NULL) {
         return;
     }
-    (*function)(node->data);
-    printf("\n");
 
     if (node->sender != NULL) {
         (*function)(node->sender->data);
