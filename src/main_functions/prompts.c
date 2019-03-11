@@ -32,13 +32,13 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     // Request a transaction
     if (strcmp(words[0], "requestTransaction") == 0) {
         if (words[1] == NULL) {
-            perror(RED "Sender wallet id was not given.\n\n" RESET);
+            printf(RED "Sender wallet id was not given.\n\n" RESET);
             return;
         } else if (words[2] == NULL) {
-            perror(RED "Receiver wallet id was not given.\n\n" RESET);
+            printf(RED "Receiver wallet id was not given.\n\n" RESET);
             return;
         } else if (words[3] == NULL) {
-            perror(RED "Amount of transaction was not given.\n\n" RESET);
+            printf(RED "Amount of transaction was not given.\n\n" RESET);
             return;
         }
         // check if date was given correctly
@@ -54,7 +54,6 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
         next++;
         memset(next_id, 0, strlen(next_id));
         sprintf(next_id, "%d", next);
-        printf("Transaction has been conducted successfully.\n");
     }
     // Request multiple transactions
     else if (strcmp(words[0], "requestTransactions") == 0) {
@@ -76,7 +75,7 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     // Show balance in a certain wallet
     else if (strcmp(words[0], "walletStatus") == 0) {
         if (words[1] == NULL) {
-            perror(RED "Wallet id was not given.\n\n" RESET);
+            printf(RED "Wallet id was not given.\n\n" RESET);
             return;
         }
         char *wal_id = words[1];
@@ -84,7 +83,7 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
         Wallet *wal = (Wallet *)search_hashtable(wallets_ht, pos, wal_id,
                                                  check_wallet_id);
         if (wal == NULL) {
-            perror(RED "There is no wallet with the given id.\n\n" RESET);
+            printf(RED "There is no wallet with the given id.\n\n" RESET);
             return;
         }
         print_wallet(wal);
@@ -101,7 +100,7 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
         Bitcoin *bitc = (Bitcoin *)search_hashtable(bitcoins_ht, pos, &bitc_id,
                                                     check_bitcoin_id);
         if (bitc == NULL) {
-            perror(RED "There is no bitcoin with the given id.\n\n" RESET);
+            printf(RED "There is no bitcoin with the given id.\n\n" RESET);
             return;
         }
         print_bitcoin(bitc);
@@ -134,12 +133,12 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
             BLUE
             "ASSIGNMENT'S TASK PROMPTS: \n\n" CYAN
             "- Request a transaction (optionally date and time) :\n" RESET
-            "\t/requestTransaction senderWalletID receiverWalletID amount "
+            "\trequestTransaction senderWalletID receiverWalletID amount "
             "[date] "
             "[time]\n\n" CYAN
             "- Request multiple transactions (optionally date and time) "
             ":\n" RESET
-            "\t/requestTransactions senderWalletID receiverWalletID amount "
+            "\trequestTransactions senderWalletID receiverWalletID amount "
             "[date] "
             "time;\n"
             "\tsenderWalletID2 receiverWalletID2 amount2 [date2] [time2];\n"
@@ -147,35 +146,34 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
             "\tsenderWalletIDn receiverWalletIDn amountn [daten] "
             "[timen];\n\n" CYAN
             "- Read transactions from an input file as :\n" RESET
-            "\t/requestTransactions inputFile\n\n" CYAN
+            "\trequestTransactions inputFile\n\n" CYAN
             "- Show received earnings of a certain user (optionally in a "
             "certain "
             "time period) "
             ":\n" RESET
-            "​\t/findEarnings walletID [time1][year1][time2][year2]\n\n" CYAN
+            "​\tfindEarnings walletID [time1][year1][time2][year2]\n\n" CYAN
             "- Show sent payments of a certain user (optionally in a certain "
             "time "
             "period) :\n" RESET
-            "​\t/findPayments walletID [time1][year1][time2][year2]\n\n" CYAN
+            "​\tfindPayments walletID [time1][year1][time2][year2]\n\n" CYAN
             "- Show balance in a certain wallet :\n" RESET
-            "​\t/walletStatus walletID\n\n" CYAN
+            "​\twalletStatus walletID\n\n" CYAN
             "- Show info about a certain bitcoin :\n" RESET
-            "\t/bitCoinStatus bitCoinID\n\n" CYAN
+            "\tbitCoinStatus bitCoinID\n\n" CYAN
             "- Show transaction history of a certain bitcoin :\n" RESET
-            "\t/traceCoin bitCoinID\n\n" BLUE
-            "FOR DEBUGGING PURPOSES: \n\n" CYAN
-            "- Show wallets' hashtable :\n" RESET "\t/showWallets\n\n" CYAN
+            "\ttraceCoin bitCoinID\n\n" BLUE "FOR DEBUGGING PURPOSES: \n\n" CYAN
+            "- Show wallets' hashtable :\n" RESET "\tshowWallets\n\n" CYAN
             "- Show senders' transactions hashtable :\n" RESET
-            "\t/showSenders\n\n" CYAN
+            "\tshowSenders\n\n" CYAN
             "- Show receivers' transactions hashtable :\n" RESET
-            "\t/showReceivers\n\n" CYAN "- Show bitcoins hashtable :\n" RESET
-            "\t/showBitcoins\n\n" CYAN
+            "\tshowReceivers\n\n" CYAN "- Show bitcoins hashtable :\n" RESET
+            "\tshowBitcoins\n\n" CYAN
             "- Show bitcoin shares of a certain wallet :\n" RESET
-            "\t/showBitcoinShares walletID\n\n" CYAN
+            "\tshowBitcoinShares walletID\n\n" CYAN
             "- Show transactions tree of a certain bitcoin :\n" RESET
-            "\t/showBitcoinTree bitCoinID\n\n" CYAN
-            "- List all possible commands :\n" RESET "\t/listCommands\n\n" CYAN
-            "- Exit program: \n" RESET "\t/exit\n\n");
+            "\tshowBitcoinTree bitCoinID\n\n" CYAN
+            "- List all possible commands :\n" RESET "\tlistCommands\n\n" CYAN
+            "- Exit program: \n" RESET "\texit\n\n");
     }
     // Print bitcoins hashtable
     else if (strcmp(words[0], "showBitcoins") == 0) {

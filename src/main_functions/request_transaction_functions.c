@@ -50,11 +50,11 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
         if (*recent_datetime != NULL &&
             (compare_datetime(tm_info, *recent_datetime) <= 0 ||
              compare_datetime(tm_info, get_current_time()) > 0)) {
-            printf(RED "Invalid date and time\n\n" RESET);
+            printf(RED "Invalid date and time\n" RESET);
             return;
         }
-        *recent_datetime = tm_info;
     }
+    *recent_datetime = tm_info;
 
     // insert values into a transaction struct
     Transaction *transaction = malloc(sizeof(Transaction));
@@ -150,6 +150,7 @@ struct tm *ascii_to_tm(char *date_str, char *time_str) {
     tm->tm_year = atoi(date[2]) - 1900;
     tm->tm_hour = atoi(time[0]);
     tm->tm_min = atoi(time[1]);
+    tm->tm_sec = 0;
     return tm;
 }
 

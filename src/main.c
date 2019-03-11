@@ -73,7 +73,7 @@ int main(int argc, char const *argv[]) {
         // call function to execute prompts given on the graph
         execute_prompt(prompt, &wallets_ht, &bitcoins_ht, &sender_ht,
                        &receiver_ht, next_id, &recent_datetime);
-    } while (strcmp(prompt, "/exit") != 0);
+    } while (strcmp(prompt, "exit") != 0);
 
     // Free allocated memory
     free(bitcoin_balances_file);
