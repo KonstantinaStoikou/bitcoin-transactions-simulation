@@ -9,5 +9,6 @@ typedef struct Bitcoin_share {
 } Bitcoin_share;
 
 void print_bitcoin_share(void *data);
+int check_bitcoin_share(void *data, void *bitcoin_id);
 
 #endif

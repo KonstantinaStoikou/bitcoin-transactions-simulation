@@ -24,7 +24,7 @@ List_node *add_list_node(List **list, void *data, int sizeof_data_struct) {
     return new_node;
 }
 
-int delete_list_node(List **list, void *data) {
+int delete_list_node(List **list, void *data, int (*function)(void *, void *)) {
     // check if node to be deleted is the head
     if ((*list)->head->data == data) {
         List_node *node_deleted = (*list)->head;
@@ -35,7 +35,7 @@ int delete_list_node(List **list, void *data) {
 
     // else continue
     // find the previous node of the one to be deleted
-    List_node *prev = search_list_prev_node(list, data);
+    List_node *prev = search_list_prev_node(list, data, function);
     if (prev == NULL) {
         perror(RED "The node does not exist in the list" RESET);
         return 1;
@@ -49,11 +49,12 @@ int delete_list_node(List **list, void *data) {
     return 0;
 }
 
-List_node *search_list_node(List **list, void *data) {
+List_node *search_list_node(List **list, void *data,
+                            int (*function)(void *, void *)) {
     List_node *current = (*list)->head;
 
     while (current != NULL) {
-        if (current->data == data) {
+        if ((*function)(current->data, data) == 1) {
             return current;
         }
         current = current->next;
@@ -61,11 +62,12 @@ List_node *search_list_node(List **list, void *data) {
     return NULL;
 }
 
-List_node *search_list_prev_node(List **list, void *data) {
+List_node *search_list_prev_node(List **list, void *data,
+                                 int (*function)(void *, void *)) {
     List_node *current = (*list)->head;
 
     while (current != NULL && current->next != NULL) {
-        if (current->next->data == data) {
+        if ((*function)(current->next->data, data) == 1) {
             return current;
         }
         current = current->next;

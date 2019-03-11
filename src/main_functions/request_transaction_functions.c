@@ -73,11 +73,35 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
     // break tree and point to these transactions
     List_node *current_share = (List_node *)sender_wal->bitcoins_list->head;
     while (current_share != NULL && value != 0) {
+        int old_value = value;  // store value before it is changed in tree
         Transaction *t = (Transaction *)inserted_transaction->data;
-        Bitcoin_share *share = (Bitcoin_share *)current_share->data;
-        traverse_bitcoin_tree(share->bitcoin->tree->root, &t, &value);
-        share->bitcoin->num_of_transactions++;
-        // share->bitcoin->unspent;
+        Bitcoin_share *sender_share = (Bitcoin_share *)current_share->data;
+        traverse_bitcoin_tree(sender_share->bitcoin->tree->root, &t, &value);
+        sender_share->bitcoin->num_of_transactions++;
+        sender_share->bitcoin->unspent -= old_value;
+        if (sender_share->bitcoin->unspent < 0) {
+            sender_share->bitcoin->unspent = 0;
+        }
+
+        // change share for sender
+        sender_share->share -= old_value - value;
+        // if receiver didn't have bitcoin in list add it
+        if (search_list_node(&receiver_wal->bitcoins_list,
+                             &sender_share->bitcoin->bitcoin_id,
+                             check_bitcoin_share) == NULL) {
+            Bitcoin_share *new_bcs = malloc(sizeof(Bitcoin_share));
+            new_bcs->share = old_value - value;
+            new_bcs->bitcoin = sender_share->bitcoin;
+            add_list_node(&receiver_wal->bitcoins_list, new_bcs,
+                          sizeof(Bitcoin_share));
+        }
+        // if sender bitcoin share is zero remove it from bitcoin list of wallet
+        if (sender_share->share == 0) {
+            delete_list_node(&sender_wal->bitcoins_list,
+                             &sender_share->bitcoin->bitcoin_id,
+                             check_bitcoin_share);
+        }
+
         current_share = current_share->next;
     }
 

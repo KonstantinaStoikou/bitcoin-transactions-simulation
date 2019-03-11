@@ -22,11 +22,13 @@ List *initialize_list(void);
 // Insert new node at the beginning of the list and return the newly added node
 List_node *add_list_node(List **list, void *data, int sizeof_data_struct);
 // Delete a node with the given data, returns 1 if there was an error, else 0
-int delete_list_node(List **list, void *data);
+int delete_list_node(List **list, void *data, int (*function)(void *, void *));
 // Search for a node with the given data and return it
-List_node *search_list_node(List **list, void *data);
+List_node *search_list_node(List **list, void *data,
+                            int (*function)(void *, void *));
 // Search for the previous node of the node with the given data and return it
-List_node *search_list_prev_node(List **list, void *data);
+List_node *search_list_prev_node(List **list, void *data,
+                                 int (*function)(void *, void *));
 // Print all nodes of the list giving a printing function as argument depending
 // on the data struct
 void print_list(List *list, void (*function)(void *));

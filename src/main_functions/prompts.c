@@ -62,7 +62,7 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
         printf("\n");
     }
     // Show info about a certain bitcoin
-    else if (strcmp(words[0], "/bitcoinStatus") == 0) {
+    else if (strcmp(words[0], "/bitCoinStatus") == 0) {
         if (words[1] == NULL) {
             perror(RED "Bitcoin id was not given.\n\n" RESET);
             return;
