@@ -22,7 +22,8 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
 // shows the biggest transaction id that will be incremented by 1 for each new
 // transaction (after reading the file)
 int read_transaction_file(char *filename, Hashtable **sender_ht,
-                          Hashtable **receiver_ht, Hashtable **wallets);
+                          Hashtable **receiver_ht, Hashtable **wallets,
+                          struct tm **recent_datetime);
 // Convert two strings (format: DD-MM-YYYY, HH:MM) to a tm struct and return the
 // struct
 struct tm *ascii_to_tm(char *date, char *time);

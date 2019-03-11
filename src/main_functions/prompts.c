@@ -12,7 +12,8 @@
 
 void execute_prompt(char *prompt, Hashtable **wallets_ht,
                     Hashtable **bitcoins_ht, Hashtable **sender_ht,
-                    Hashtable **receiver_ht, char *next_id) {
+                    Hashtable **receiver_ht, char *next_id,
+                    struct tm **recent_datetime) {
     // break prompt into words
     char *words[6];  // maximum number of words for a prompt is 6
     for (int i = 0; i < 6; i++) {
@@ -29,7 +30,7 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     printf("\n");
 
     // Request a transaction
-    if (strcmp(words[0], "/requestTransaction") == 0) {
+    if (strcmp(words[0], "requestTransaction") == 0) {
         if (words[1] == NULL) {
             perror(RED "Sender wallet id was not given.\n\n" RESET);
             return;
@@ -47,14 +48,16 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
         }
 
         make_transaction(next_id, words[1], words[2], atoi(words[3]), words[4],
-                         words[5], wallets_ht, sender_ht, receiver_ht);
+                         words[5], wallets_ht, sender_ht, receiver_ht,
+                         recent_datetime);
         int next = atoi(next_id);
         next++;
         memset(next_id, 0, strlen(next_id));
         sprintf(next_id, "%d", next);
+        printf("Transaction has been conducted successfully.\n");
     }
     // Request multiple transactions
-    else if (strcmp(words[0], "/requestTransactions") == 0) {
+    else if (strcmp(words[0], "requestTransactions") == 0) {
         printf("multiple transactions were requested.\n");
         // check if transactions are from an input file (if only one extra
         // argument was given)
@@ -63,15 +66,15 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
         }
     }
     // Show received earnings of a certain user
-    else if (strcmp(words[0], "/findEarnings") == 0) {
+    else if (strcmp(words[0], "findEarnings") == 0) {
         printf("finding earnings\n");
     }
     // Show sent payments of a certain user
-    else if (strcmp(words[0], "/findPayments") == 0) {
+    else if (strcmp(words[0], "findPayments") == 0) {
         printf("finding payments\n");
     }
     // Show balance in a certain wallet
-    else if (strcmp(words[0], "/walletStatus") == 0) {
+    else if (strcmp(words[0], "walletStatus") == 0) {
         if (words[1] == NULL) {
             perror(RED "Wallet id was not given.\n\n" RESET);
             return;
@@ -88,7 +91,7 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
         printf("\n");
     }
     // Show info about a certain bitcoin
-    else if (strcmp(words[0], "/bitCoinStatus") == 0) {
+    else if (strcmp(words[0], "bitCoinStatus") == 0) {
         if (words[1] == NULL) {
             perror(RED "Bitcoin id was not given.\n\n" RESET);
             return;
@@ -105,7 +108,7 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
         printf("\n");
     }
     // Show transaction history of a certain bitcoin
-    else if (strcmp(words[0], "/traceCoin") == 0) {
+    else if (strcmp(words[0], "traceCoin") == 0) {
         if (words[1] == NULL) {
             printf(RED "Bitcoin id was not given.\n\n" RESET);
             return;
@@ -121,12 +124,12 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
         print_tree_senders(bitc->tree->root, print_bitcoin_transactions);
     }
     // Exit program
-    else if (strcmp(words[0], "/exit") == 0) {
+    else if (strcmp(words[0], "exit") == 0) {
         printf("Exit program\n");
     }
     // EXTRA PROMPTS FOR DEBUGGING:
     // List all possible commands
-    else if (strcmp(words[0], "/listCommands") == 0) {
+    else if (strcmp(words[0], "listCommands") == 0) {
         printf(
             BLUE
             "ASSIGNMENT'S TASK PROMPTS: \n\n" CYAN
@@ -175,23 +178,23 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
             "- Exit program: \n" RESET "\t/exit\n\n");
     }
     // Print bitcoins hashtable
-    else if (strcmp(words[0], "/showBitcoins") == 0) {
+    else if (strcmp(words[0], "showBitcoins") == 0) {
         print_hashtable(*bitcoins_ht, print_bitcoin);
     }
     // Print wallets hashtable
-    else if (strcmp(words[0], "/showWallets") == 0) {
+    else if (strcmp(words[0], "showWallets") == 0) {
         print_hashtable(*wallets_ht, print_wallet);
     }
     // Print sender transactions hashtable
-    else if (strcmp(words[0], "/showSenders") == 0) {
+    else if (strcmp(words[0], "showSenders") == 0) {
         print_hashtable(*sender_ht, print_transaction_hashtable_data);
     }
     // Print receiver transactions hashtable
-    else if (strcmp(words[0], "/showReceivers") == 0) {
+    else if (strcmp(words[0], "showReceivers") == 0) {
         print_hashtable(*receiver_ht, print_transaction_hashtable_data);
     }
     // Print bitcoin shares of a given wallet
-    else if (strcmp(words[0], "/showBitcoinShares") == 0) {
+    else if (strcmp(words[0], "showBitcoinShares") == 0) {
         if (words[1] == NULL) {
             perror(RED "Wallet id was not given.\n\n" RESET);
             return;
@@ -208,7 +211,7 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     }
     // Print bitcoin tree (only data stored in tree, not pointers) of a given
     // bitcoin id
-    else if (strcmp(words[0], "/showBitcoinTree") == 0) {
+    else if (strcmp(words[0], "showBitcoinTree") == 0) {
         if (words[1] == NULL) {
             perror(RED "Bitcoin id was not given.\n\n" RESET);
             return;

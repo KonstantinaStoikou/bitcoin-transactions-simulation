@@ -47,12 +47,16 @@ int main(int argc, char const *argv[]) {
     Hashtable *receiver_ht =
         initialize_hashtable(receiver_hashtable_num_of_entries, bucket_size);
 
+    // a tm struct to hold most recent transaction date
+    struct tm *recent_datetime = NULL;
+
     // read input files and insert data in structs
     read_bitcoin_balances_file(bitcoin_balances_file, bitcoin_value,
                                &wallets_ht, &bitcoins_ht, &sender_ht,
                                &receiver_ht);
-    int next_tr_id = read_transaction_file(transaction_file, &sender_ht,
-                                           &receiver_ht, &wallets_ht);
+    int next_tr_id =
+        read_transaction_file(transaction_file, &sender_ht, &receiver_ht,
+                              &wallets_ht, &recent_datetime);
     // create unique transaction id for next transaction
     char next_id[TRANSACTION_ID_SIZE];
     sprintf(next_id, "%d", next_tr_id);
@@ -68,7 +72,7 @@ int main(int argc, char const *argv[]) {
         prompt[strcspn(prompt, "\r\n")] = 0;
         // call function to execute prompts given on the graph
         execute_prompt(prompt, &wallets_ht, &bitcoins_ht, &sender_ht,
-                       &receiver_ht, next_id);
+                       &receiver_ht, next_id, &recent_datetime);
     } while (strcmp(prompt, "/exit") != 0);
 
     // Free allocated memory

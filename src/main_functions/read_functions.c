@@ -160,7 +160,8 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
 }
 
 int read_transaction_file(char *filename, Hashtable **sender_ht,
-                          Hashtable **receiver_ht, Hashtable **wallets) {
+                          Hashtable **receiver_ht, Hashtable **wallets,
+                          struct tm **recent_datetime) {
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
@@ -209,7 +210,7 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
 
             make_transaction(tr_id, words[1], words[2], atoi(words[3]),
                              words[4], words[5], wallets, sender_ht,
-                             receiver_ht);
+                             receiver_ht, recent_datetime);
             insert_hashtable_entry(&transaction_ids, pos, tr_id,
                                    sizeof(char *));
         } else {

@@ -11,7 +11,7 @@
 void make_transaction(char *transaction_id, char *sender_wal_id,
                       char *receiver_wal_id, int value, char *date, char *time,
                       Hashtable **wallets, Hashtable **sender_ht,
-                      Hashtable **receiver_ht) {
+                      Hashtable **receiver_ht, struct tm **recent_datetime) {
     // check if sender and receiver exist
     int pos = get_hash(get_wallet_hash, sender_wal_id);
     Wallet *sender_wal = (Wallet *)search_hashtable(wallets, pos, sender_wal_id,
@@ -45,6 +45,15 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
         tm_info = get_current_time();
     } else {
         tm_info = ascii_to_tm(date, time);
+        // datetime should be aftermost recent datetime but before or equal to
+        // current time
+        if (*recent_datetime != NULL &&
+            (compare_datetime(tm_info, *recent_datetime) <= 0 ||
+             compare_datetime(tm_info, get_current_time()) > 0)) {
+            printf(RED "Invalid date and time\n\n" RESET);
+            return;
+        }
+        *recent_datetime = tm_info;
     }
 
     // insert values into a transaction struct
@@ -81,6 +90,7 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
     List_node *current_share = (List_node *)sender_wal->bitcoins_list->head;
     while (current_share != NULL && value != 0) {
         int old_value = value;  // store value before it is changed in tree
+        List_node *next_share = current_share->next;
         Transaction *t = (Transaction *)inserted_transaction->data;
         Bitcoin_share *sender_share = (Bitcoin_share *)current_share->data;
         traverse_bitcoin_tree(sender_share->bitcoin->tree->root, &t, &value);
@@ -109,7 +119,7 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
                              check_bitcoin_share);
         }
 
-        current_share = current_share->next;
+        current_share = next_share;
     }
 
     sender_wal->balance -= value;
