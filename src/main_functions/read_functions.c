@@ -1,4 +1,5 @@
 #include "../../include/main_functions/read_functions.h"
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -178,6 +179,8 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
     Hashtable *transaction_ids =
         initialize_hashtable(TRANSACTION_HT_SIZE, TRANSACTION_BUCKET_SIZE);
 
+    int max_id = 0;  // maximum transaction id (integer) found in transactions
+
     int pos;  // variable to store positions found for hashtables
 
     while (getline(&line, &len, fp) != -1) {
@@ -199,6 +202,11 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
         char *tr_id_stored = (char *)search_hashtable(
             &transaction_ids, pos, tr_id, check_transaction_id_only);
         if (tr_id_stored == NULL) {
+            // if transaction id is a number, update max_id
+            if (is_number(tr_id) && atoi(tr_id) > max_id) {
+                max_id = atoi(tr_id);
+            }
+
             make_transaction(tr_id, words[1], words[2], atoi(words[3]),
                              words[4], words[5], wallets, sender_ht,
                              receiver_ht);
@@ -213,5 +221,15 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
     printf("\n");
     free(line);
     fclose(fp);
-    return 0;
+    return ++max_id;
+}
+
+int is_number(char *s) {
+    for (int i = 0; i < strlen(s); i++) {
+        if (isdigit(s[i]) == 0) {
+            return 0;
+        }
+    }
+
+    return 1;
 }

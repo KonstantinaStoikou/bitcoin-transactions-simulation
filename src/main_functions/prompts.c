@@ -8,10 +8,11 @@
 #include "../../include/data_structs/wallet.h"
 #include "../../include/defines.h"
 #include "../../include/generic_structures/tree.h"
+#include "../../include/main_functions/request_transaction_functions.h"
 
 void execute_prompt(char *prompt, Hashtable **wallets_ht,
                     Hashtable **bitcoins_ht, Hashtable **sender_ht,
-                    Hashtable **receiver_ht) {
+                    Hashtable **receiver_ht, char *next_id) {
     // break prompt into words
     char *words[6];  // maximum number of words for a prompt is 6
     int count = 0;
@@ -25,7 +26,22 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
 
     // Request a transaction
     if (strcmp(words[0], "/requestTransaction") == 0) {
-        printf("a transaction was requested\n");
+        if (words[1] == NULL) {
+            perror(RED "Sender wallet id was not given.\n\n" RESET);
+            return;
+        } else if (words[2] == NULL) {
+            perror(RED "Receiver wallet id was not given.\n\n" RESET);
+            return;
+        } else if (words[3] == NULL) {
+            perror(RED "Amount of transaction was not given.\n\n" RESET);
+            return;
+        }
+
+        make_transaction(next_id, words[1], words[2], atoi(words[3]), words[4],
+                         words[5], wallets_ht, sender_ht, receiver_ht);
+        int next = atoi(next_id);
+        memset(next_id, 0, strlen(next_id));
+        sprintf(next_id, "%d", next);
     }
     // Request multiple transactions
     else if (strcmp(words[0], "/requestTransactions") == 0) {

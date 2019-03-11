@@ -51,8 +51,11 @@ int main(int argc, char const *argv[]) {
     read_bitcoin_balances_file(bitcoin_balances_file, bitcoin_value,
                                &wallets_ht, &bitcoins_ht, &sender_ht,
                                &receiver_ht);
-    int new_transaction_id = read_transaction_file(transaction_file, &sender_ht,
-                                                   &receiver_ht, &wallets_ht);
+    int next_tr_id = read_transaction_file(transaction_file, &sender_ht,
+                                           &receiver_ht, &wallets_ht);
+    // create unique transaction id for next transaction
+    char next_id[TRANSACTION_ID_SIZE];
+    sprintf(next_id, "%d", next_tr_id);
 
     // ask for user input until user enters "exit"
     char prompt[BUF_SIZE];
@@ -65,7 +68,7 @@ int main(int argc, char const *argv[]) {
         prompt[strcspn(prompt, "\r\n")] = 0;
         // call function to execute prompts given on the graph
         execute_prompt(prompt, &wallets_ht, &bitcoins_ht, &sender_ht,
-                       &receiver_ht);
+                       &receiver_ht, next_id);
     } while (strcmp(prompt, "/exit") != 0);
 
     // Free allocated memory

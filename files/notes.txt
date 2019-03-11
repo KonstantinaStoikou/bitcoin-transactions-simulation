@@ -1,9 +1,10 @@
 NOTES
 
-- tree split policy
+- check if files work from all possible directories
 - transaction key change in function
 - better hash functions
 - change hashtable sizes
 - make input validity checks (for prompts)
 - check if command line arguments work
 - check if all double pointer are useful (for by reference passing)
+- check date and time

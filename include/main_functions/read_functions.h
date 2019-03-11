@@ -26,5 +26,7 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
 // Convert two strings (format: DD-MM-YYYY, HH:MM) to a tm struct and return the
 // struct
 struct tm *ascii_to_tm(char *date, char *time);
+// Return 1 if given string is a number, else return 0
+int is_number(char *s);
 
 #endif

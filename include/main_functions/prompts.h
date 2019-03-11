@@ -11,6 +11,6 @@
 // Execute a command given by the user
 void execute_prompt(char *prompt, Hashtable **wallets_ht,
                     Hashtable **bitcoins_ht, Hashtable **sender_ht,
-                    Hashtable **receiver_ht);
+                    Hashtable **receiver_ht, char *next_id);
 
 #endif
