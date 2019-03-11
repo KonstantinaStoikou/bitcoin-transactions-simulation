@@ -169,7 +169,7 @@ void traverse_bitcoin_tree(Tree_node *node, Transaction **transaction,
             add_receiver(node, new_receiver_btd, sizeof(Bitcoin_tree_data));
             // decrease remaining value of transaction by the amount of bitcoin
             // node used
-            *value -= new_sender_btd->amount;
+            *value -= new_receiver_btd->amount;
             free(new_sender_btd);
             free(new_receiver_btd);
         }
