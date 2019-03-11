@@ -23,5 +23,10 @@ struct tm *ascii_to_tm(char *date, char *time);
 // traversal)
 void traverse_bitcoin_tree(Tree_node *node, Transaction **transaction,
                            int *value);
+// Compare two struct tm and returns difference transaction_date -
+// comparison_date
+int compare_datetime(struct tm *transaction_date, struct tm *comparison_date);
+// Return a struct tm with current time
+struct tm *get_current_time();
 
 #endif

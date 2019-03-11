@@ -39,13 +39,20 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
         return;
     }
 
+    // if date was not given at all get current time
+    struct tm *tm_info;
+    if (date == NULL && time == NULL) {
+        tm_info = get_current_time();
+    } else {
+        tm_info = ascii_to_tm(date, time);
+    }
+
     // insert values into a transaction struct
     Transaction *transaction = malloc(sizeof(Transaction));
     strcpy(transaction->transaction_id, transaction_id);
     transaction->sender_wallet = sender_wal;
     transaction->receiver_wallet = receiver_wal;
     transaction->value = value;
-    struct tm *tm_info = ascii_to_tm(date, time);
     transaction->date = tm_info;
 
     // insert transaction to both sender and receiver hashtables
@@ -178,4 +185,19 @@ void traverse_bitcoin_tree(Tree_node *node, Transaction **transaction,
 
     traverse_bitcoin_tree(node->sender, transaction, value);
     traverse_bitcoin_tree(node->receiver, transaction, value);
+}
+
+int compare_datetime(struct tm *transaction_date, struct tm *comparison_date) {
+    time_t t1 = mktime(transaction_date);
+    time_t t2 = mktime(comparison_date);
+    return difftime(t1, t2);
+}
+
+struct tm *get_current_time() {
+    time_t rawtime;
+    struct tm *timeinfo;
+
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+    return timeinfo;
 }

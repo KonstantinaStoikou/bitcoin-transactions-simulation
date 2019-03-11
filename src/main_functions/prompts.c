@@ -15,6 +15,10 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
                     Hashtable **receiver_ht, char *next_id) {
     // break prompt into words
     char *words[6];  // maximum number of words for a prompt is 6
+    for (int i = 0; i < 6; i++) {
+        words[i] = NULL;
+    }
+
     int count = 0;
     char *word = strtok(prompt, " ");  // split prompt by spaces
     while (word) {
@@ -36,10 +40,16 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
             perror(RED "Amount of transaction was not given.\n\n" RESET);
             return;
         }
+        // check if date was given correctly
+        if ((words[4] != NULL) && (words[5] == NULL)) {
+            perror(RED "Incomplete date and time");
+            return;
+        }
 
         make_transaction(next_id, words[1], words[2], atoi(words[3]), words[4],
                          words[5], wallets_ht, sender_ht, receiver_ht);
         int next = atoi(next_id);
+        next++;
         memset(next_id, 0, strlen(next_id));
         sprintf(next_id, "%d", next);
     }
