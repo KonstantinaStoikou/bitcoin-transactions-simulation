@@ -77,6 +77,8 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
         Transaction *t = (Transaction *)inserted_transaction->data;
         Bitcoin_share *share = (Bitcoin_share *)current_share->data;
         traverse_bitcoin_tree(share->bitcoin->tree->root, &t, &value);
+        share->bitcoin->num_of_transactions++;
+        // share->bitcoin->unspent;
         current_share = current_share->next;
     }
 }

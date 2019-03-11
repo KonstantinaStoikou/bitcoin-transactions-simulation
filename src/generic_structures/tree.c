@@ -59,8 +59,8 @@ void print_tree(Tree_node *node, void (*function)(void *)) {
     }
     (*function)(node->data);
     printf("\n");
-    print_tree_senders(node->sender, function);
-    print_tree_senders(node->receiver, function);
+    print_tree(node->sender, function);
+    print_tree(node->receiver, function);
 }
 
 void delete_tree(Tree_node *node, void (*function)(void **)) {

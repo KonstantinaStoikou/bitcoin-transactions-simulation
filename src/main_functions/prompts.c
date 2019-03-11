@@ -46,11 +46,37 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     }
     // Show balance in a certain wallet
     else if (strcmp(words[0], "/walletStatus") == 0) {
-        printf("showing wallet status\n");
+        if (words[1] == NULL) {
+            perror(RED "Wallet id was not given.\n\n" RESET);
+            return;
+        }
+        char *wal_id = words[1];
+        int pos = get_hash(get_wallet_hash, wal_id);
+        Wallet *wal = (Wallet *)search_hashtable(wallets_ht, pos, wal_id,
+                                                 check_wallet_id);
+        if (wal == NULL) {
+            perror(RED "There is no wallet with the given id.\n\n" RESET);
+            return;
+        }
+        print_wallet(wal);
+        printf("\n");
     }
     // Show info about a certain bitcoin
     else if (strcmp(words[0], "/bitcoinStatus") == 0) {
-        printf("showing bitcoin status\n");
+        if (words[1] == NULL) {
+            perror(RED "Bitcoin id was not given.\n\n" RESET);
+            return;
+        }
+        int bitc_id = atoi(words[1]);
+        int pos = get_hash(get_bitcoin_hash, &bitc_id);
+        Bitcoin *bitc = (Bitcoin *)search_hashtable(bitcoins_ht, pos, &bitc_id,
+                                                    check_bitcoin_id);
+        if (bitc == NULL) {
+            perror(RED "There is no bitcoin with the given id.\n\n" RESET);
+            return;
+        }
+        print_bitcoin(bitc);
+        printf("\n");
     }
     // Show transaction history of a certain bitcoin
     else if (strcmp(words[0], "/traceCoin") == 0) {
