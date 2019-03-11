@@ -27,7 +27,7 @@ int main(int argc, char const *argv[]) {
         bucket_size = 100;
     }
 
-    printf(MAGENTA "bitcoin_balances_file:             %s\n",
+    printf(BLUE "bitcoin_balances_file:             %s\n",
            bitcoin_balances_file);
     printf("transaction_file:                  %s\n", transaction_file);
     printf("bitcoin_value:                     %d\n", bitcoin_value);
@@ -73,6 +73,7 @@ int main(int argc, char const *argv[]) {
         // call function to execute prompts given on the graph
         execute_prompt(prompt, &wallets_ht, &bitcoins_ht, &sender_ht,
                        &receiver_ht, next_id, &recent_datetime);
+        printf("\n");
     } while (strcmp(prompt, "exit") != 0);
 
     // Free allocated memory

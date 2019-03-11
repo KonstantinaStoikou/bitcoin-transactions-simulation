@@ -57,11 +57,49 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     }
     // Request multiple transactions
     else if (strcmp(words[0], "requestTransactions") == 0) {
-        printf("multiple transactions were requested.\n");
         // check if transactions are from an input file (if only one extra
         // argument was given)
         if (words[2] == NULL) {
             printf("transactions from an input file were requested.\n");
+        } else {
+            char new_prompt[BUF_SIZE];
+            sprintf(new_prompt, "requestTransaction %s %s %s", words[1],
+                    words[2], words[3]);
+            if (words[4] != NULL) {
+                sprintf(new_prompt, " %s", words[4]);
+            }
+            if (words[5] != NULL) {
+                sprintf(new_prompt, " %s", words[5]);
+            }
+            new_prompt[strcspn(new_prompt, ";")] = 0;
+            execute_prompt(new_prompt, wallets_ht, bitcoins_ht, sender_ht,
+                           receiver_ht, next_id, recent_datetime);
+            // get next transaction
+            do {
+                // empty prompt array before asking for new user input
+                memset(new_prompt, 0, BUF_SIZE);
+                fgets(new_prompt, BUF_SIZE, stdin);
+                // remove newline character from prompt string
+                new_prompt[strcspn(new_prompt, "\r\n")] = 0;
+                // if user input does not end in ';' execute prompt as a command
+                if (strchr(new_prompt, ';') == NULL) {
+                    // call function to execute prompts given on the graph
+                    execute_prompt(new_prompt, wallets_ht, bitcoins_ht,
+                                   sender_ht, receiver_ht, next_id,
+                                   recent_datetime);
+                    return;
+                } else {
+                    // create a string requestTransaction + given arguments and
+                    // execute it as a prompt
+                    // remove ';' character from prompt string
+                    new_prompt[strcspn(new_prompt, ";")] = 0;
+                    char new_prompt1[BUF_SIZE];
+                    sprintf(new_prompt1, "requestTransaction %s", new_prompt);
+                    execute_prompt(new_prompt1, wallets_ht, bitcoins_ht,
+                                   sender_ht, receiver_ht, next_id,
+                                   recent_datetime);
+                }
+            } while (1);
         }
     }
     // Show received earnings of a certain user
@@ -227,5 +265,5 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
         printf(RED "There is no such command.\n" RESET);
     }
 
-    printf("\n");
+    // printf("\n");
 }
