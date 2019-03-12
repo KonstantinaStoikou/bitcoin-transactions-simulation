@@ -24,6 +24,9 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
 int read_transaction_file(char *filename, Hashtable **sender_ht,
                           Hashtable **receiver_ht, Hashtable **wallets,
                           struct tm **recent_datetime);
+void read_input_file(char *filename, Hashtable **sender_ht,
+                     Hashtable **receiver_ht, Hashtable **wallets,
+                     struct tm **recent_datetime, char *next_id);
 // Convert two strings (format: DD-MM-YYYY, HH:MM) to a tm struct and return the
 // struct
 struct tm *ascii_to_tm(char *date, char *time);

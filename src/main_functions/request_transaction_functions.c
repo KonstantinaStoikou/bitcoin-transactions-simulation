@@ -124,6 +124,8 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
 
     sender_wal->balance -= value;
     receiver_wal->balance += value;
+
+    printf("Successful transaction.\n");
 }
 
 struct tm *ascii_to_tm(char *date_str, char *time_str) {

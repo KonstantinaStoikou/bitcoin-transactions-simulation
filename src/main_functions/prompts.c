@@ -8,6 +8,7 @@
 #include "../../include/data_structs/wallet.h"
 #include "../../include/defines.h"
 #include "../../include/generic_structures/tree.h"
+#include "../../include/main_functions/read_functions.h"
 #include "../../include/main_functions/request_transaction_functions.h"
 
 void execute_prompt(char *prompt, Hashtable **wallets_ht,
@@ -43,7 +44,7 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
         }
         // check if date was given correctly
         if ((words[4] != NULL) && (words[5] == NULL)) {
-            perror(RED "Incomplete date and time");
+            printf(RED "Incomplete date and time.\n");
             return;
         }
 
@@ -60,7 +61,8 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
         // check if transactions are from an input file (if only one extra
         // argument was given)
         if (words[2] == NULL) {
-            printf("transactions from an input file were requested.\n");
+            read_input_file(words[1], sender_ht, receiver_ht, wallets_ht,
+                            recent_datetime, next_id);
         } else {
             char new_prompt[BUF_SIZE];
             sprintf(new_prompt, "requestTransaction %s %s %s", words[1],
@@ -81,7 +83,8 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
                 fgets(new_prompt, BUF_SIZE, stdin);
                 // remove newline character from prompt string
                 new_prompt[strcspn(new_prompt, "\r\n")] = 0;
-                // if user input does not end in ';' execute prompt as a command
+                // if user input does not end in ';' execute prompt as a
+                // command
                 if (strchr(new_prompt, ';') == NULL) {
                     // call function to execute prompts given on the graph
                     execute_prompt(new_prompt, wallets_ht, bitcoins_ht,
@@ -89,9 +92,9 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
                                    recent_datetime);
                     return;
                 } else {
-                    // create a string requestTransaction + given arguments and
-                    // execute it as a prompt
-                    // remove ';' character from prompt string
+                    // create a string requestTransaction + given arguments
+                    // and execute it as a prompt remove ';' character from
+                    // prompt string
                     new_prompt[strcspn(new_prompt, ";")] = 0;
                     char new_prompt1[BUF_SIZE];
                     sprintf(new_prompt1, "requestTransaction %s", new_prompt);
@@ -189,11 +192,14 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
             "certain "
             "time period) "
             ":\n" RESET
-            "​\tfindEarnings walletID [time1][year1][time2][year2]\n\n" CYAN
-            "- Show sent payments of a certain user (optionally in a certain "
+            "​\tfindEarnings walletID "
+            "[time1][year1][time2][year2]\n\n" CYAN
+            "- Show sent payments of a certain user (optionally in a "
+            "certain "
             "time "
             "period) :\n" RESET
-            "​\tfindPayments walletID [time1][year1][time2][year2]\n\n" CYAN
+            "​\tfindPayments walletID "
+            "[time1][year1][time2][year2]\n\n" CYAN
             "- Show balance in a certain wallet :\n" RESET
             "​\twalletStatus walletID\n\n" CYAN
             "- Show info about a certain bitcoin :\n" RESET
@@ -245,8 +251,8 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
         }
         print_list(wal->bitcoins_list, print_bitcoin_share);
     }
-    // Print bitcoin tree (only data stored in tree, not pointers) of a given
-    // bitcoin id
+    // Print bitcoin tree (only data stored in tree, not pointers) of a
+    // given bitcoin id
     else if (strcmp(words[0], "showBitcoinTree") == 0) {
         if (words[1] == NULL) {
             perror(RED "Bitcoin id was not given.\n\n" RESET);
@@ -264,6 +270,4 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     } else {
         printf(RED "There is no such command.\n" RESET);
     }
-
-    // printf("\n");
 }

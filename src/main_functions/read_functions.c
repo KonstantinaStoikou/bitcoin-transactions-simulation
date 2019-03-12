@@ -165,11 +165,8 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
-    // format path because of folder structure
-    char filepath[strlen(filename) + 3];
-    snprintf(filepath, sizeof(filepath), "%s%s", "./", filename);
 
-    fp = fopen(filepath, "r");
+    fp = fopen(filename, "r");
     if (fp == NULL) {
         perror(RED "Transactions file cannot be opened." RESET);
         exit(EXIT_FAILURE);
@@ -190,7 +187,7 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
         // input format: id sender receiver amount date time
         char *words[6];  // maximum number of words for a line of that file is 6
         int count = 0;
-        char *w = strtok(line, " ");  // split prompt by spaces
+        char *w = strtok(line, " ");
         while (w) {
             words[count] = w;
             count++;
@@ -223,6 +220,45 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
     free(line);
     fclose(fp);
     return ++max_id;
+}
+
+void read_input_file(char *filename, Hashtable **sender_ht,
+                     Hashtable **receiver_ht, Hashtable **wallets,
+                     struct tm **recent_datetime, char *next_id) {
+    FILE *fp;
+    char *line = NULL;
+    size_t len = 0;
+
+    fp = fopen(filename, "r");
+    if (fp == NULL) {
+        perror(RED "Input file cannot be opened." RESET);
+        exit(EXIT_FAILURE);
+    }
+
+    while (getline(&line, &len, fp) != -1) {
+        // remove newline character from line
+        line[strcspn(line, "\r\n")] = 0;
+        char *words[5];  // maximum number of words for a line of that
+                         // file is 5
+        int count = 0;
+        char *w = strtok(line, " ");
+        while (w) {
+            words[count] = w;
+            count++;
+            w = strtok(NULL, " ");
+        }
+
+        make_transaction(next_id, words[0], words[1], atoi(words[2]), words[3],
+                         words[4], wallets, sender_ht, receiver_ht,
+                         recent_datetime);
+        int next = atoi(next_id);
+        next++;
+        memset(next_id, 0, strlen(next_id));
+        sprintf(next_id, "%d", next);
+    }
+
+    free(line);
+    fclose(fp);
 }
 
 int is_number(char *s) {
