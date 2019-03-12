@@ -118,7 +118,6 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
         }
         int arg_case =
             check_datetime_arguments(words[2], words[3], words[4], words[5]);
-        printf("argument case: %d\n", arg_case);
         find_transactions(words[1], *receiver_ht, words[2], words[3], words[4],
                           words[5], 1, arg_case);
     }
@@ -261,13 +260,14 @@ void find_transactions(char *wallet_id, Hashtable *ht, char *arg1, char *arg2,
     int sum = 0;
     List_node *current = thd->transactions->head;
     if (type == 1) {
-        printf("\nReceived transactions :\n");
+        printf("Received transactions :\n");
     } else {
-        printf("\nSent transactions :\n");
+        printf("Sent transactions :\n");
     }
 
     if (arg_case == NOARGS) {
         while (current != NULL) {
+            printf("\t");
             print_transaction(current->data);
             printf("\n");
             sum += ((Transaction *)current->data)->value;
@@ -295,6 +295,7 @@ void find_transactions(char *wallet_id, Hashtable *ht, char *arg1, char *arg2,
             struct tm *datetime =
                 (struct tm *)((Transaction *)current->data)->date;
             if (check_time_period(start_time, end_time, datetime) == 1) {
+                printf("\t");
                 print_transaction(current->data);
                 printf("\n");
                 sum += ((Transaction *)current->data)->value;
@@ -302,14 +303,38 @@ void find_transactions(char *wallet_id, Hashtable *ht, char *arg1, char *arg2,
             current = current->next;
         }
     } else if (arg_case == YEARONLY) {
+        char *start_date[3];  // maximum number of members of date is 3
+                              // (DD-MM-YYYY)
+        int count = 0;
+        char *d1 = strtok(arg1, "-");
+        while (d1) {
+            start_date[count] = d1;
+            count++;
+            d1 = strtok(NULL, "-");
+        }
+        char *
+            end_date[3];  // maximum number of members of date is 3 (DD-MM-YYYY)
+        count = 0;
+        char *d2 = strtok(arg2, "-");
+        while (d2) {
+            end_date[count] = d2;
+            count++;
+            d2 = strtok(NULL, "-");
+        }
         while (current != NULL) {
-            print_transaction(current->data);
-            printf("\n");
-            sum += ((Transaction *)current->data)->value;
+            struct tm *datetime =
+                (struct tm *)((Transaction *)current->data)->date;
+            if (check_date_period(start_date, end_date, datetime) == 1) {
+                printf("\t");
+                print_transaction(current->data);
+                printf("\n");
+                sum += ((Transaction *)current->data)->value;
+            }
             current = current->next;
         }
     } else if (arg_case == TIMEYEAR) {
         while (current != NULL) {
+            printf("\t");
             print_transaction(current->data);
             printf("\n");
             sum += ((Transaction *)current->data)->value;
@@ -318,9 +343,9 @@ void find_transactions(char *wallet_id, Hashtable *ht, char *arg1, char *arg2,
     }
 
     if (type == 1) {
-        printf("Total earnings of %s: $%d\n", wallet_id, sum);
+        printf("\nTotal earnings of %s : $%d\n", wallet_id, sum);
     } else {
-        printf("Total payments of %s: $%d\n", wallet_id, sum);
+        printf("\nTotal payments of %s : $%d\n", wallet_id, sum);
     }
 }
 
@@ -370,6 +395,40 @@ int check_time_period(char **start_time, char **end_time, struct tm *datetime) {
 }
 
 int check_date_period(char **start_date, char **end_date, struct tm *datetime) {
+    // check if datetime is between start and end year
+    if (datetime->tm_year + 1900 < atoi(start_date[2]) ||
+        datetime->tm_year + 1900 > atoi(end_date[2])) {
+        return 0;
+    } else if (datetime->tm_year + 1900 > atoi(start_date[2]) &&
+               datetime->tm_year + 1900 < atoi(end_date[2])) {
+        return 1;
+    }
+    // if start year is the same with datetime year, check month
+    else if (datetime->tm_year + 1900 == atoi(start_date[2]) &&
+             datetime->tm_mon + 1 < atoi(start_date[1])) {
+        return 0;
+    }
+    // if end year is the same with datetime year, check month
+    else if (datetime->tm_year + 1900 == atoi(end_date[2]) &&
+             datetime->tm_mon + 1 > atoi(end_date[1])) {
+        return 0;
+    }
+    // if both start year and start month are the same with datetime year and
+    // month, check day
+    else if (datetime->tm_year + 1900 == atoi(start_date[2]) &&
+             datetime->tm_mon + 1 == atoi(start_date[1]) &&
+             datetime->tm_mday < atoi(start_date[0])) {
+        return 0;
+    }
+    // if both end year and end month are the same with datetime year and
+    // month, check day
+    else if (datetime->tm_year + 1900 == atoi(end_date[2]) &&
+             datetime->tm_mon + 1 == atoi(end_date[1]) &&
+             datetime->tm_mday > atoi(end_date[0])) {
+        return 0;
+    } else {
+        return 1;
+    }
 }
 
 void print_commands() {
