@@ -333,11 +333,78 @@ void find_transactions(char *wallet_id, Hashtable *ht, char *arg1, char *arg2,
             current = current->next;
         }
     } else if (arg_case == TIMEYEAR) {
+        struct tm *start_tm = malloc(sizeof(struct tm));
+        char *start_date[3];  // maximum number of members of date is 3
+                              // (DD-MM-YYYY)
+        int count = 0;
+        char *d1 = strtok(arg1, "-");
+        while (d1) {
+            start_date[count] = d1;
+            count++;
+            d1 = strtok(NULL, "-");
+        }
+        char *start_time[2];  // maximum number of members of time is 2 (HH:MM)
+        count = 0;
+        char *t1 = strtok(arg2, ":");
+        while (t1) {
+            start_time[count] = t1;
+            count++;
+            t1 = strtok(NULL, ":");
+        }
+
+        start_tm->tm_mday = atoi(start_date[0]);
+        start_tm->tm_mon = atoi(start_date[1]) - 1;
+        start_tm->tm_year = atoi(start_date[2]) - 1900;
+        start_tm->tm_hour = atoi(start_time[0]);
+        start_tm->tm_min = atoi(start_time[1]);
+        start_tm->tm_sec = 0;
+
+        struct tm *end_tm = malloc(sizeof(struct tm));
+        char *end_date[3];  // maximum number of members of date is 3
+                            // (DD-MM-YYYY)
+        count = 0;
+        char *d2 = strtok(arg3, "-");
+        while (d2) {
+            end_date[count] = d2;
+            count++;
+            d2 = strtok(NULL, "-");
+        }
+        char *end_time[2];  // maximum number of members of time is 2 (HH:MM)
+        count = 0;
+        char *t2 = strtok(arg4, ":");
+        while (t2) {
+            end_time[count] = t2;
+            count++;
+            t2 = strtok(NULL, ":");
+        }
+
+        end_tm->tm_mday = atoi(end_date[0]);
+        end_tm->tm_mon = atoi(end_date[1]) - 1;
+        end_tm->tm_year = atoi(end_date[2]) - 1900;
+        end_tm->tm_hour = atoi(end_time[0]);
+        end_tm->tm_min = atoi(end_time[1]);
+        end_tm->tm_sec = 0;
+
+        char buffer1[20];
+        strftime(buffer1, 20, "%d-%m-%Y %H:%M", start_tm);
+        printf("%s", buffer1);
+        char buffer2[20];
+        strftime(buffer2, 20, "%d-%m-%Y %H:%M", end_tm);
+        printf("%s", buffer2);
+
         while (current != NULL) {
-            printf("\t");
-            print_transaction(current->data);
-            printf("\n");
-            sum += ((Transaction *)current->data)->value;
+            struct tm *datetime =
+                (struct tm *)((Transaction *)current->data)->date;
+            char buffer3[20];
+            strftime(buffer3, 20, "%d-%m-%Y %H:%M", datetime);
+            printf("%s", buffer3);
+            if (compare_datetime(datetime, start_tm) >= 0 &&
+                compare_datetime(datetime, end_tm) <= 0) {
+                printf("\t");
+                print_transaction(current->data);
+                printf("\n");
+                sum += ((Transaction *)current->data)->value;
+            }
             current = current->next;
         }
     }
@@ -356,7 +423,7 @@ int check_datetime_arguments(char *arg1, char *arg2, char *arg3, char *arg4) {
     if (arg1 == NULL) {
         // case: no arguments
         return NOARGS;
-    } else if (arg4 != NULL) {
+    } else if (arg4 != NULL && arg2 != NULL) {
         // case: [time1][year1][time2][year2]
         // all arguments in correct order
         return TIMEYEAR;

@@ -125,6 +125,7 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
     sender_wal->balance -= value;
     receiver_wal->balance += value;
 
+    // free(new_node);
     printf("Successful transaction.\n");
 }
 
