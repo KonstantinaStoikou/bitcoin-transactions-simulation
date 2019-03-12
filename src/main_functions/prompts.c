@@ -6,7 +6,6 @@
 #include "../../include/data_structs/bitcoin_tree_data.h"
 #include "../../include/data_structs/transaction_hashtable_data.h"
 #include "../../include/data_structs/wallet.h"
-#include "../../include/defines.h"
 #include "../../include/generic_structures/tree.h"
 #include "../../include/main_functions/read_functions.h"
 #include "../../include/main_functions/request_transaction_functions.h"
@@ -107,11 +106,38 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     }
     // Show received earnings of a certain user
     else if (strcmp(words[0], "findEarnings") == 0) {
-        printf("finding earnings\n");
+        if (words[1] == NULL) {
+            printf(RED "Wallet id was not given.\n\n" RESET);
+            return;
+        }
+        // if odd number of arguments then return
+        if ((words[4] != NULL && words[5] == NULL) ||
+            (words[2] != NULL && words[3] == NULL)) {
+            printf(RED "Wrong number of given arguments.\n\n" RESET);
+            return;
+        }
+        int arg_case =
+            check_datetime_arguments(words[2], words[3], words[4], words[5]);
+        printf("argument case: %d\n", arg_case);
+        find_transactions(words[1], *receiver_ht, words[2], words[3], words[4],
+                          words[5], 1, arg_case);
     }
     // Show sent payments of a certain user
     else if (strcmp(words[0], "findPayments") == 0) {
-        printf("finding payments\n");
+        if (words[1] == NULL) {
+            printf(RED "Wallet id was not given.\n\n" RESET);
+            return;
+        }
+        // if odd number of arguments then return
+        if ((words[4] != NULL && words[5] == NULL) ||
+            (words[2] != NULL && words[3] == NULL)) {
+            printf(RED "Wrong number of given arguments.\n\n" RESET);
+            return;
+        }
+        int arg_case =
+            check_datetime_arguments(words[2], words[3], words[4], words[5]);
+        find_transactions(words[1], *sender_ht, words[2], words[3], words[4],
+                          words[5], 0, arg_case);
     }
     // Show balance in a certain wallet
     else if (strcmp(words[0], "walletStatus") == 0) {
@@ -170,54 +196,7 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     // EXTRA PROMPTS FOR DEBUGGING:
     // List all possible commands
     else if (strcmp(words[0], "listCommands") == 0) {
-        printf(
-            BLUE
-            "ASSIGNMENT'S TASK PROMPTS: \n\n" CYAN
-            "- Request a transaction (optionally date and time) :\n" RESET
-            "\trequestTransaction senderWalletID receiverWalletID amount "
-            "[date] "
-            "[time]\n\n" CYAN
-            "- Request multiple transactions (optionally date and time) "
-            ":\n" RESET
-            "\trequestTransactions senderWalletID receiverWalletID amount "
-            "[date] "
-            "time;\n"
-            "\tsenderWalletID2 receiverWalletID2 amount2 [date2] [time2];\n"
-            "\t...\n"
-            "\tsenderWalletIDn receiverWalletIDn amountn [daten] "
-            "[timen];\n\n" CYAN
-            "- Read transactions from an input file as :\n" RESET
-            "\trequestTransactions inputFile\n\n" CYAN
-            "- Show received earnings of a certain user (optionally in a "
-            "certain "
-            "time period) "
-            ":\n" RESET
-            "​\tfindEarnings walletID "
-            "[time1][year1][time2][year2]\n\n" CYAN
-            "- Show sent payments of a certain user (optionally in a "
-            "certain "
-            "time "
-            "period) :\n" RESET
-            "​\tfindPayments walletID "
-            "[time1][year1][time2][year2]\n\n" CYAN
-            "- Show balance in a certain wallet :\n" RESET
-            "​\twalletStatus walletID\n\n" CYAN
-            "- Show info about a certain bitcoin :\n" RESET
-            "\tbitCoinStatus bitCoinID\n\n" CYAN
-            "- Show transaction history of a certain bitcoin :\n" RESET
-            "\ttraceCoin bitCoinID\n\n" BLUE "FOR DEBUGGING PURPOSES: \n\n" CYAN
-            "- Show wallets' hashtable :\n" RESET "\tshowWallets\n\n" CYAN
-            "- Show senders' transactions hashtable :\n" RESET
-            "\tshowSenders\n\n" CYAN
-            "- Show receivers' transactions hashtable :\n" RESET
-            "\tshowReceivers\n\n" CYAN "- Show bitcoins hashtable :\n" RESET
-            "\tshowBitcoins\n\n" CYAN
-            "- Show bitcoin shares of a certain wallet :\n" RESET
-            "\tshowBitcoinShares walletID\n\n" CYAN
-            "- Show transactions tree of a certain bitcoin :\n" RESET
-            "\tshowBitcoinTree bitCoinID\n\n" CYAN
-            "- List all possible commands :\n" RESET "\tlistCommands\n\n" CYAN
-            "- Exit program: \n" RESET "\texit\n\n");
+        print_commands();
     }
     // Print bitcoins hashtable
     else if (strcmp(words[0], "showBitcoins") == 0) {
@@ -270,4 +249,176 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
     } else {
         printf(RED "There is no such command.\n" RESET);
     }
+}
+
+void find_transactions(char *wallet_id, Hashtable *ht, char *arg1, char *arg2,
+                       char *arg3, char *arg4, int type, int arg_case) {
+    int pos = get_transaction_hash(wallet_id, ht->num_of_entries);
+    Transaction_hashtable_data *thd =
+        (Transaction_hashtable_data *)search_hashtable(
+            &ht, pos, wallet_id, check_transaction_wallet);
+    // find sum of all transactions inside given dates (if given)
+    int sum = 0;
+    List_node *current = thd->transactions->head;
+    if (type == 1) {
+        printf("\nReceived transactions :\n");
+    } else {
+        printf("\nSent transactions :\n");
+    }
+
+    if (arg_case == NOARGS) {
+        while (current != NULL) {
+            print_transaction(current->data);
+            printf("\n");
+            sum += ((Transaction *)current->data)->value;
+            current = current->next;
+        }
+    } else if (arg_case == TIMEONLY) {
+        // break arguments to char* arrays
+        char *start_time[2];  // maximum number of members of time is 2 (HH:MM)
+        int count = 0;
+        char *t1 = strtok(arg1, ":");
+        while (t1) {
+            start_time[count] = t1;
+            count++;
+            t1 = strtok(NULL, ":");
+        }
+        char *end_time[2];  // maximum number of members of time is 2 (HH:MM)
+        count = 0;
+        char *t2 = strtok(arg2, ":");
+        while (t2) {
+            end_time[count] = t2;
+            count++;
+            t2 = strtok(NULL, ":");
+        }
+        while (current != NULL) {
+            struct tm *datetime =
+                (struct tm *)((Transaction *)current->data)->date;
+            if (check_time_period(start_time, end_time, datetime) == 1) {
+                print_transaction(current->data);
+                printf("\n");
+                sum += ((Transaction *)current->data)->value;
+            }
+            current = current->next;
+        }
+    } else if (arg_case == YEARONLY) {
+        while (current != NULL) {
+            print_transaction(current->data);
+            printf("\n");
+            sum += ((Transaction *)current->data)->value;
+            current = current->next;
+        }
+    } else if (arg_case == TIMEYEAR) {
+        while (current != NULL) {
+            print_transaction(current->data);
+            printf("\n");
+            sum += ((Transaction *)current->data)->value;
+            current = current->next;
+        }
+    }
+
+    if (type == 1) {
+        printf("Total earnings of %s: $%d\n", wallet_id, sum);
+    } else {
+        printf("Total payments of %s: $%d\n", wallet_id, sum);
+    }
+}
+
+int check_datetime_arguments(char *arg1, char *arg2, char *arg3, char *arg4) {
+    // 4 different cases:
+    // no arguments, [time1][time2], [year1][year2],
+    // [time1][year1][time2][year2]
+    if (arg1 == NULL) {
+        // case: no arguments
+        return NOARGS;
+    } else if (arg4 != NULL) {
+        // case: [time1][year1][time2][year2]
+        // all arguments in correct order
+        return TIMEYEAR;
+    } else if (strchr(arg1, '-') != NULL) {
+        // case: [year1][year2]
+        // because first argument contains a "-" which means it's a year
+        return YEARONLY;
+    } else if (strchr(arg1, ':') != NULL) {
+        // case: [time1][time2]
+        return TIMEONLY;
+    }
+    return 0;
+}
+
+int check_time_period(char **start_time, char **end_time, struct tm *datetime) {
+    // check if datetime is between start and end hours
+    if (datetime->tm_hour < atoi(start_time[0]) ||
+        datetime->tm_hour > atoi(end_time[0])) {
+        return 0;
+    } else if (datetime->tm_hour > atoi(start_time[0]) &&
+               datetime->tm_hour < atoi(end_time[0])) {
+        return 1;
+    }
+    // if start hour is the same with datetime hour, check minutes
+    else if (datetime->tm_hour == atoi(start_time[0]) &&
+             datetime->tm_min < atoi(start_time[1])) {
+        return 0;
+    }
+    // if end hour is the same with datetime hour, check minutes
+    else if (datetime->tm_hour == atoi(end_time[0]) &&
+             datetime->tm_min > atoi(end_time[1])) {
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
+int check_date_period(char **start_date, char **end_date, struct tm *datetime) {
+}
+
+void print_commands() {
+    printf(BLUE
+           "ASSIGNMENT'S TASK PROMPTS: \n\n" CYAN
+           "- Request a transaction (optionally date and time) :\n" RESET
+           "\trequestTransaction senderWalletID receiverWalletID amount "
+           "[date] "
+           "[time]\n\n" CYAN
+           "- Request multiple transactions (optionally date and time) "
+           ":\n" RESET
+           "\trequestTransactions senderWalletID receiverWalletID amount "
+           "[date] "
+           "time;\n"
+           "\tsenderWalletID2 receiverWalletID2 amount2 [date2] [time2];\n"
+           "\t...\n"
+           "\tsenderWalletIDn receiverWalletIDn amountn [daten] "
+           "[timen];\n\n" CYAN
+           "- Read transactions from an input file as :\n" RESET
+           "\trequestTransactions inputFile\n\n" CYAN
+           "- Show received earnings of a certain user (optionally in a "
+           "certain "
+           "time period) "
+           ":\n" RESET
+           "​\tfindEarnings walletID "
+           "[time1][year1][time2][year2]\n\n" CYAN
+           "- Show sent payments of a certain user (optionally in a "
+           "certain "
+           "time "
+           "period) :\n" RESET
+           "​\tfindPayments walletID "
+           "[time1][year1][time2][year2]\n\n" CYAN
+           "- Show balance in a certain wallet :\n" RESET
+           "​\twalletStatus walletID\n\n" CYAN
+           "- Show info about a certain bitcoin :\n" RESET
+           "\tbitCoinStatus bitCoinID\n\n" CYAN
+           "- Show transaction history of a certain bitcoin :\n" RESET
+           "\ttraceCoin bitCoinID\n\n" BLUE "FOR DEBUGGING PURPOSES: \n\n" CYAN
+           "- Show wallets' hashtable :\n" RESET "\tshowWallets\n\n" CYAN
+           "- Show senders' transactions hashtable :\n" RESET
+           "\tshowSenders\n\n" CYAN
+           "- Show receivers' transactions hashtable :\n" RESET
+           "\tshowReceivers\n\n" CYAN "- Show bitcoins hashtable :\n" RESET
+           "\tshowBitcoins\n\n" CYAN
+           "- Show bitcoin shares of a certain wallet :\n" RESET
+           "\tshowBitcoinShares walletID\n\n" CYAN
+           "- Show transactions tree of a certain bitcoin :\n" RESET
+           "\tshowBitcoinTree bitCoinID\n\n" CYAN
+           "- List all possible commands :\n" RESET "\tlistCommands\n\n" CYAN
+           "- Exit program: \n" RESET "\texit\n\n");
+    return;
 }

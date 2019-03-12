@@ -33,5 +33,10 @@
 #define TRANSACTION_HT_SIZE 20
 // Define size of buckets of transactions (in bytes)
 #define TRANSACTION_BUCKET_SIZE 100
+// Define return values for check_datetime_arguments function
+#define NOARGS 1
+#define TIMEYEAR 2
+#define YEARONLY 3
+#define TIMEONLY 4
 
 #endif

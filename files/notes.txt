@@ -3,9 +3,9 @@ NOTES
 - check if files work from all possible directories
 - better hash functions
 - change hashtable sizes
-- make input validity checks (for prompts)
 - check if command line arguments work
 - check if all double pointer are useful (for by reference passing)
 - check when tree node amount is 0
 - check node not found
-- maybe i dont need sprintf with "./" for files
+- memory deallocation
+- find payments, find earnings

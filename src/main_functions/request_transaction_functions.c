@@ -132,7 +132,7 @@ struct tm *ascii_to_tm(char *date_str, char *time_str) {
     struct tm *tm = malloc(sizeof(struct tm));
     char *date[3];  // maximum number of members of date is 3 (DD-MM-YYYY)
     int count = 0;
-    char *d = strtok(date_str, "-");  // split prompt by spaces
+    char *d = strtok(date_str, "-");
     while (d) {
         date[count] = d;
         count++;
@@ -140,7 +140,7 @@ struct tm *ascii_to_tm(char *date_str, char *time_str) {
     }
     char *time[2];  // maximum number of members of time is 2 (HH:MM)
     count = 0;
-    char *t = strtok(time_str, ":");  // split prompt by spaces
+    char *t = strtok(time_str, ":");
     while (t) {
         time[count] = t;
         count++;
