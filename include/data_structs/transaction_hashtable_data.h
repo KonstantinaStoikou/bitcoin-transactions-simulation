@@ -17,5 +17,6 @@ void print_transaction_hashtable_data(void *data);
 // search for), return 1 if same data, else 0
 int check_transaction_wallet(void *data, void *wallet_id);
 void delete_transaction_hashtable_data(void **thd);
+void delete_transaction_hashtable_data_pointers(void **thd);
 
 #endif

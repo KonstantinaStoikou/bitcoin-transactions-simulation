@@ -1,12 +1,20 @@
 NOTES
 
 - check if files work from all possible directories
-- better hash functions
-- change hashtable sizes
 - check if command line arguments work
 - check if all double pointer are useful (for by reference passing)
 - check when tree node amount is 0
 - check node not found
-- memory deallocation
 - find payments, find earnings
+- request trasanctions from input file remove semicolon
+- test in linux of university
+
+Today:
+- memory deallocation
+- better hash functions
+- change hashtable sizes
+
+Friday:
+- make readme
 - look all comments and add/delete some
+- final tests

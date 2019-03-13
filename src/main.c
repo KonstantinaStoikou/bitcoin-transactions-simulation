@@ -82,7 +82,7 @@ int main(int argc, char const *argv[]) {
     delete_hashtable(&wallets_ht, delete_wallet);
     delete_hashtable(&bitcoins_ht, delete_bitcoin);
     delete_hashtable(&sender_ht, delete_transaction_hashtable_data);
-    delete_hashtable(&receiver_ht, delete_transaction_hashtable_data);
+    delete_hashtable(&receiver_ht, delete_transaction_hashtable_data_pointers);
 
     return 0;
 }

@@ -40,7 +40,7 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
     }
 
     // if date was not given at all get current time
-    struct tm *tm_info;
+    struct tm *tm_info = NULL;
     if (date == NULL && time == NULL) {
         tm_info = get_current_time();
     } else {
@@ -54,6 +54,7 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
             return;
         }
     }
+
     *recent_datetime = tm_info;
 
     // insert values into a transaction struct
@@ -85,7 +86,7 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
     receiver_thd->transactions->head = new_node;
 
     free(transaction);
-    free(tm_info);
+    // free(recent_datetime);
 
     // break tree and point to these transactions
     List_node *current_share = (List_node *)sender_wal->bitcoins_list->head;
@@ -127,8 +128,6 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
     sender_wal->balance -= value;
     receiver_wal->balance += value;
 
-    free(new_node->data);
-    free(new_node);
     printf("Successful transaction.\n");
 }
 

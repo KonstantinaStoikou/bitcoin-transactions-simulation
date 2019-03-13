@@ -11,7 +11,15 @@ void print_wallet(void *wallet) {
 
 int get_wallet_hash(void *wallet_id) {
     char *w = (char *)wallet_id;
-    return w[0] % WALLET_HT_SIZE;
+    unsigned long hash = 5381;
+    int c;
+
+    while (c = *w++) {
+        // hash * 33 + c
+        hash = ((hash << 5) + hash) + c;
+    }
+
+    return hash % WALLET_HT_SIZE;
 }
 
 int check_wallet_id(void *data, void *wallet_id) {
@@ -27,7 +35,6 @@ int check_wallet_id(void *data, void *wallet_id) {
 void delete_wallet(void **wallet) {
     // will delete list of bitcoin shares, but not the actual bitcoins it points
     // to
-    printf("WAllet: %s\n\n", ((Wallet *)(*wallet))->wallet_id);
     delete_list(&((Wallet *)(*wallet))->bitcoins_list, NULL);
     free(((Wallet *)(*wallet)));
 }
