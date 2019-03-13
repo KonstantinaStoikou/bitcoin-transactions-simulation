@@ -13,7 +13,7 @@
 void execute_prompt(char *prompt, Hashtable **wallets_ht,
                     Hashtable **bitcoins_ht, Hashtable **sender_ht,
                     Hashtable **receiver_ht, char *next_id,
-                    struct tm **recent_datetime) {
+                    struct tm *recent_datetime) {
     // break prompt into words
     char *words[6];  // maximum number of words for a prompt is 6
     for (int i = 0; i < 6; i++) {

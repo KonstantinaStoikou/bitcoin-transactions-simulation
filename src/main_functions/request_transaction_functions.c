@@ -11,7 +11,7 @@
 void make_transaction(char *transaction_id, char *sender_wal_id,
                       char *receiver_wal_id, int value, char *date, char *time,
                       Hashtable **wallets, Hashtable **sender_ht,
-                      Hashtable **receiver_ht, struct tm **recent_datetime) {
+                      Hashtable **receiver_ht, struct tm *recent_datetime) {
     // check if sender and receiver exist
     int pos = get_hash(get_wallet_hash, sender_wal_id);
     Wallet *sender_wal = (Wallet *)search_hashtable(wallets, pos, sender_wal_id,
@@ -47,15 +47,15 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
         tm_info = ascii_to_tm(date, time);
         // datetime should be aftermost recent datetime but before or equal to
         // current time
-        if (*recent_datetime != NULL &&
-            (compare_datetime(tm_info, *recent_datetime) <= 0 ||
+        if (recent_datetime != NULL &&
+            (compare_datetime(tm_info, recent_datetime) <= 0 ||
              compare_datetime(tm_info, get_current_time()) > 0)) {
-            printf(RED "Invalid date and time\n" RESET);
+            printf(RED "Invalid date and time.\n" RESET);
             return;
         }
     }
 
-    *recent_datetime = tm_info;
+    recent_datetime = tm_info;
 
     // insert values into a transaction struct
     Transaction *transaction = malloc(sizeof(Transaction));
@@ -80,13 +80,13 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
     // Allocate memory for node (cannot use add_list_node because of memcpy)
     List_node *new_node = (List_node *)malloc(sizeof(List_node));
     new_node->data = malloc(sizeof(Transaction *));
-    new_node->data = (Transaction *)inserted_transaction->data;
+    memcpy(new_node->data, inserted_transaction->data, sizeof(Transaction));
     new_node->next = receiver_thd->transactions->head;
     // Change head pointer as new node is added at the beginning
     receiver_thd->transactions->head = new_node;
 
     free(transaction);
-    // free(recent_datetime);
+    free(tm_info);
 
     // break tree and point to these transactions
     List_node *current_share = (List_node *)sender_wal->bitcoins_list->head;

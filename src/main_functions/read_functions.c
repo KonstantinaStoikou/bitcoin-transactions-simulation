@@ -163,7 +163,7 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
 
 int read_transaction_file(char *filename, Hashtable **sender_ht,
                           Hashtable **receiver_ht, Hashtable **wallets,
-                          struct tm **recent_datetime) {
+                          struct tm *recent_datetime) {
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
@@ -226,7 +226,7 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
 
 void read_input_file(char *filename, Hashtable **sender_ht,
                      Hashtable **receiver_ht, Hashtable **wallets,
-                     struct tm **recent_datetime, char *next_id) {
+                     struct tm *recent_datetime, char *next_id) {
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
