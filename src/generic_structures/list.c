@@ -95,6 +95,7 @@ void delete_list(List **list, void (*function)(void **)) {
         if (*function != NULL) {
             (*function)(&current->data);
         }
+
         free(current->data);
         free(current);
         current = next;
