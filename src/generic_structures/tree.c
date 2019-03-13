@@ -71,8 +71,7 @@ void delete_tree(Tree_node *node, void (*function)(void **)) {
     // if a delete function was given, delete data with it
     if (*function != NULL) {
         (*function)(node->data);
-    }
-    if (node->data != NULL) {
+    } else {
         free(node->data);
     }
 

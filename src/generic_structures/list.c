@@ -36,7 +36,7 @@ int delete_list_node(List **list, void *data, int (*function)(void *, void *)) {
     // find the previous node of the one to be deleted
     List_node *prev = search_list_prev_node(list, data, function);
     if (prev == NULL) {
-        perror(RED "The node does not exist in the list" RESET);
+        printf(RED "The node does not exist in the list." RESET);
         return 1;
     }
 
@@ -94,8 +94,7 @@ void delete_list(List **list, void (*function)(void **)) {
         // if a delete function was given, delete data with it
         if (*function != NULL) {
             (*function)(&current->data);
-        }
-        if (current->data != NULL) {
+        } else {
             free(current->data);
         }
 

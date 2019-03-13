@@ -17,7 +17,7 @@ int get_transaction_hash(void *wallet_id, int size) {
     unsigned long hash = 5381;
     int c;
 
-    while (c = *w++) {
+    while ((c = *w++)) {
         // hash * 33 + c
         hash = ((hash << 5) + hash) + c;
     }
@@ -29,7 +29,7 @@ int get_transaction_id_hash(void *transaction_id) {
     unsigned long hash = 5381;
     int c;
 
-    while (c = *t++) {
+    while ((c = *t++)) {
         // hash * 33 + c
         hash = ((hash << 5) + hash) + c;
     }
@@ -57,6 +57,5 @@ int check_transaction_id(void *data, void *transaction_id) {
 }
 
 void delete_transaction(void **transaction) {
-    free(((Transaction *)(*transaction))->date);
     free((Transaction *)(*transaction));
 }

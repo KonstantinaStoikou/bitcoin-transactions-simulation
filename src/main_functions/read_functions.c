@@ -111,9 +111,6 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
                         add_list_node(&wal->bitcoins_list, bitc_share,
                                       sizeof(Bitcoin_share));
                         free(btd);
-                        // free(bitc->tree->root->data);
-                        // free(bitc->tree->root);
-                        // free(bitc->tree);
                         free(bitc);
                         free(bitc_share);
                         // increase total balance of wallet by one full bitcoin
@@ -149,8 +146,6 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
                                         (*receiver_ht)->num_of_entries);
             insert_hashtable_entry(receiver_ht, tpos, receiver_thd,
                                    sizeof(Transaction_hashtable_data));
-            // delete_wallet((void **)&wal);
-            delete_list(&wal->bitcoins_list, NULL);
             free(wal);
             free(sender_thd);
             free(receiver_thd);
@@ -163,7 +158,7 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
 
 int read_transaction_file(char *filename, Hashtable **sender_ht,
                           Hashtable **receiver_ht, Hashtable **wallets,
-                          struct tm *recent_datetime) {
+                          struct tm **recent_datetime) {
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
@@ -226,7 +221,7 @@ int read_transaction_file(char *filename, Hashtable **sender_ht,
 
 void read_input_file(char *filename, Hashtable **sender_ht,
                      Hashtable **receiver_ht, Hashtable **wallets,
-                     struct tm *recent_datetime, char *next_id) {
+                     struct tm **recent_datetime, char *next_id) {
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
@@ -240,6 +235,7 @@ void read_input_file(char *filename, Hashtable **sender_ht,
     while (getline(&line, &len, fp) != -1) {
         // remove newline character from line
         line[strcspn(line, "\r\n")] = 0;
+        line[strcspn(line, ";")] = 0;
         char *words[5];  // maximum number of words for a line of that
                          // file is 5
         int count = 0;

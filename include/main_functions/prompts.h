@@ -13,7 +13,7 @@
 void execute_prompt(char *prompt, Hashtable **wallets_ht,
                     Hashtable **bitcoins_ht, Hashtable **sender_ht,
                     Hashtable **receiver_ht, char *next_id,
-                    struct tm *recent_datetime);
+                    struct tm **recent_datetime);
 // find earnings or payments depending on type argument, type = 1: find
 // earnings, type = 2: find payments
 void find_transactions(char *wallet_id, Hashtable *ht, char *arg1, char *arg2,

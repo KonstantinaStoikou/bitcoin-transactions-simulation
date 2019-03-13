@@ -14,7 +14,7 @@ int get_wallet_hash(void *wallet_id) {
     unsigned long hash = 5381;
     int c;
 
-    while (c = *w++) {
+    while ((c = *w++)) {
         // hash * 33 + c
         hash = ((hash << 5) + hash) + c;
     }
@@ -36,5 +36,5 @@ void delete_wallet(void **wallet) {
     // will delete list of bitcoin shares, but not the actual bitcoins it points
     // to
     delete_list(&((Wallet *)(*wallet))->bitcoins_list, NULL);
-    free(((Wallet *)(*wallet)));
+    free((Wallet *)(*wallet));
 }

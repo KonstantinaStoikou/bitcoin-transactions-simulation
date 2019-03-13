@@ -1,17 +1,12 @@
 NOTES
 
-- check if files work from all possible directories
-- check if command line arguments work
-- check if all double pointer are useful (for by reference passing)
-- check when tree node amount is 0
 - check node not found
-- find payments, find earnings
-- request trasanctions from input file remove semicolon
-- test in linux of university
 
-Today:
+
+Tomorrow:
 - memory deallocation
-- change hashtable sizes
+- test in linux of university
+- find payments, find earnings
 
 Friday:
 - make readme

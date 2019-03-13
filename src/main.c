@@ -15,18 +15,6 @@ int main(int argc, char const *argv[]) {
                    &bitcoin_value, &sender_hashtable_num_of_entries,
                    &receiver_hashtable_num_of_entries, &bucket_size);
 
-    if (argc == 1) {
-        bitcoin_balances_file =
-            malloc(strlen("files/bitCoinBalancesFile.txt") + 1);
-        strcpy(bitcoin_balances_file, "files/bitCoinBalancesFile.txt");
-        transaction_file = malloc(strlen("files/transactionsFile.txt") + 1);
-        strcpy(transaction_file, "files/transactionsFile.txt");
-        bitcoin_value = 10;
-        sender_hashtable_num_of_entries = 15;
-        receiver_hashtable_num_of_entries = 15;
-        bucket_size = 100;
-    }
-
     printf(BLUE "bitcoin_balances_file:             %s\n",
            bitcoin_balances_file);
     printf("transaction_file:                  %s\n", transaction_file);
@@ -38,10 +26,8 @@ int main(int argc, char const *argv[]) {
     printf("bucket_size:                       %d\n\n" RESET, bucket_size);
 
     // initialize structs that will store data later
-    Hashtable *wallets_ht =
-        initialize_hashtable(WALLET_HT_SIZE, WALLET_BUCKET_SIZE);
-    Hashtable *bitcoins_ht =
-        initialize_hashtable(BITCOIN_HT_SIZE, BITCOIN_BUCKET_SIZE);
+    Hashtable *wallets_ht = initialize_hashtable(WALLET_HT_SIZE, bucket_size);
+    Hashtable *bitcoins_ht = initialize_hashtable(BITCOIN_HT_SIZE, bucket_size);
     Hashtable *sender_ht =
         initialize_hashtable(sender_hashtable_num_of_entries, bucket_size);
     Hashtable *receiver_ht =
@@ -56,7 +42,7 @@ int main(int argc, char const *argv[]) {
                                &receiver_ht);
     int next_tr_id =
         read_transaction_file(transaction_file, &sender_ht, &receiver_ht,
-                              &wallets_ht, recent_datetime);
+                              &wallets_ht, &recent_datetime);
     // create unique transaction id for next transaction
     char next_id[TRANSACTION_ID_SIZE];
     sprintf(next_id, "%d", next_tr_id);
@@ -72,7 +58,7 @@ int main(int argc, char const *argv[]) {
         prompt[strcspn(prompt, "\r\n")] = 0;
         // call function to execute prompts given on the graph
         execute_prompt(prompt, &wallets_ht, &bitcoins_ht, &sender_ht,
-                       &receiver_ht, next_id, recent_datetime);
+                       &receiver_ht, next_id, &recent_datetime);
         printf("\n");
     } while (strcmp(prompt, "exit") != 0);
 
