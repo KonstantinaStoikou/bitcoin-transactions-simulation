@@ -54,9 +54,9 @@ int main(int argc, char const *argv[]) {
     read_bitcoin_balances_file(bitcoin_balances_file, bitcoin_value,
                                &wallets_ht, &bitcoins_ht, &sender_ht,
                                &receiver_ht);
-    int next_tr_id =
-        read_transaction_file(transaction_file, &sender_ht, &receiver_ht,
-                              &wallets_ht, &recent_datetime);
+    int next_tr_id = 0;
+    //     read_transaction_file(transaction_file, &sender_ht, &receiver_ht,
+    //                           &wallets_ht, &recent_datetime);
     // create unique transaction id for next transaction
     char next_id[TRANSACTION_ID_SIZE];
     sprintf(next_id, "%d", next_tr_id);
@@ -81,6 +81,8 @@ int main(int argc, char const *argv[]) {
     free(transaction_file);
     delete_hashtable(&wallets_ht, delete_wallet);
     delete_hashtable(&bitcoins_ht, delete_bitcoin);
+    delete_hashtable(&sender_ht, delete_transaction_hashtable_data);
+    delete_hashtable(&receiver_ht, delete_transaction_hashtable_data);
 
     return 0;
 }

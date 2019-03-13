@@ -27,6 +27,7 @@ int check_wallet_id(void *data, void *wallet_id) {
 void delete_wallet(void **wallet) {
     // will delete list of bitcoin shares, but not the actual bitcoins it points
     // to
+    printf("WAllet: %s\n\n", ((Wallet *)(*wallet))->wallet_id);
     delete_list(&((Wallet *)(*wallet))->bitcoins_list, NULL);
     free(((Wallet *)(*wallet)));
 }

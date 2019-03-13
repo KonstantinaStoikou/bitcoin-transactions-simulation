@@ -111,7 +111,7 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
                         add_list_node(&wal->bitcoins_list, bitc_share,
                                       sizeof(Bitcoin_share));
                         free(btd);
-                        // free(bitc->tree->root->data);
+                        free(bitc->tree->root->data);
                         // free(bitc->tree->root);
                         // free(bitc->tree);
                         free(bitc);
@@ -149,6 +149,7 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
                                         (*receiver_ht)->num_of_entries);
             insert_hashtable_entry(receiver_ht, tpos, receiver_thd,
                                    sizeof(Transaction_hashtable_data));
+            // delete_wallet((void **)&wal);
             free(wal);
             free(sender_thd);
             free(receiver_thd);

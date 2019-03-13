@@ -85,6 +85,7 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
     receiver_thd->transactions->head = new_node;
 
     free(transaction);
+    free(tm_info);
 
     // break tree and point to these transactions
     List_node *current_share = (List_node *)sender_wal->bitcoins_list->head;
@@ -111,6 +112,7 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
             new_bcs->bitcoin = sender_share->bitcoin;
             add_list_node(&receiver_wal->bitcoins_list, new_bcs,
                           sizeof(Bitcoin_share));
+            free(new_bcs);
         }
         // if sender bitcoin share is zero remove it from bitcoin list of wallet
         if (sender_share->share == 0) {
@@ -125,7 +127,8 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
     sender_wal->balance -= value;
     receiver_wal->balance += value;
 
-    // free(new_node);
+    free(new_node->data);
+    free(new_node);
     printf("Successful transaction.\n");
 }
 
@@ -154,6 +157,7 @@ struct tm *ascii_to_tm(char *date_str, char *time_str) {
     tm->tm_hour = atoi(time[0]);
     tm->tm_min = atoi(time[1]);
     tm->tm_sec = 0;
+
     return tm;
 }
 

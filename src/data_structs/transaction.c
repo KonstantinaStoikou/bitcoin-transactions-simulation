@@ -1,5 +1,6 @@
 #include "../../include/data_structs/transaction.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 void print_transaction(void *data) {
@@ -39,4 +40,8 @@ int check_transaction_id(void *data, void *transaction_id) {
     } else {
         return 0;
     }
+}
+
+void delete_transaction(void **transaction) {
+    free((Transaction *)(*transaction));
 }

@@ -24,5 +24,6 @@ int get_transaction_id_hash(void *transaction_id);
 // Check for transactions id hashtable only
 int check_transaction_id_only(void *data, void *transaction_id);
 int check_transaction_id(void *data, void *transaction_id);
+void delete_transaction(void **transaction);
 
 #endif

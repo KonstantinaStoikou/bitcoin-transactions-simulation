@@ -72,5 +72,5 @@ void delete_tree(Tree_node *node, void (*function)(void **)) {
     if (*function != NULL) {
         (*function)(node->data);
     }
-    // free(node);
+    free(node);
 }

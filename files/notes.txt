@@ -9,3 +9,4 @@ NOTES
 - check node not found
 - memory deallocation
 - find payments, find earnings
+- look all comments and add/delete some

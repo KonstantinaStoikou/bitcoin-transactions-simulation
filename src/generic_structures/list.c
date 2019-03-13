@@ -5,8 +5,7 @@
 #include "../../include/defines.h"
 
 List *initialize_list(void) {
-    List *list = NULL;
-    list = malloc(sizeof(List));
+    List *list = malloc(sizeof(List));
     list->head = NULL;
 
     return list;
