@@ -2,7 +2,6 @@ NOTES
 
 - check node not found
 
-
 Tomorrow:
 - memory deallocation
 - test in linux of university

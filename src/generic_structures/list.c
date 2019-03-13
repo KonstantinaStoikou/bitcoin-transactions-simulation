@@ -25,7 +25,7 @@ List_node *add_list_node(List **list, void *data, int sizeof_data_struct) {
 
 int delete_list_node(List **list, void *data, int (*function)(void *, void *)) {
     // check if node to be deleted is the head
-    if ((*list)->head->data == data) {
+    if ((*function)((*list)->head->data, data) == 1) {
         List_node *node_deleted = (*list)->head;
         (*list)->head = node_deleted->next;
         free(node_deleted);
@@ -35,6 +35,7 @@ int delete_list_node(List **list, void *data, int (*function)(void *, void *)) {
     // else continue
     // find the previous node of the one to be deleted
     List_node *prev = search_list_prev_node(list, data, function);
+    // if prev is null then node to be deleted is head
     if (prev == NULL) {
         printf(RED "The node does not exist in the list." RESET);
         return 1;
