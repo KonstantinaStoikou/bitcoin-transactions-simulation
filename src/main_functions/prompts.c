@@ -258,7 +258,6 @@ void find_transactions(char *wallet_id, Hashtable *ht, char *arg1, char *arg2,
             &ht, pos, wallet_id, check_transaction_wallet);
     if (thd == NULL) {
         printf(RED "There is no wallet with the given id\n" RESET);
-        return;
     }
 
     // find sum of all transactions inside given dates (if given)
@@ -342,7 +341,7 @@ void find_transactions(char *wallet_id, Hashtable *ht, char *arg1, char *arg2,
         char *start_date[3];  // maximum number of members of date is 3
                               // (DD-MM-YYYY)
         int count = 0;
-        char *d1 = strtok(arg1, "-");
+        char *d1 = strtok(arg2, "-");
         while (d1) {
             start_date[count] = d1;
             count++;
@@ -350,7 +349,7 @@ void find_transactions(char *wallet_id, Hashtable *ht, char *arg1, char *arg2,
         }
         char *start_time[2];  // maximum number of members of time is 2 (HH:MM)
         count = 0;
-        char *t1 = strtok(arg2, ":");
+        char *t1 = strtok(arg1, ":");
         while (t1) {
             start_time[count] = t1;
             count++;
@@ -368,7 +367,7 @@ void find_transactions(char *wallet_id, Hashtable *ht, char *arg1, char *arg2,
         char *end_date[3];  // maximum number of members of date is 3
                             // (DD-MM-YYYY)
         count = 0;
-        char *d2 = strtok(arg3, "-");
+        char *d2 = strtok(arg4, "-");
         while (d2) {
             end_date[count] = d2;
             count++;
@@ -376,7 +375,7 @@ void find_transactions(char *wallet_id, Hashtable *ht, char *arg1, char *arg2,
         }
         char *end_time[2];  // maximum number of members of time is 2 (HH:MM)
         count = 0;
-        char *t2 = strtok(arg4, ":");
+        char *t2 = strtok(arg3, ":");
         while (t2) {
             end_time[count] = t2;
             count++;
@@ -390,19 +389,9 @@ void find_transactions(char *wallet_id, Hashtable *ht, char *arg1, char *arg2,
         end_tm->tm_min = atoi(end_time[1]);
         end_tm->tm_sec = 0;
 
-        char buffer1[20];
-        strftime(buffer1, 20, "%d-%m-%Y %H:%M", start_tm);
-        printf("%s", buffer1);
-        char buffer2[20];
-        strftime(buffer2, 20, "%d-%m-%Y %H:%M", end_tm);
-        printf("%s", buffer2);
-
         while (current != NULL) {
             struct tm *datetime =
                 (struct tm *)((Transaction *)current->data)->date;
-            char buffer3[20];
-            strftime(buffer3, 20, "%d-%m-%Y %H:%M", datetime);
-            printf("%s", buffer3);
             if (compare_datetime(datetime, start_tm) >= 0 &&
                 compare_datetime(datetime, end_tm) <= 0) {
                 printf("\t");
@@ -412,6 +401,8 @@ void find_transactions(char *wallet_id, Hashtable *ht, char *arg1, char *arg2,
             }
             current = current->next;
         }
+        free(start_tm);
+        free(end_tm);
     }
 
     if (type == 1) {
