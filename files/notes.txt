@@ -1,13 +1,11 @@
 NOTES
 
-- check node not found
-
 Tomorrow:
 - memory deallocation
-- test in linux of university
 - find payments, find earnings
 
 Friday:
 - make readme
+- test in linux of university
 - look all comments and add/delete some
 - final tests

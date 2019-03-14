@@ -86,6 +86,11 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
     receiver_thd->transactions->head = new_node;
 
     free(transaction);
+    // if tm_info points to malloc'ed space, free it
+    if (date != NULL || time != NULL) {
+        free(tm_info);
+    }
+
     // decrease/increase balances
     sender_wal->balance -= value;
     receiver_wal->balance += value;
