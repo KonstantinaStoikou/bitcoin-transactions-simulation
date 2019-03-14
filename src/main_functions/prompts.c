@@ -256,6 +256,11 @@ void find_transactions(char *wallet_id, Hashtable *ht, char *arg1, char *arg2,
     Transaction_hashtable_data *thd =
         (Transaction_hashtable_data *)search_hashtable(
             &ht, pos, wallet_id, check_transaction_wallet);
+    if (thd == NULL) {
+        printf(RED "There is no wallet with the given id\n" RESET);
+        return;
+    }
+
     // find sum of all transactions inside given dates (if given)
     int sum = 0;
     List_node *current = thd->transactions->head;

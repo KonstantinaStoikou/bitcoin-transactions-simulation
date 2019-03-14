@@ -57,5 +57,6 @@ int check_transaction_id(void *data, void *transaction_id) {
 }
 
 void delete_transaction(void **transaction) {
+    free(((Transaction *)(*transaction))->date);
     free((Transaction *)(*transaction));
 }

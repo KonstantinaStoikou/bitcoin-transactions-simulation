@@ -1,10 +1,10 @@
 NOTES
 
 Tomorrow:
-- memory deallocation
 - find payments, find earnings
 
 Friday:
+- final memory deallocation
 - make readme
 - test in linux of university
 - look all comments and add/delete some

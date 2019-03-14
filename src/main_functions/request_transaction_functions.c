@@ -51,6 +51,7 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
             (compare_datetime(tm_info, *recent_datetime) <= 0 ||
              compare_datetime(tm_info, get_current_time()) > 0)) {
             printf(RED "Invalid date and time.\n" RESET);
+            free(tm_info);
             return;
         }
     }
@@ -86,10 +87,6 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
     receiver_thd->transactions->head = new_node;
 
     free(transaction);
-    // if tm_info points to malloc'ed space, free it
-    if (date != NULL || time != NULL) {
-        free(tm_info);
-    }
 
     // decrease/increase balances
     sender_wal->balance -= value;
@@ -137,6 +134,7 @@ void make_transaction(char *transaction_id, char *sender_wal_id,
 
 struct tm *ascii_to_tm(char *date_str, char *time_str) {
     struct tm *tm = malloc(sizeof(struct tm));
+    memset(tm, 0, sizeof(struct tm));
     char *date[3];  // maximum number of members of date is 3 (DD-MM-YYYY)
     int count = 0;
     char *d = strtok(date_str, "-");
