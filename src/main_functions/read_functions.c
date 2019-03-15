@@ -80,6 +80,7 @@ void read_bitcoin_balances_file(char *filename, int bitcoin_value,
                                "%d: A bitcoin with this id already "
                                "exists.\n\n" RESET,
                                b_id);
+                        exit(EXIT_FAILURE);
                     } else {
                         // initialize bitcoin share struct
                         Bitcoin_share *bitc_share =
