@@ -1,3 +1,8 @@
+/**
+ * A struct and it's functions to store transaction info.
+ *
+ */
+
 #ifndef TRANSACTION_HEADER
 #define TRANSACTION_HEADER
 

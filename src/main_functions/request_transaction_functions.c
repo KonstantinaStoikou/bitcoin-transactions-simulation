@@ -212,15 +212,7 @@ int compare_datetime(struct tm *transaction_date, struct tm *comparison_date) {
     tzset();
     time_t t1 = mktime(transaction_date);
     time_t t2 = mktime(comparison_date);
-    int diff = difftime(t1, t2);
-    char buffer1[20];
-    strftime(buffer1, 20, "%d-%m-%Y %H:%M", transaction_date);
-    printf("%s\n", buffer1);
-    char buffer2[20];
-    strftime(buffer2, 20, "%d-%m-%Y %H:%M", comparison_date);
-    printf("%s\n", buffer2);
-    printf("diff is %d\n", diff);
-    return diff;
+    return difftime(t1, t2);
 }
 
 struct tm *get_current_time() {

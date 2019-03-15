@@ -13,7 +13,6 @@
 typedef struct Bucket {
     void **data;
     int num_of_entries;
-    // mporei na min to xreiasto analogos to readme mou
     void *remaining_space;
 } Bucket;
 

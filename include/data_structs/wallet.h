@@ -1,3 +1,8 @@
+/**
+ * A struct and it's functions to store wallet info.
+ *
+ */
+
 #ifndef WALLET_HEADER
 #define WALLET_HEADER
 

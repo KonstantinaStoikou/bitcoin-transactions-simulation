@@ -11,7 +11,7 @@ void print_bitcoin_tree_data(void *data) {
     }
 }
 
-void print_bitcoin_transactions(void *data) {
+void print_bitcoin_transaction(void *data) {
     Bitcoin_tree_data *btd = (Bitcoin_tree_data *)data;
     if (btd->transaction != NULL) {
         print_transaction(btd->transaction);

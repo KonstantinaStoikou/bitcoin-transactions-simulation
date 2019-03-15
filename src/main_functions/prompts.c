@@ -186,7 +186,7 @@ void execute_prompt(char *prompt, Hashtable **wallets_ht,
             printf(RED "There is no bitcoin with the given id.\n\n" RESET);
             return;
         }
-        print_tree_senders(bitc->tree->root, print_bitcoin_transactions);
+        print_tree_senders(bitc->tree->root, print_bitcoin_transaction);
     }
     // Exit program
     else if (strcmp(words[0], "exit") == 0) {

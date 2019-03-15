@@ -28,6 +28,7 @@ void delete_transaction_hashtable_data(void **thd) {
 }
 
 void delete_transaction_hashtable_data_pointers(void **thd) {
+    // delete list of transactions but not the actual transactions
     delete_list(&((Transaction_hashtable_data *)(*thd))->transactions, NULL);
     free(((Transaction_hashtable_data *)(*thd)));
 }

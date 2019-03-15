@@ -1,8 +1,5 @@
 NOTES
 
-Tomorrow:
-- find payments, find earnings
-
 Friday:
 - final memory deallocation
 - make readme
