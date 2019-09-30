@@ -1,7 +1,0 @@
-NOTES
-
-Friday:
-- final memory deallocation
-- make readme
-- test in linux of university
-- final tests
